@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Astron Valuation — Project Quotation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f7;
+      --ink: #111110;
+      --ink-light: #555550;
+      --ink-faint: #99998f;
+      --border: #e5e4df;
+      --accent: #1a1a18;
+      --green: #2d6a4f;
+      --green-bg: #f0f7f4;
+      --tag-bg: #f0efe9;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.25rem, 5vw, 4rem);
+      height: 52px;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    .topbar-left .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 12px;
+      color: var(--ink-light);
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      background: var(--tag-bg);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 6px 14px;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .cta-link:hover { opacity: 0.8; }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 5vw, 3rem);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 5rem 0 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.25rem;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 500;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--ink-light);
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--ink-light);
+      margin-top: 1.75rem;
+    }
+    .hero-meta span { display: flex; align-items: center; gap: 0.4rem; }
+
+    /* ── SECTION ── */
+    .section {
+      border-bottom: 1px solid var(--border);
+    }
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 2.5rem 0 2rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .section-head:hover .section-title { opacity: 0.7; }
+    .section-num {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--ink-faint);
+      min-width: 28px;
+      padding-top: 0.35rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .section-title-wrap { flex: 1; }
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.35rem, 3vw, 1.9rem);
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      transition: opacity 0.15s;
+    }
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--ink-light);
+      margin-top: 0.35rem;
+    }
+    .section-chevron {
+      font-size: 18px;
+      color: var(--ink-faint);
+      transition: transform 0.25s;
+      padding-top: 0.2rem;
+      flex-shrink: 0;
+    }
+    .section.open .section-chevron { transform: rotate(180deg); }
+
+    .section-body {
+      display: none;
+      padding: 0 0 2.5rem 2.75rem;
+    }
+    .section.open .section-body { display: block; }
+
+    /* always-open sections */
+    .section-always .section-head { cursor: default; }
+    .section-always .section-chevron { display: none; }
+    .section-always .section-body { display: block; }
+
+    /* ── PROSE ── */
+    p { margin-bottom: 1rem; color: var(--ink-light); }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--ink); font-weight: 600; }
+
+    /* ── GRID CARDS ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: var(--bg);
+      padding: 1.1rem 1.25rem;
+    }
+    .card-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.4rem;
+    }
+    .card-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ── TABLE ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin-bottom: 1rem;
+    }
+    thead th {
+      text-align: left;
+      padding: 0.6rem 0.9rem;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td {
+      padding: 0.75rem 0.9rem;
+      vertical-align: top;
+      color: var(--ink-light);
+    }
+    tbody td:first-child { color: var(--ink); font-weight: 500; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--tag-bg);
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ── TIMELINE ── */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 1rem; }
+    .tl-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 1.25rem;
+      align-items: start;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tl-row:last-child { border-bottom: none; }
+    .tl-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      padding-top: 2px;
+    }
+    .tl-bar-wrap { display: flex; flex-direction: column; gap: 0.4rem; }
+    .tl-name { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+    .tl-desc { font-size: 12.5px; color: var(--ink-light); }
+    .tl-bar {
+      height: 5px;
+      border-radius: 10px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .tl-fill { height: 100%; border-radius: 10px; background: var(--ink); }
+
+    /* ── PRICING ── */
+    .pricing-base {
+      background: var(--ink);
+      color: #fff;
+      border-radius: 10px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .pricing-base-label { font-size: 13px; font-weight: 500; opacity: 0.7; }
+    .pricing-base-amount { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.02em; }
+
+    .addon-list { display: flex; flex-direction: column; gap: 1px; margin-bottom: 1.25rem; }
+    .addon-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+      background: var(--bg);
+      margin-bottom: 6px;
+    }
+    .addon-item:hover { background: #f5f4f0; }
+    .addon-item.selected { background: var(--green-bg); border-color: #a8d5bc; }
+    .addon-check {
+      width: 18px; height: 18px;
+      border-radius: 4px;
+      border: 1.5px solid var(--border);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.12s;
+      font-size: 11px;
+    }
+    .addon-item.selected .addon-check {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+    .addon-info { flex: 1; }
+    .addon-name { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+    .addon-desc { font-size: 12px; color: var(--ink-light); }
+    .addon-price {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--green);
+      white-space: nowrap;
+    }
+
+    .pricing-total {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .pricing-total-label { font-size: 13px; color: var(--ink-light); }
+    .pricing-total-amount {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      transition: all 0.2s;
+    }
+    .pricing-hint {
+      font-size: 11.5px;
+      color: var(--ink-faint);
+      margin-top: 0.75rem;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist { display: flex; flex-direction: column; gap: 0; }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-icon { color: var(--green); font-weight: 700; flex-shrink: 0; padding-top: 1px; }
+    .check-text { color: var(--ink-light); }
+    .check-text strong { color: var(--ink); }
+
+    /* ── ASSUMPTIONS ── */
+    .assumption-list { display: flex; flex-direction: column; gap: 0; }
+    .assumption-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+      color: var(--ink-light);
+    }
+    .assumption-item:last-child { border-bottom: none; }
+    .assumption-num {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-faint);
+      min-width: 22px;
+      padding-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── WHY US ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .why-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+    }
+    .why-card-icon { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .why-card-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
+    .why-card-text { font-size: 12.5px; color: var(--ink-light); }
+
+    /* ── CTA SECTION ── */
+    .cta-section {
+      padding: 4rem 0 5rem;
+      text-align: center;
+    }
+    .cta-section .big-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 500;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+    .cta-section .big-title em { font-style: italic; color: var(--ink-light); }
+    .cta-section p { color: var(--ink-light); max-width: 460px; margin: 0 auto 2rem; }
+    .cta-btns { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 10px 22px;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.8; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 10px 22px;
+      border: 1.5px solid var(--border);
+      color: var(--ink);
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.15s;
+      background: transparent;
+    }
+    .btn-secondary:hover { background: var(--tag-bg); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      font-size: 12px;
+      color: var(--ink-faint);
+    }
+
+    @media (max-width: 600px) {
+      .topbar-right .tag { display: none; }
+      .tl-row { grid-template-columns: 80px 1fr; gap: 0.75rem; }
+      .section-body { padding-left: 0; }
+      .section-head { gap: 1rem; }
+    }
+    /* ── ICONS ── */
+    [data-lucide] {
+      width: 1.25em;
+      height: 1.25em;
+      stroke-width: 2.25px;
+      vertical-align: -0.2em;
+      display: inline-block;
+    }
+    .check-icon [data-lucide] { width: 14px; height: 14px; stroke-width: 3px; }
+    .addon-check [data-lucide] { width: 12px; height: 12px; stroke-width: 3px; }
+    .hero-meta [data-lucide] { width: 14px; height: 14px; }
+    .section-chevron [data-lucide] { width: 18px; height: 18px; }
+    .why-card-icon [data-lucide] { width: 24px; height: 24px; color: var(--green); }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="dot"></div>
+      Astron Valuation
+    </div>
+    <div class="topbar-right">
+      <span class="tag">v1.0</span>
+      <span>May 2025</span>
+      <a class="cta-link" href="mailto:dhaval.m@brilworks.com">Get in touch <i data-lucide="arrow-right"></i></a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-eyebrow">Project Quotation — Astron Consulting Services</div>
+      <h1 class="hero-title">
+        A platform built for<br />
+        <em>property valuation at scale</em>
+      </h1>
+      <p style="max-width: 600px; color: var(--ink-light); font-size: 15px;">
+        From the moment a bank requests a valuation to the final PDF submission and billing closure — every step, digitised. Built for Astron's team of admins and field engineers operating across Gujarat.
+      </p>
+      <div class="hero-meta">
+        <span><i data-lucide="clock"></i> 10–12 weeks</span>
+        <span>·</span>
+        <span><i data-lucide="users"></i> 3 user roles</span>
+        <span>·</span>
+        <span><i data-lucide="landmark"></i> Multi-bank ready</span>
+        <span>·</span>
+        <span><i data-lucide="smartphone"></i> Mobile-first field app</span>
+      </div>
+    </div>
+
+    <!-- SECTION 01 — VISION -->
+    <div class="section open" id="s1">
+      <div class="section-head" onclick="toggle('s1')">
+        <div class="section-num">01</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Vision</div>
+          <div class="section-subtitle">What we're building, and why it matters</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <p>
+          Astron Consulting Services processes hundreds of property valuation requests monthly, each routed through a tangled mix of WhatsApp messages, shared spreadsheets, and manual PDF templates. Engineers in the field have no structured way to capture measurements. Admins manually chase status updates. Bank submissions arrive late.
+        </p>
+        <p>
+          <strong>We're building the operational backbone that Astron doesn't have yet</strong> — a secure, role-based platform where every case has a single source of truth: from initial intake, through GPS-verified site visits, to automated bank-format PDF reports and billing closure.
+        </p>
+        <p>
+          Think of it as going from a shared Google Sheet to an operations platform built specifically for how Astron works — <em>without adding complexity, only removing it.</em>
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION 02 — WHO IT'S FOR -->
+    <div class="section" id="s2">
+      <div class="section-head" onclick="toggle('s2')">
+        <div class="section-num">02</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Who It's For</div>
+          <div class="section-subtitle">Three roles, each with a purpose-built experience</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <div class="cards">
+          <div class="card">
+            <div class="card-label">Super Admin</div>
+            <div class="card-value">Full system visibility — users, banks, all cases, global MIS</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Operations Admin</div>
+            <div class="card-value">Case assignment, bank portal tracking, billing status, queries</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Field Engineer</div>
+            <div class="card-value">Mobile app for GPS check-in, measurements, categorised photo upload</div>
+          </div>
+        </div>
+        <p>Each role sees only what they need. No clutter, no access creep.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 03 — THE PROBLEM -->
+    <div class="section" id="s3">
+      <div class="section-head" onclick="toggle('s3')">
+        <div class="section-num">03</div>
+        <div class="section-title-wrap">
+          <div class="section-title">The Problem</div>
+          <div class="section-subtitle">What we're replacing, pain point by pain point</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>Current reality</th>
+              <th>Impact</th>
+              <th>What we build instead</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>WhatsApp for case updates</td>
+              <td>Cases lost in chat, no audit trail</td>
+              <td>In-app internal ticketing</td>
+            </tr>
+            <tr>
+              <td>Manual spreadsheet tracking</td>
+              <td>Stale data, duplicate entries</td>
+              <td>Real-time case dashboard</td>
+            </tr>
+            <tr>
+              <td>Engineers fill paper forms in the field</td>
+              <td>Transcription errors, lost notes</td>
+              <td>Structured mobile data capture with GPS</td>
+            </tr>
+            <tr>
+              <td>Manual PDF report assembly</td>
+              <td>Hours per report, formatting errors</td>
+              <td>One-click bank-specific PDF generation</td>
+            </tr>
+            <tr>
+              <td>Billing tracked in Excel</td>
+              <td>Revenue leakage, delayed follow-up</td>
+              <td>Integrated billing & MIS dashboard</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 04 — SCOPE -->
+    <div class="section" id="s4">
+      <div class="section-head" onclick="toggle('s4')">
+        <div class="section-num">04</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Scope</div>
+          <div class="section-subtitle">Everything included in the base build</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <div class="checklist">
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Role-based auth</strong> — Supabase Auth with three roles, RLS-enforced at the database layer</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Case intake &amp; management</strong> — create, assign, track, and close valuation cases with full status history</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Bank management</strong> — maintain a register of empanelled banks with contact and portal details</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>User management</strong> — admin CRUD for engineers and admin accounts; onboarding flow</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Mobile site visit app</strong> — GPS check-in, property measurements, boundary data, structured form capture</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Photo upload</strong> — categorised photo capture per visit (exterior, interior, locality, site)</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>PDF report generation</strong> — automated bank-format reports for ICICI &amp; HDFC using react-pdf</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Internal ticketing</strong> — raise and resolve case queries in-platform; replaces WhatsApp coordination</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Financial MIS</strong> — revenue tracking, billing status, and performance charts per bank/engineer/period</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Super admin dashboard</strong> — global visibility with Recharts-powered analytics</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 05 — TECH STACK -->
+    <div class="section" id="s5">
+      <div class="section-head" onclick="toggle('s5')">
+        <div class="section-num">05</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Technology Stack</div>
+          <div class="section-subtitle">Every choice made for a reason</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr><th>Layer</th><th>Choice</th><th>Why</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Framework</td>
+              <td><span class="badge">Next.js 16</span></td>
+              <td>App Router with server components; edge-ready; zero separate backend needed</td>
+            </tr>
+            <tr>
+              <td>Language</td>
+              <td><span class="badge">TypeScript</span></td>
+              <td>Type safety across UI, API routes, and Supabase queries — catches bugs at compile time</td>
+            </tr>
+            <tr>
+              <td>Database</td>
+              <td><span class="badge">Supabase (PostgreSQL)</span></td>
+              <td>Row Level Security enforces role isolation; real-time subscriptions; S3-compatible storage for photos</td>
+            </tr>
+            <tr>
+              <td>Styling</td>
+              <td><span class="badge">Tailwind CSS v4</span></td>
+              <td>Rapid, consistent UI — no stylesheet bloat, works perfectly with server components</td>
+            </tr>
+            <tr>
+              <td>State</td>
+              <td><span class="badge">Zustand</span></td>
+              <td>Minimal boilerplate, predictable client state for complex forms and visit flows</td>
+            </tr>
+            <tr>
+              <td>PDF Generation</td>
+              <td><span class="badge">@react-pdf/renderer</span></td>
+              <td>Pixel-perfect bank-format PDFs rendered server-side in React — no external services</td>
+            </tr>
+            <tr>
+              <td>Maps</td>
+              <td><span class="badge">Google Maps API</span></td>
+              <td>GPS verification for site visit check-in; property boundary plotting</td>
+            </tr>
+            <tr>
+              <td>Charts</td>
+              <td><span class="badge">Recharts</span></td>
+              <td>Composable chart library tuned for React 19; drives the MIS dashboards</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 06 — TIMELINE -->
+    <div class="section" id="s6">
+      <div class="section-head" onclick="toggle('s6')">
+        <div class="section-num">06</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Timeline</div>
+          <div class="section-subtitle">10 weeks from kickoff to production</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <div class="timeline">
+          <div class="tl-row">
+            <div class="tl-label">Weeks 1–2</div>
+            <div class="tl-bar-wrap">
+              <div class="tl-name">Foundation</div>
+              <div class="tl-desc">Project setup, Supabase schema, auth + RLS, role scaffolding, design system</div>
+              <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-label">Weeks 3–4</div>
+            <div class="tl-bar-wrap">
+              <div class="tl-name">Admin Core</div>
+              <div class="tl-desc">Case management, user/bank CRUD, case assignment, status tracking</div>
+              <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-label">Weeks 5–6</div>
+            <div class="tl-bar-wrap">
+              <div class="tl-name">Field Engineer App</div>
+              <div class="tl-desc">Mobile site visit workflow, GPS check-in, photo upload, measurements form</div>
+              <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-label">Weeks 7–8</div>
+            <div class="tl-bar-wrap">
+              <div class="tl-name">Reports &amp; Ticketing</div>
+              <div class="tl-desc">Bank PDF templates (ICICI, HDFC), internal ticketing system, query resolution flow</div>
+              <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-label">Weeks 9–10</div>
+            <div class="tl-bar-wrap">
+              <div class="tl-name">MIS, QA &amp; Launch</div>
+              <div class="tl-desc">Financial MIS, billing tracker, charts, end-to-end QA, staging → production deployment</div>
+              <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size: 13px;">Weekly standups throughout. A staging environment is available from Week 3 onwards for client review.</p>
+      </div>
+    </div>
+
+    <!-- SECTION 07 — INVESTMENT -->
+    <div class="section" id="s7">
+      <div class="section-head" onclick="toggle('s7')">
+        <div class="section-num">07</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Investment</div>
+          <div class="section-subtitle">Base build + optional add-ons — click to customise your build</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <div class="pricing-base">
+          <div>
+            <div class="pricing-base-label">Base Platform (Sections 01–04 scope, full 10-week build)</div>
+            <div style="font-size: 12px; opacity: 0.55; margin-top: 3px;">All 10 modules · 3 roles · 2 bank PDF formats · Supabase hosted</div>
+          </div>
+          <div class="pricing-base-amount">₹4,50,000</div>
+        </div>
+
+        <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.75rem;">
+          Optional Add-ons — click to add to your build
+        </div>
+
+        <div class="addon-list">
+          <div class="addon-item" onclick="toggleAddon(this, 35000)" data-price="35000">
+            <div class="addon-check"><i data-lucide="check"></i></div>
+            <div class="addon-info">
+              <div class="addon-name">Google Maps GPS Integration</div>
+              <div class="addon-desc">Live map view for visit locations; automated proximity validation against property address</div>
+            </div>
+            <div class="addon-price">+ ₹35,000</div>
+          </div>
+          <div class="addon-item" onclick="toggleAddon(this, 20000)" data-price="20000">
+            <div class="addon-check"><i data-lucide="check"></i></div>
+            <div class="addon-info">
+              <div class="addon-name">Additional Bank PDF Template</div>
+              <div class="addon-desc">Each additional bank format beyond the 2 included (SBI, Axis, Kotak, etc.) — priced per bank</div>
+            </div>
+            <div class="addon-price">+ ₹20,000 / bank</div>
+          </div>
+          <div class="addon-item" onclick="toggleAddon(this, 45000)" data-price="45000">
+            <div class="addon-check"><i data-lucide="check"></i></div>
+            <div class="addon-info">
+              <div class="addon-name">WhatsApp / SMS Notifications</div>
+              <div class="addon-desc">Automated engineer assignment alerts, query notifications, and status updates via WhatsApp Business API</div>
+            </div>
+            <div class="addon-price">+ ₹45,000</div>
+          </div>
+          <div class="addon-item" onclick="toggleAddon(this, 60000)" data-price="60000">
+            <div class="addon-check"><i data-lucide="check"></i></div>
+            <div class="addon-info">
+              <div class="addon-name">Advanced Analytics Dashboard</div>
+              <div class="addon-desc">Drill-down MIS with engineer performance rankings, bank-wise TAT analysis, and exportable reports</div>
+            </div>
+            <div class="addon-price">+ ₹60,000</div>
+          </div>
+          <div class="addon-item" onclick="toggleAddon(this, 90000)" data-price="90000">
+            <div class="addon-check"><i data-lucide="check"></i></div>
+            <div class="addon-info">
+              <div class="addon-name">6-Month Post-Launch Support</div>
+              <div class="addon-desc">Priority bug fixes, minor feature iterations, Supabase infra monitoring, and monthly catch-up calls</div>
+            </div>
+            <div class="addon-price">+ ₹90,000</div>
+          </div>
+          <div class="addon-item" onclick="toggleAddon(this, 75000)" data-price="75000">
+            <div class="addon-check">✓</div>
+            <div class="addon-info">
+              <div class="addon-name">Engineer Mobile PWA</div>
+              <div class="addon-desc">Installable Progressive Web App with offline support — engineers can capture data without a live connection</div>
+            </div>
+            <div class="addon-price">+ ₹75,000</div>
+          </div>
+        </div>
+
+        <div class="pricing-total">
+          <div>
+            <div class="pricing-total-label">Your estimated build total</div>
+            <div class="pricing-hint">All prices exclude GST (18%). Payment: 40% on kickoff · 40% mid-build · 20% on delivery.</div>
+          </div>
+          <div class="pricing-total-amount" id="totalDisplay">₹4,50,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 08 — DELIVERABLES -->
+    <div class="section" id="s8">
+      <div class="section-head" onclick="toggle('s8')">
+        <div class="section-num">08</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Deliverables</div>
+          <div class="section-subtitle">Exactly what you receive at handoff</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <div class="checklist">
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Production-deployed application</strong> on Vercel (Next.js) + Supabase cloud</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Full source code</strong> in a private GitHub repository, transferred to your account on delivery</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Database schema + seed data</strong> — migrations, RLS policies, and initial configuration</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>3 role-based interfaces</strong> — Super Admin, Operations Admin, Field Engineer</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>PDF templates for 2 banks</strong> — ICICI &amp; HDFC in bank-prescribed formats</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Mobile-optimised field engineer app</strong> — tested on Android Chrome and iOS Safari</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Internal ticketing module</strong> — full query lifecycle with comment threads</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Financial MIS module</strong> — billing status, revenue charts, engineer performance</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Admin documentation</strong> — setup guide, environment variable reference, deployment steps</span></div>
+          <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>30-day post-launch support</strong> — bug fixes and configuration changes at no extra cost</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 09 — ASSUMPTIONS -->
+    <div class="section" id="s9">
+      <div class="section-head" onclick="toggle('s9')">
+        <div class="section-num">09</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Assumptions &amp; Fine Print</div>
+          <div class="section-subtitle">What this quote is based on</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <div class="assumption-list">
+          <div class="assumption-item"><span class="assumption-num">01</span><span>Bank PDF format requirements (field layout, mandatory data points) are provided by Astron before the start of Week 7. Delays here may extend the timeline.</span></div>
+          <div class="assumption-item"><span class="assumption-num">02</span><span>A Google Maps API key is provided by the client. Maps integration add-on is priced assuming this key is active and billed to the client's Google Cloud account.</span></div>
+          <div class="assumption-item"><span class="assumption-num">03</span><span>Supabase project is hosted on Astron's own account (free tier is sufficient for launch). We assist with setup but the account belongs to the client.</span></div>
+          <div class="assumption-item"><span class="assumption-num">04</span><span>Content (company name, logo, address, bank names, user seed data) is provided by Astron within the first week of the project.</span></div>
+          <div class="assumption-item"><span class="assumption-num">05</span><span>A single round of consolidated feedback is provided within 3 business days of each milestone demo. Multiple parallel feedback streams may affect timelines.</span></div>
+          <div class="assumption-item"><span class="assumption-num">06</span><span>Scope changes after sign-off are welcomed but quoted separately. Minor tweaks (&lt; 2 hours) within an active sprint are absorbed; larger changes are scoped and priced.</span></div>
+          <div class="assumption-item"><span class="assumption-num">07</span><span>Existing data migration (e.g. importing historical cases from Excel) is out of scope unless explicitly added. We can quote a one-time data import if needed.</span></div>
+          <div class="assumption-item"><span class="assumption-num">08</span><span>This quote is valid for 30 days from the date of issue. Pricing may be revised after that point based on updated scope or resource availability.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 10 — WHY BRILWORKS -->
+    <div class="section" id="s10">
+      <div class="section-head" onclick="toggle('s10')">
+        <div class="section-num">10</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Why Brilworks</div>
+          <div class="section-subtitle">The team behind this build</div>
+        </div>
+        <div class="section-chevron"><i data-lucide="chevron-up"></i></div>
+      </div>
+      <div class="section-body">
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-card-icon"><i data-lucide="construction"></i></div>
+            <div class="why-card-title">8+ years building SaaS</div>
+            <div class="why-card-text">Enterprise-grade products across fintech, field operations, and logistics — not first-time builders.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-card-icon"><i data-lucide="zap"></i></div>
+            <div class="why-card-title">Deep Next.js + Supabase expertise</div>
+            <div class="why-card-text">This stack is our default for operations platforms — we've shipped 12+ projects on it.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-card-icon"><i data-lucide="smartphone"></i></div>
+            <div class="why-card-title">Mobile-first field apps</div>
+            <div class="why-card-text">We've built field engineer apps for inspection, logistics, and asset management verticals.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-card-icon"><i data-lucide="globe"></i></div>
+            <div class="why-card-title">India-based, IST hours</div>
+            <div class="why-card-text">Ahmedabad-based team. Same timezone, same context, same urgency as your business.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-card-icon"><i data-lucide="clipboard-list"></i></div>
+            <div class="why-card-title">Dedicated project manager</div>
+            <div class="why-card-text">Weekly standups, a shared project board, and a single point of contact throughout.</div>
+          </div>
+          <div class="why-card">
+            <div class="why-card-icon"><i data-lucide="lock"></i></div>
+            <div class="why-card-title">Security first</div>
+            <div class="why-card-text">RLS-enforced DB access, no client-side secrets, OWASP-reviewed codebase before handoff.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <div class="big-title">
+        Ready to replace the spreadsheets<br />
+        <em>with something that actually works?</em>
+      </div>
+      <p>This is a fixed-scope, fixed-price engagement. No surprises. We'll start with a 30-minute kickoff call to walk through the spec together.</p>
+      <div class="cta-btns">
+        <a class="btn-primary" href="mailto:dhaval.m@brilworks.com?subject=Astron Valuation — Let's kick off">Book a kickoff call <i data-lucide="arrow-right"></i></a>
+        <a class="btn-secondary" href="mailto:dhaval.m@brilworks.com?subject=Astron Valuation — Question about quote">Ask a question</a>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <span>Astron Valuation Platform · Project Quotation v1 · May 2025</span>
+      <span>Prepared by <strong>Brilworks</strong> · dhaval.m@brilworks.com</span>
+    </footer>
+
+  </div><!-- /container -->
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+
+    function toggle(id) {
+      const el = document.getElementById(id);
+      el.classList.toggle('open');
+    }
+
+    const BASE = 450000;
+    let addons = new Set();
+
+    function toggleAddon(el, price) {
+      el.classList.toggle('selected');
+      if (el.classList.contains('selected')) {
+        addons.add(price + '_' + Math.random()); // allow same price multiple times
+        // Actually, track by element
+      }
+      recalculate();
+    }
+
+    function recalculate() {
+      let total = BASE;
+      document.querySelectorAll('.addon-item.selected').forEach(function(item) {
+        total += parseInt(item.dataset.price, 10);
+      });
+      document.getElementById('totalDisplay').textContent = '₹' + total.toLocaleString('en-IN');
+    }
+  </script>
+
+</body>
+</html>
