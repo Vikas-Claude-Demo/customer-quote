@@ -608,8 +608,38 @@
       font-size: 12px; color: var(--ink-faint);
     }
 
+    /* ── PHONE DOTS ── */
+    .phone-dots {
+      display: flex; justify-content: center; gap: 6px; margin-top: 14px;
+    }
+    .phone-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--border); cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .phone-dot.active { background: var(--ink); transform: scale(1.25); }
+
+    /* ── MOBILE ADMIN TABS ── */
+    .admin-mobile-tabs {
+      display: none;
+      overflow-x: auto; gap: 6px; padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: #f5f4f0;
+      scrollbar-width: none;
+    }
+    .admin-mobile-tabs::-webkit-scrollbar { display: none; }
+    .admin-tab-btn {
+      flex-shrink: 0; padding: 5px 12px;
+      border-radius: 20px; font-size: 11px; font-weight: 600;
+      background: #fff; border: 1px solid var(--border);
+      cursor: pointer; white-space: nowrap; color: var(--ink-light);
+      transition: all 0.15s;
+    }
+    .admin-tab-btn.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 680px) {
+      .topbar-right .nav-link { display: none; }
       .mobile-demo { grid-template-columns: 1fr; }
       .screen-list { flex-direction: row; overflow-x: auto; position: static; }
       .screen-btn { min-width: 100px; }
@@ -617,10 +647,13 @@
       .phone-screen { height: 500px; }
       .admin-layout { grid-template-columns: 1fr; }
       .admin-sidebar { display: none; }
+      .admin-mobile-tabs { display: flex; }
       .metric-row { grid-template-columns: repeat(2, 1fr); }
+      .billing-row { grid-template-columns: repeat(2, 1fr); }
       .mini-chart-row { grid-template-columns: 1fr; }
       .pdf-body { padding: 16px; }
       .pdf-grid { grid-template-columns: 1fr; }
+      .eng-row { grid-template-columns: 1fr; }
     }
     /* ── ICONS ── */
     [data-lucide] {
@@ -873,7 +906,10 @@
       Astron Valuation
     </div>
     <div class="topbar-right">
-      <span class="tag">Proposal + Interactive POC</span>
+      <a class="nav-link" href="#s03">Mobile Demo</a>
+      <a class="nav-link" href="#s04">Admin Demo</a>
+      <a class="nav-link" href="#s10">Pricing</a>
+      <a class="btn-primary" href="mailto:dhaval.m@brilworks.com?subject=Astron Valuation — Ready to kick off" style="padding:6px 14px;font-size:12px;border-radius:6px;">Get in touch</a>
     </div>
   </div>
 
@@ -941,7 +977,7 @@
     </div>
 
     <!-- SECTION 03 — MOBILE -->
-    <div class="section-hd">
+    <div class="section-hd" id="s03">
       <span class="section-num">03</span>
       <h2 class="section-title">The engineer's <em>daily tool</em></h2>
     </div>
@@ -1222,12 +1258,19 @@
 
           </div><!-- /phone-screen -->
         </div><!-- /phone-frame -->
+        <div class="phone-dots">
+          <div class="phone-dot active" id="dot-0" onclick="showScreen(0,null)"></div>
+          <div class="phone-dot" id="dot-1" onclick="showScreen(1,null)"></div>
+          <div class="phone-dot" id="dot-2" onclick="showScreen(2,null)"></div>
+          <div class="phone-dot" id="dot-3" onclick="showScreen(3,null)"></div>
+          <div class="phone-dot" id="dot-4" onclick="showScreen(4,null)"></div>
+        </div>
       </div><!-- /phone-wrap -->
 
     </div><!-- /mobile-demo -->
 
     <!-- SECTION 04 — ADMIN DASHBOARD -->
-    <div class="section-hd">
+    <div class="section-hd" id="s04">
       <span class="section-num">04</span>
       <h2 class="section-title">The admin's <em>command centre</em></h2>
     </div>
@@ -1245,6 +1288,16 @@
           <div class="browser-url" id="admin-browser-url">astron.brilworks.app / admin / dashboard</div>
         </div>
         <div class="browser-content">
+          <div class="admin-mobile-tabs">
+            <button class="admin-tab-btn active" onclick="showAdminView('dashboard',this)">Dashboard</button>
+            <button class="admin-tab-btn" onclick="showAdminView('cases',this)">Cases</button>
+            <button class="admin-tab-btn" onclick="showAdminView('engineers',this)">Engineers</button>
+            <button class="admin-tab-btn" onclick="showAdminView('banks',this)">Banks</button>
+            <button class="admin-tab-btn" onclick="showAdminView('tickets',this)">Tickets</button>
+            <button class="admin-tab-btn" onclick="showAdminView('reports',this)">Reports</button>
+            <button class="admin-tab-btn" onclick="showAdminView('billing',this)">Billing</button>
+            <button class="admin-tab-btn" onclick="showAdminView('users',this)">Users</button>
+          </div>
           <div class="admin-layout">
 
             <!-- Sidebar -->
@@ -1694,7 +1747,7 @@
           <div class="tl-bar-wrap">
             <div class="tl-name">Admin Core</div>
             <div class="tl-desc">Case management, user/bank CRUD, case assignment, status tracking</div>
-            <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+            <div class="tl-bar"><div class="tl-fill" style="width:80%"></div></div>
           </div>
         </div>
         <div class="tl-row">
@@ -1702,7 +1755,7 @@
           <div class="tl-bar-wrap">
             <div class="tl-name">Field Portal (Responsive)</div>
             <div class="tl-desc">Mobile-responsive site visit workflow, GPS check-in, photo upload, measurements form</div>
-            <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+            <div class="tl-bar"><div class="tl-fill" style="width:60%"></div></div>
           </div>
         </div>
         <div class="tl-row">
@@ -1710,7 +1763,7 @@
           <div class="tl-bar-wrap">
             <div class="tl-name">Reports &amp; Ticketing</div>
             <div class="tl-desc">Bank PDF templates (ICICI, HDFC), internal ticketing system</div>
-            <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+            <div class="tl-bar"><div class="tl-fill" style="width:45%"></div></div>
           </div>
         </div>
         <div class="tl-row">
@@ -1718,7 +1771,7 @@
           <div class="tl-bar-wrap">
             <div class="tl-name">MIS, QA &amp; Launch</div>
             <div class="tl-desc">Financial MIS, charts, end-to-end QA, production deployment</div>
-            <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+            <div class="tl-bar"><div class="tl-fill" style="width:30%"></div></div>
           </div>
         </div>
       </div>
@@ -1739,10 +1792,10 @@
       </div>
       <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.75rem;">Optional Add-ons</div>
       <div class="addon-list">
-        <div class="addon-item" onclick="toggleAddon(this, 35000)" data-price="35000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">Google Maps GPS Integration</div></div><div class="addon-price">+ ₹35,000</div></div>
-        <div class="addon-item" onclick="toggleAddon(this, 20000)" data-price="20000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">Additional Bank PDF Template</div></div><div class="addon-price">+ ₹20,000 / bank</div></div>
-        <div class="addon-item" onclick="toggleAddon(this, 45000)" data-price="45000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">WhatsApp / SMS Notifications</div></div><div class="addon-price">+ ₹45,000</div></div>
-        <div class="addon-item" onclick="toggleAddon(this, 60000)" data-price="60000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">Advanced Analytics Dashboard</div></div><div class="addon-price">+ ₹60,000</div></div>
+        <div class="addon-item" onclick="toggleAddon(this, 35000)" data-price="35000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">Google Maps GPS Integration</div><div class="addon-desc">Live map view, geofencing, and distance-to-property verification using the Maps API</div></div><div class="addon-price">+ ₹35,000</div></div>
+        <div class="addon-item" onclick="toggleAddon(this, 20000)" data-price="20000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">Additional Bank PDF Template</div><div class="addon-desc">Custom report format for one additional bank (e.g. Kotak, Axis, BoB) — per template</div></div><div class="addon-price">+ ₹20,000 / bank</div></div>
+        <div class="addon-item" onclick="toggleAddon(this, 45000)" data-price="45000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">WhatsApp / SMS Notifications</div><div class="addon-desc">Automated alerts to engineers and admins on case assignment, status change, and overdue billing</div></div><div class="addon-price">+ ₹45,000</div></div>
+        <div class="addon-item" onclick="toggleAddon(this, 60000)" data-price="60000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">Advanced Analytics Dashboard</div><div class="addon-desc">Engineer performance leaderboards, bank-wise revenue trends, TAT analysis, and exportable MIS reports</div></div><div class="addon-price">+ ₹60,000</div></div>
       </div>
       <div class="pricing-total">
         <div><div class="pricing-total-label">Estimated build total (excl. GST)</div></div>
@@ -1838,13 +1891,15 @@
       document.querySelectorAll('.screen-btn').forEach(function(b) { b.classList.remove('active'); });
       if (btn) btn.classList.add('active');
       else {
-        // If no btn provided (from phone click), find the corresponding btn by index
         var btns = document.querySelectorAll('.screen-btn');
         if (btns[index]) btns[index].classList.add('active');
       }
       document.querySelectorAll('.app-screen').forEach(function(s) { s.classList.remove('visible'); });
       var target = document.getElementById('sc-' + index);
       if (target) target.classList.add('visible');
+      document.querySelectorAll('.phone-dot').forEach(function(d, i) {
+        d.classList.toggle('active', i === index);
+      });
     }
 
     var currentScreen = 0;
@@ -1866,9 +1921,20 @@
     };
 
     function showAdminView(view, btn) {
-      // Sidebar active state
+      // Sidebar + mobile tab active state
       document.querySelectorAll('.admin-nav-item').forEach(function(n) { n.classList.remove('active'); });
-      if (btn) btn.classList.add('active');
+      document.querySelectorAll('.admin-tab-btn').forEach(function(t) { t.classList.remove('active'); });
+      if (btn) {
+        btn.classList.add('active');
+        // Sync the sibling list (sidebar ↔ mobile tabs)
+        var label = btn.textContent.trim().toLowerCase().replace(' mis','');
+        document.querySelectorAll('.admin-nav-item').forEach(function(n) {
+          if (n.textContent.trim().toLowerCase().startsWith(label)) n.classList.add('active');
+        });
+        document.querySelectorAll('.admin-tab-btn').forEach(function(t) {
+          if (t.textContent.trim().toLowerCase().startsWith(label)) t.classList.add('active');
+        });
+      }
 
       // Panel visibility
       document.querySelectorAll('.admin-panel').forEach(function(p) { p.classList.remove('visible'); });
