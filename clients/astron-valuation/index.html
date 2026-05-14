@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Astron Valuation — Proof of Concept</title>
+  <title>Astron Valuation — Project Proposal &amp; Interactive POC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet" />
@@ -633,6 +633,235 @@
     .app-nav-icon [data-lucide] { width: 18px; height: 18px; vertical-align: middle; }
     .admin-nav-icon [data-lucide] { width: 14px; height: 14px; vertical-align: middle; }
     .icons [data-lucide] { width: 11px; height: 11px; vertical-align: middle; stroke-width: 2.5px; }
+    /* ── PROSE ── */
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--ink); font-weight: 600; }
+
+    /* ── GRID CARDS ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: var(--bg);
+      padding: 1.1rem 1.25rem;
+    }
+    .card-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.4rem;
+    }
+    .card-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ── TABLE ── */
+    table.q-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin-bottom: 1rem;
+    }
+    table.q-table thead th {
+      text-align: left;
+      padding: 0.6rem 0.9rem;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      border-bottom: 1px solid var(--border);
+    }
+    table.q-table tbody tr { border-bottom: 1px solid var(--border); }
+    table.q-table tbody tr:last-child { border-bottom: none; }
+    table.q-table tbody td {
+      padding: 0.75rem 0.9rem;
+      vertical-align: top;
+      color: var(--ink-light);
+    }
+    table.q-table tbody td:first-child { color: var(--ink); font-weight: 500; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--tag-bg);
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* ── TIMELINE ── */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 1rem; }
+    .tl-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 1.25rem;
+      align-items: start;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .tl-row:last-child { border-bottom: none; }
+    .tl-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      padding-top: 2px;
+    }
+    .tl-bar-wrap { display: flex; flex-direction: column; gap: 0.4rem; }
+    .tl-name { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+    .tl-desc { font-size: 12.5px; color: var(--ink-light); }
+    .tl-bar {
+      height: 5px;
+      border-radius: 10px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .tl-fill { height: 100%; border-radius: 10px; background: var(--ink); }
+
+    /* ── PRICING ── */
+    .pricing-base {
+      background: var(--ink);
+      color: #fff;
+      border-radius: 10px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .pricing-base-label { font-size: 13px; font-weight: 500; opacity: 0.7; }
+    .pricing-base-amount { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.02em; }
+
+    .addon-list { display: flex; flex-direction: column; gap: 1px; margin-bottom: 1.25rem; }
+    .addon-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.12s, border-color 0.12s;
+      background: var(--bg);
+      margin-bottom: 6px;
+    }
+    .addon-item:hover { background: #f5f4f0; }
+    .addon-item.selected { background: var(--green-bg); border-color: #a8d5bc; }
+    .addon-check {
+      width: 18px; height: 18px;
+      border-radius: 4px;
+      border: 1.5px solid var(--border);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.12s;
+      font-size: 11px;
+    }
+    .addon-item.selected .addon-check {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+    .addon-info { flex: 1; }
+    .addon-name { font-size: 13.5px; font-weight: 500; color: var(--ink); }
+    .addon-desc { font-size: 12px; color: var(--ink-light); }
+    .addon-price {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--green);
+      white-space: nowrap;
+    }
+
+    .pricing-total {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .pricing-total-label { font-size: 13px; color: var(--ink-light); }
+    .pricing-total-amount {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      transition: all 0.2s;
+    }
+    .pricing-hint {
+      font-size: 11.5px;
+      color: var(--ink-faint);
+      margin-top: 0.75rem;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist { display: flex; flex-direction: column; gap: 0; }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-icon { color: var(--green); font-weight: 700; flex-shrink: 0; padding-top: 1px; }
+    .check-text { color: var(--ink-light); }
+    .check-text strong { color: var(--ink); }
+
+    /* ── ASSUMPTIONS ── */
+    .assumption-list { display: flex; flex-direction: column; gap: 0; }
+    .assumption-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+      color: var(--ink-light);
+    }
+    .assumption-item:last-child { border-bottom: none; }
+    .assumption-num {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-faint);
+      min-width: 22px;
+      padding-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── WHY US ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .why-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+    }
+    .why-card-icon { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .why-card-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
+    .why-card-text { font-size: 12.5px; color: var(--ink-light); }
   </style>
 </head>
 <body>
@@ -644,8 +873,7 @@
       Astron Valuation
     </div>
     <div class="topbar-right">
-      <a class="nav-link" href="quote.html"><i data-lucide="arrow-left" style="width:12px;height:12px"></i> View Quotation</a>
-      <span class="tag">Working Mock</span>
+      <span class="tag">Proposal + Interactive POC</span>
     </div>
   </div>
 
@@ -653,26 +881,68 @@
 
     <!-- HERO -->
     <div class="hero">
-      <div class="hero-eyebrow">Proof of Concept · Interactive Mock</div>
+      <div class="hero-eyebrow">Project Proposal & Proof of Concept — Astron Consulting Services</div>
       <h1 class="hero-title">
-        The platform your team<br />
-        <em>will actually use every day</em>
+        A platform built for<br />
+        <em>property valuation at scale</em>
       </h1>
       <p class="hero-sub">
-        Three interfaces. One connected system. What you see below is the working mock of the V1 we'll ship — click through each screen to explore the field engineer app, the admin dashboard, and the bank PDF output.
+        From the moment a bank requests a valuation to the final PDF submission and billing closure — every step, digitised. Built for Astron's team of admins and field engineers operating across Gujarat.
       </p>
       <div class="hero-meta">
-        <span><i data-lucide="smartphone"></i> Field engineer app</span>
+        <span><i data-lucide="clock"></i> 10–12 weeks</span>
         <span>·</span>
-        <span><i data-lucide="monitor"></i> Admin dashboard</span>
+        <span><i data-lucide="smartphone"></i> Mobile-responsive web app</span>
         <span>·</span>
-        <span><i data-lucide="file-text"></i> Bank PDF report</span>
+        <span><i data-lucide="monitor"></i> Admin portal</span>
+        <span>·</span>
+        <span><i data-lucide="file-text"></i> PDF reports</span>
       </div>
     </div>
 
-    <!-- SECTION 01 — MOBILE -->
+    <!-- SECTION 01 — VISION -->
     <div class="section-hd">
       <span class="section-num">01</span>
+      <h2 class="section-title">The <em>vision</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <p style="max-width: 680px; color: var(--ink-light); margin-bottom: 1.25rem; line-height: 1.8;">
+        Astron Consulting Services processes hundreds of property valuation requests monthly, each routed through a tangled mix of WhatsApp messages, shared spreadsheets, and manual PDF templates. Engineers in the field have no structured way to capture measurements. Admins manually chase status updates. Bank submissions arrive late.
+      </p>
+      <p style="max-width: 680px; color: var(--ink-light); margin-bottom: 1.25rem; line-height: 1.8;">
+        <strong>We're building the operational backbone that Astron doesn't have yet</strong> — a secure, role-based platform where every case has a single source of truth: from initial intake, through GPS-verified site visits, to automated bank-format PDF reports and billing closure.
+      </p>
+      <p style="max-width: 680px; color: var(--ink-light); line-height: 1.8;">
+        Think of it as going from a shared Google Sheet to an operations platform built specifically for how Astron works — <em>without adding complexity, only removing it.</em>
+      </p>
+    </div>
+
+    <!-- SECTION 02 — WHO IT'S FOR -->
+    <div class="section-hd">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Who it's <em>built for</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <div class="cards">
+        <div class="card">
+          <div class="card-label">Super Admin</div>
+          <div class="card-value">Full system visibility — users, banks, all cases, global MIS</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Operations Admin</div>
+          <div class="card-value">Case assignment, bank portal tracking, billing status, queries</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Field Engineer</div>
+          <div class="card-value">Mobile-responsive web portal for GPS check-in, measurements, and photo upload</div>
+        </div>
+      </div>
+      <p style="color: var(--ink-light); font-size: 14px;">Each role sees only what they need. No clutter, no access creep.</p>
+    </div>
+
+    <!-- SECTION 03 — MOBILE -->
+    <div class="section-hd">
+      <span class="section-num">03</span>
       <h2 class="section-title">The engineer's <em>daily tool</em></h2>
     </div>
     <div class="mobile-demo">
@@ -701,14 +971,14 @@
             <div><div class="sc-name">Queries</div><div class="sc-desc">Tickets &amp; replies</div></div>
           </button>
         </div>
-        <div class="screen-hint"><i data-lucide="arrow-left"></i> Tap a screen to explore</div>
+        <div class="screen-hint"><i data-lucide="mouse-pointer-2"></i> Click buttons or the phone to explore</div>
       </div>
 
       <!-- Phone mockup -->
       <div class="phone-wrap">
         <div class="phone-frame">
           <div class="phone-notch"></div>
-          <div class="phone-screen">
+          <div class="phone-screen" onclick="nextScreen()" style="cursor:pointer" title="Click to view next screen">
             <div class="phone-status">
               <span class="time">9:41</span>
               <span class="icons">
@@ -956,9 +1226,9 @@
 
     </div><!-- /mobile-demo -->
 
-    <!-- SECTION 02 — ADMIN DASHBOARD -->
+    <!-- SECTION 04 — ADMIN DASHBOARD -->
     <div class="section-hd">
-      <span class="section-num">02</span>
+      <span class="section-num">04</span>
       <h2 class="section-title">The admin's <em>command centre</em></h2>
     </div>
     <div class="admin-demo">
@@ -1284,9 +1554,9 @@
       </div><!-- /browser-frame -->
     </div><!-- /admin-demo -->
 
-    <!-- SECTION 03 — PDF REPORT -->
+    <!-- SECTION 05 — PDF REPORT -->
     <div class="section-hd">
-      <span class="section-num">03</span>
+      <span class="section-num">05</span>
       <h2 class="section-title">One click to a <em>bank-ready report</em></h2>
     </div>
     <div class="pdf-section">
@@ -1342,7 +1612,186 @@
       </div><!-- /pdf-frame -->
     </div>
 
-    <!-- CTA -->
+    <!-- SECTION 06 — THE PROBLEM -->
+    <div class="section-hd">
+      <span class="section-num">06</span>
+      <h2 class="section-title">The <em>problem</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <p style="color: var(--ink-light); margin-bottom: 1.5rem; font-size: 14px;">What we're replacing, pain point by pain point:</p>
+      <table class="q-table">
+        <thead>
+          <tr>
+            <th>Current reality</th>
+            <th>Impact</th>
+            <th>What we build instead</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>WhatsApp for case updates</td><td>Cases lost in chat, no audit trail</td><td>In-app internal ticketing</td></tr>
+          <tr><td>Manual spreadsheet tracking</td><td>Stale data, duplicate entries</td><td>Real-time case dashboard</td></tr>
+          <tr><td>Engineers fill paper forms in field</td><td>Transcription errors, lost notes</td><td>Structured mobile-responsive capture + GPS</td></tr>
+          <tr><td>Manual PDF report assembly</td><td>Hours per report, formatting errors</td><td>One-click bank-specific PDFs</td></tr>
+          <tr><td>Billing tracked in Excel</td><td>Revenue leakage, delayed follow-up</td><td>Integrated billing & MIS</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- SECTION 07 — SCOPE -->
+    <div class="section-hd">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Project <em>scope</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <div class="checklist">
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Role-based auth</strong> — Supabase Auth with three roles, RLS-enforced at the database layer</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Case management</strong> — create, assign, track, and close valuation cases with full history</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Bank management</strong> — register of empanelled banks with contact and portal details</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>User management</strong> — admin CRUD for engineers and admin accounts; onboarding flow</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Mobile-responsive web app</strong> — GPS check-in, measurements, boundary data, and structured form capture for field engineers</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Photo upload</strong> — categorised photo capture per visit (exterior, interior, locality, site)</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>PDF report generation</strong> — automated reports for ICICI &amp; HDFC using react-pdf</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Internal ticketing</strong> — raise and resolve case queries in-platform; replaces WhatsApp</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Financial MIS</strong> — revenue tracking, billing status, and performance charts</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text"><strong>Admin dashboard</strong> — global visibility with Recharts-powered analytics</span></div>
+      </div>
+    </div>
+
+    <!-- SECTION 08 — TECH STACK -->
+    <div class="section-hd">
+      <span class="section-num">08</span>
+      <h2 class="section-title">Technology <em>stack</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <table class="q-table">
+        <thead><tr><th>Layer</th><th>Choice</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Framework</td><td><span class="badge">Next.js 16</span></td><td>App Router with server components; edge-ready</td></tr>
+          <tr><td>Language</td><td><span class="badge">TypeScript</span></td><td>Type safety across UI, API, and DB queries</td></tr>
+          <tr><td>Database</td><td><span class="badge">Supabase (PostgreSQL)</span></td><td>RLS enforces role isolation; S3-compatible storage</td></tr>
+          <tr><td>Styling</td><td><span class="badge">Tailwind CSS v4</span></td><td>Rapid, consistent UI — works perfectly with server components</td></tr>
+          <tr><td>Charts</td><td><span class="badge">Recharts</span></td><td>Composable chart library tuned for React 19</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 09 — TIMELINE -->
+    <div class="section-hd">
+      <span class="section-num">09</span>
+      <h2 class="section-title">Project <em>timeline</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-label">Weeks 1–2</div>
+          <div class="tl-bar-wrap">
+            <div class="tl-name">Foundation</div>
+            <div class="tl-desc">Project setup, Supabase schema, auth + RLS, role scaffolding, design system</div>
+            <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-label">Weeks 3–4</div>
+          <div class="tl-bar-wrap">
+            <div class="tl-name">Admin Core</div>
+            <div class="tl-desc">Case management, user/bank CRUD, case assignment, status tracking</div>
+            <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-label">Weeks 5–6</div>
+          <div class="tl-bar-wrap">
+            <div class="tl-name">Field Portal (Responsive)</div>
+            <div class="tl-desc">Mobile-responsive site visit workflow, GPS check-in, photo upload, measurements form</div>
+            <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-label">Weeks 7–8</div>
+          <div class="tl-bar-wrap">
+            <div class="tl-name">Reports &amp; Ticketing</div>
+            <div class="tl-desc">Bank PDF templates (ICICI, HDFC), internal ticketing system</div>
+            <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-label">Weeks 9–10</div>
+          <div class="tl-bar-wrap">
+            <div class="tl-name">MIS, QA &amp; Launch</div>
+            <div class="tl-desc">Financial MIS, charts, end-to-end QA, production deployment</div>
+            <div class="tl-bar"><div class="tl-fill" style="width:100%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 10 — INVESTMENT -->
+    <div class="section-hd" id="s10">
+      <span class="section-num">10</span>
+      <h2 class="section-title">Project <em>investment</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <div class="pricing-base">
+        <div>
+          <div class="pricing-base-label">Base Platform (Sections 01–07 scope, full 10-week build)</div>
+          <div style="font-size: 12px; opacity: 0.55; margin-top: 3px;">All 10 modules · 3 roles · 2 bank PDF formats · Supabase hosted</div>
+        </div>
+        <div class="pricing-base-amount">₹4,50,000</div>
+      </div>
+      <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 0.75rem;">Optional Add-ons</div>
+      <div class="addon-list">
+        <div class="addon-item" onclick="toggleAddon(this, 35000)" data-price="35000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">Google Maps GPS Integration</div></div><div class="addon-price">+ ₹35,000</div></div>
+        <div class="addon-item" onclick="toggleAddon(this, 20000)" data-price="20000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">Additional Bank PDF Template</div></div><div class="addon-price">+ ₹20,000 / bank</div></div>
+        <div class="addon-item" onclick="toggleAddon(this, 45000)" data-price="45000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">WhatsApp / SMS Notifications</div></div><div class="addon-price">+ ₹45,000</div></div>
+        <div class="addon-item" onclick="toggleAddon(this, 60000)" data-price="60000"><div class="addon-check"><i data-lucide="check"></i></div><div class="addon-info"><div class="addon-name">Advanced Analytics Dashboard</div></div><div class="addon-price">+ ₹60,000</div></div>
+      </div>
+      <div class="pricing-total">
+        <div><div class="pricing-total-label">Estimated build total (excl. GST)</div></div>
+        <div class="pricing-total-amount" id="totalDisplay">₹4,50,000</div>
+      </div>
+    </div>
+
+    <!-- SECTION 11 — DELIVERABLES -->
+    <div class="section-hd">
+      <span class="section-num">11</span>
+      <h2 class="section-title">Project <em>deliverables</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <div class="checklist">
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text">Production-deployed application on Vercel + Supabase cloud</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text">Full source code in a private GitHub repository</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text">3 role-based interfaces — Super Admin, Ops Admin, Field Engineer</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text">PDF templates for 2 banks — ICICI &amp; HDFC</span></div>
+        <div class="check-item"><span class="check-icon"><i data-lucide="check"></i></span><span class="check-text">30-day post-launch support &amp; handoff documentation</span></div>
+      </div>
+    </div>
+
+    <!-- SECTION 12 — ASSUMPTIONS -->
+    <div class="section-hd">
+      <span class="section-num">12</span>
+      <h2 class="section-title">Assumptions <em>&amp; fine print</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <div class="assumption-list">
+        <div class="assumption-item"><span class="assumption-num">01</span><span>Bank PDF format requirements are provided before Week 7.</span></div>
+        <div class="assumption-item"><span class="assumption-num">02</span><span>Google Maps API key and Supabase account are provided/owned by the client.</span></div>
+        <div class="assumption-item"><span class="assumption-num">03</span><span>Content and seed data are provided within the first week.</span></div>
+        <div class="assumption-item"><span class="assumption-num">04</span><span>Quote is valid for 30 days; GST (18%) is extra.</span></div>
+      </div>
+    </div>
+
+    <!-- SECTION 13 — WHY BRILWORKS -->
+    <div class="section-hd">
+      <span class="section-num">13</span>
+      <h2 class="section-title">Why <em>Brilworks</em></h2>
+    </div>
+    <div style="margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem;">
+      <div class="why-grid">
+        <div class="why-card"><div class="why-card-icon"><i data-lucide="construction"></i></div><div class="why-card-title">8+ years building SaaS</div><div class="why-card-text">Enterprise-grade products across fintech and field operations.</div></div>
+        <div class="why-card"><div class="why-card-icon"><i data-lucide="zap"></i></div><div class="why-card-title">Next.js + Supabase experts</div><div class="why-card-text">Our default stack for operations platforms — 12+ projects shipped.</div></div>
+        <div class="why-card"><div class="why-card-icon"><i data-lucide="smartphone"></i></div><div class="why-card-title">Mobile-first web approach</div><div class="why-card-text">Proven experience in building responsive, web-based field applications for engineers.</div></div>
+      </div>
+    </div>
+
     <div class="cta-section">
       <div class="cta-big">
         What you've seen is the V1<br />
@@ -1353,14 +1802,14 @@
       </p>
       <div class="cta-btns">
         <a class="btn-primary" href="mailto:dhaval.m@brilworks.com?subject=Astron Valuation — Ready to kick off">Start the project <i data-lucide="arrow-right"></i></a>
-        <a class="btn-secondary" href="/quote.html">View full quotation</a>
+        <a class="btn-secondary" href="#s10">Review pricing detail</a>
       </div>
     </div>
 
     <!-- FOOTER -->
     <footer>
-      <span>Astron Valuation Platform · Proof of Concept · May 2025</span>
-      <span>Built by <strong>Brilworks</strong> · dhaval.m@brilworks.com</span>
+      <span>Astron Valuation Platform · Project Proposal v1 · May 2025</span>
+      <span>Prepared by <strong>Brilworks</strong> · dhaval.m@brilworks.com</span>
     </footer>
 
   </div><!-- /container -->
@@ -1369,11 +1818,40 @@
   <script>
     lucide.createIcons();
 
+    /* ── Pricing: add-on toggle ── */
+    var BASE = 450000;
+    function toggleAddon(el, price) {
+      el.classList.toggle('selected');
+      recalculate();
+    }
+    function recalculate() {
+      var total = BASE;
+      document.querySelectorAll('.addon-item.selected').forEach(function(item) {
+        total += parseInt(item.dataset.price, 10);
+      });
+      var display = document.getElementById('totalDisplay');
+      if (display) display.textContent = '\u20B9' + total.toLocaleString('en-IN');
+    }
+
     function showScreen(index, btn) {
+      currentScreen = index;
       document.querySelectorAll('.screen-btn').forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
+      else {
+        // If no btn provided (from phone click), find the corresponding btn by index
+        var btns = document.querySelectorAll('.screen-btn');
+        if (btns[index]) btns[index].classList.add('active');
+      }
       document.querySelectorAll('.app-screen').forEach(function(s) { s.classList.remove('visible'); });
-      document.getElementById('sc-' + index).classList.add('visible');
+      var target = document.getElementById('sc-' + index);
+      if (target) target.classList.add('visible');
+    }
+
+    var currentScreen = 0;
+    var totalScreens = 5;
+    function nextScreen() {
+      currentScreen = (currentScreen + 1) % totalScreens;
+      showScreen(currentScreen);
     }
 
     var adminTitles = {
