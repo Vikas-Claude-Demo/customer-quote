@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Champions Longevity — MVP Scope of Work</title>
+<style>
+:root {
+  --brand-deep:   #1F3A5F;
+  --brand-mid:    #2C4D7A;
+  --brand-soft:   #EAF2FC;
+  --ink:          #0F172A;
+  --muted:        #475569;
+  --line:         #CBD5E1;
+  --line-soft:    #E2E8F0;
+  --paper:        #FFFFFF;
+  --paper-tint:   #F8FAFC;
+  --tint:         #F1F5F9;
+
+  --v1-bg: #DCFCE7; --v1-fg: #166534;
+  --v2-bg: #FEF3C7; --v2-fg: #92400E;
+  --mx-bg: #E0E7FF; --mx-fg: #3730A3;
+
+  --admin:    #5B21B6;
+  --provider: #BE185D;
+  --integ:    #0E7490;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--ink);
+  background: #F4F6FB;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 1280px; margin: 0 auto; padding: 40px 28px 80px 28px; }
+
+/* COVER */
+.cover {
+  background: linear-gradient(135deg, var(--brand-deep) 0%, var(--brand-mid) 60%, #3a679f 100%);
+  color: #fff; border-radius: 18px; padding: 36px 36px 30px 36px;
+  margin-bottom: 32px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+.cover .eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: #cfe0f5; margin-bottom: 8px;
+}
+.cover h1 { font-size: 38px; font-weight: 800; margin: 0 0 4px 0; letter-spacing: -1px; }
+.cover h2 { font-size: 20px; font-weight: 500; margin: 0 0 18px 0; color: #cfe0f5; }
+.cover .meta { font-size: 12.5px; color: #b3c7e3; margin-bottom: 22px; }
+.cover-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; margin-top: 12px; }
+.cover-box {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px; padding: 16px 18px; color: #f8fafc;
+}
+.cover-box h3 {
+  font-size: 13px; font-weight: 700; margin: 0 0 8px 0;
+  letter-spacing: 0.6px; text-transform: uppercase; color: #cfe0f5;
+}
+.cover-box ul { margin: 0; padding-left: 16px; }
+.cover-box li { margin-bottom: 4px; font-size: 13px; }
+.cover-box b { color: #fff; }
+
+.tag-inline {
+  display: inline-block; padding: 2px 8px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+  vertical-align: 1px;
+}
+.tag-inline.v1 { background: var(--v1-bg); color: var(--v1-fg); }
+.tag-inline.v2 { background: var(--v2-bg); color: var(--v2-fg); }
+.tag-inline.mx { background: var(--mx-bg); color: var(--mx-fg); }
+.tag-inline.mvp { background: #DCFCE7; color: #166534; }
+
+/* Dependency-graph block */
+.depgraph {
+  background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  padding: 22px 26px; margin-bottom: 28px;
+}
+.depgraph h3 { margin: 0 0 4px 0; color: var(--brand-deep); font-size: 14px; text-transform: uppercase; letter-spacing: 1.2px; }
+.depgraph .sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+.layer-row {
+  display: grid; grid-template-columns: 130px 1fr; gap: 18px;
+  padding: 12px 0; border-top: 1px dashed var(--line-soft); align-items: center;
+}
+.layer-row:first-of-type { border-top: none; }
+.layer-tag {
+  font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+  color: #fff; padding: 6px 10px; border-radius: 8px; text-align: center;
+}
+.layer-tag.l0 { background: #0E7490; }
+.layer-tag.l1 { background: #1F3A5F; }
+.layer-tag.l2 { background: #B45309; }
+.layer-tag.l3 { background: #6D28D9; }
+.layer-tag.l4 { background: #15803D; }
+.layer-tag.l5 { background: #BE185D; }
+.layer-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.layer-chip {
+  background: var(--paper-tint); border: 1px solid var(--line);
+  padding: 5px 10px; border-radius: 8px; font-size: 12.5px; font-weight: 600;
+}
+.layer-chip .code { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-right: 4px; }
+.layer-chip.v1 { border-color: #BBF7D0; background: #F0FDF4; }
+.layer-chip.v2 { border-color: #FDE68A; background: #FFFBEB; }
+.layer-chip.mx { border-color: #C7D2FE; background: #EEF2FF; }
+
+/* TOC */
+.toc { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-bottom: 28px; }
+.toc h3 { margin: 0 0 10px 0; font-size: 12px; color: var(--brand-deep); text-transform: uppercase; letter-spacing: 1.2px; }
+.toc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 22px; }
+.toc-row { display: grid; grid-template-columns: 50px 1fr auto; padding: 5px 0; border-bottom: 1px dotted var(--line-soft); font-size: 13px; align-items: baseline; gap: 10px; }
+.toc-row:last-child { border-bottom: none; }
+.toc-row .num { color: var(--brand-deep); font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.toc-row .name { color: var(--ink); font-weight: 600; }
+.toc-row a { color: inherit; text-decoration: none; }
+.toc-row a:hover { color: var(--brand-deep); }
+
+/* MODULE CARD */
+.card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 16px; overflow: hidden; margin-bottom: 36px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  scroll-margin-top: 20px;
+}
+.card-header {
+  background: linear-gradient(135deg, var(--brand-deep) 0%, var(--brand-mid) 100%);
+  color: #fff; padding: 18px 24px 16px 24px;
+  display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+}
+.card-header .code {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: #cfe0f5; letter-spacing: 1px; text-transform: uppercase;
+}
+.card-header .title { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; margin-top: 2px; }
+.card-header .summary { font-size: 13px; color: #d9e6f7; margin-top: 6px; max-width: 800px; }
+.card-header .phase {
+  font-size: 11px; color: #cfe0f5; margin-top: 8px; letter-spacing: 0.6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.card-header .tag {
+  display: inline-block; padding: 6px 14px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
+}
+.card-header .tag.v1 { background: var(--v1-bg); color: var(--v1-fg); }
+.card-header .tag.v2 { background: var(--v2-bg); color: var(--v2-fg); }
+.card-header .tag.mx { background: var(--mx-bg); color: var(--mx-fg); }
+.card-header .tag.mvp { background: var(--v1-bg); color: var(--v1-fg); }
+
+/* Panes */
+.panes { display: grid; grid-template-columns: 1fr 1fr; }
+.panes.three { grid-template-columns: 1.15fr 1fr 0.9fr; }
+.pane { padding: 18px 22px 16px 22px; border-right: 1px dashed var(--line); }
+.pane:last-child { border-right: none; }
+.pane.admin    { background: #FBFAFE; }
+.pane.provider { background: #FDF7FB; }
+
+.pane-title {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.4px;
+  color: var(--brand-deep); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.pane.admin    .pane-title { color: var(--admin); }
+.pane.provider .pane-title { color: var(--provider); }
+.pane-title .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--brand-deep); }
+.pane.admin    .pane-title .dot { background: var(--admin); }
+.pane.provider .pane-title .dot { background: var(--provider); }
+.pane-title .where { font-weight: 500; color: var(--muted); letter-spacing: 0; text-transform: none; font-size: 11px; }
+
+.items { list-style: none; padding: 0; margin: 0; }
+.items li { padding: 7px 0; border-bottom: 1px dotted var(--line-soft); display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: baseline; }
+.items li:last-child { border-bottom: none; }
+.items .label { font-weight: 600; color: var(--ink); font-size: 13px; }
+.items .desc  { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.fid { font-family: 'JetBrains Mono', 'Menlo', monospace; font-size: 10.5px; color: var(--muted);
+  background: var(--tint); padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+.v2-chip { display: inline-block; background: var(--v2-bg); color: var(--v2-fg);
+  padding: 1px 6px; border-radius: 4px; font-size: 9.5px; font-weight: 800;
+  letter-spacing: 0.4px; margin-left: 6px; vertical-align: 1px; }
+.v1-chip { display: inline-block; background: var(--v1-bg); color: var(--v1-fg);
+  padding: 1px 6px; border-radius: 4px; font-size: 9.5px; font-weight: 800;
+  letter-spacing: 0.4px; margin-left: 6px; vertical-align: 1px; }
+
+/* Backend strip */
+.backend { background: var(--tint); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.backend .label { color: var(--muted); font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; font-size: 10.5px; margin-right: 4px; }
+.chip { background: #fff; border: 1px solid var(--line); color: var(--ink);
+  padding: 4px 11px; border-radius: 999px; font-size: 11.5px; font-weight: 500; }
+
+/* Actions table */
+.actions-wrap { padding: 18px 24px 20px 24px; background: #fff; }
+.actions-title { font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: var(--brand-deep); margin-bottom: 8px; }
+table.actions { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.actions th { text-align: left; background: #F1F5F9; color: var(--brand-deep);
+  font-weight: 700; padding: 8px 12px; border-bottom: 1px solid var(--line);
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.7px; }
+table.actions td { padding: 9px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+table.actions tr:last-child td { border-bottom: none; }
+table.actions td.sub { font-weight: 600; color: var(--ink); width: 26%; }
+table.actions td.actions-col { color: var(--muted); width: 50%; }
+table.actions td.role { color: var(--ink); font-size: 12px; width: 24%; }
+.role-chip { display: inline-block; padding: 2px 8px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 600; margin: 1px 3px 1px 0; }
+.role-chip.user   { background: #DCFCE7; color: #166534; }
+.role-chip.staff  { background: #F3E8FF; color: #6B21A8; }
+.role-chip.system { background: #ECFEFF; color: #155E75; }
+.role-chip.prov   { background: #FCE7F3; color: #9D174D; }
+
+/* Dependency footer */
+.deps { display: grid; grid-template-columns: 1fr 1fr; background: #F8FAFC; border-top: 1px solid var(--line); }
+.deps-pane { padding: 14px 24px 16px 24px; }
+.deps-pane.left { border-right: 1px dashed var(--line); }
+.deps-title { font-size: 11px; font-weight: 800; letter-spacing: 1.4px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px; }
+.deps-title.in  { color: #B45309; }
+.deps-title.out { color: #0E7490; }
+.deps-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.dep-chip { border: 1px solid var(--line); background: #fff; color: var(--ink);
+  font-size: 11.5px; padding: 4px 10px; border-radius: 7px; font-weight: 500; }
+.dep-chip.in  { border-color: #FCD34D; background: #FFFBEB; color: #78350F; }
+.dep-chip.out { border-color: #67E8F9; background: #ECFEFF; color: #155E75; }
+
+/* Shared infrastructure section */
+.infra-section {
+  background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px 28px; margin-bottom: 36px;
+}
+.infra-section h3 {
+  margin: 0 0 6px 0; color: var(--brand-deep); font-size: 16px; font-weight: 700;
+}
+.infra-section .sub { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
+.infra-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.infra-box {
+  background: var(--paper-tint); border: 1px solid var(--line-soft);
+  border-radius: 10px; padding: 16px 18px;
+}
+.infra-box h4 {
+  margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: var(--brand-deep);
+  text-transform: uppercase; letter-spacing: 0.6px;
+}
+.infra-box ul { margin: 0; padding-left: 16px; }
+.infra-box li { font-size: 12.5px; color: var(--muted); margin-bottom: 3px; }
+.infra-box li b { color: var(--ink); }
+
+/* Footer note */
+.doc-foot { text-align: center; color: var(--muted); font-size: 12px; margin-top: 32px; }
+
+@media print {
+  body { background: #fff; }
+  .page { padding: 0; max-width: none; }
+  .card { page-break-inside: avoid; box-shadow: none; }
+  .cover { page-break-after: always; box-shadow: none; }
+  .depgraph, .toc { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ========== COVER ========== -->
+<section class="cover">
+  <div class="eyebrow">Champions Longevity — Brilworks Software LLP</div>
+  <h1>MVP Scope of Work</h1>
+  <h2>4 modules &middot; User App &middot; Admin Console &middot; Backend &middot; Dependencies</h2>
+  <div class="meta">
+    Source: Champions Longevity Full Requirements v1.2 + App Design Screens &nbsp;&bull;&nbsp; Generated 2026-05-16 &nbsp;&bull;&nbsp;
+    4 MVP modules &nbsp;&bull;&nbsp; ~60 features &nbsp;&bull;&nbsp; 3 build layers + shared infrastructure
+  </div>
+  <div class="cover-grid">
+    <div class="cover-box">
+      <h3>What's in this document</h3>
+      <ul>
+        <li><b>Dependency-layered build order</b> &mdash; 3 layers on top of shared infrastructure, foundation up to AI.</li>
+        <li><b>4 module cards</b> &mdash; each with User App / Admin Console panes, backend strip, per-feature Actions &amp; Roles table, and Depends-on / Depended-on-by footer.</li>
+        <li><b>Shared Infrastructure summary</b> &mdash; Authentication, Backend Services, Admin Console base that all 4 modules depend on.</li>
+        <li><b>Feature IDs</b> &mdash; D-xxx (Diagnostics), T-xxx (Therapies), AI-xxx (CHAMP AI), P-xxx (Programs).</li>
+      </ul>
+    </div>
+    <div class="cover-box">
+      <h3>MVP Modules</h3>
+      <ul>
+        <li><b>Module 1 &mdash; Diagnostics Hub</b> &mdash; 3,500+ markers across 6 health systems, physician-interpreted.</li>
+        <li><b>Module 2 &mdash; Longevity Therapies</b> &mdash; 20+ therapies, 7 categories, booking &amp; scheduling.</li>
+        <li><b>Module 3 &mdash; CHAMP AI Coach</b> &mdash; Conversational AI with full biomarker &amp; session context.</li>
+        <li><b>Module 4 &mdash; Longevity Programs</b> &mdash; Multi-week physician-designed programs with outcome tracking.</li>
+      </ul>
+      <div style="margin-top:10px;">
+        <span class="role-chip user">End User</span>
+        <span class="role-chip staff">Admin / Staff</span>
+        <span class="role-chip system">Service</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== DEPENDENCY GRAPH ========== -->
+<section class="depgraph">
+  <h3>Dependency Layers &middot; Build Order</h3>
+  <div class="sub">Each layer builds on the ones above. Click any chip to jump to its card. All modules are <b>MVP</b> scope.</div>
+
+  <div class="layer-row">
+    <div class="layer-tag l0">Layer 0 &middot; Foundation</div>
+    <div class="layer-chips">
+      <span class="layer-chip v1"><span class="code">INFRA</span>Shared Infrastructure <span class="tag-inline mvp" style="margin-left:6px;">MVP</span></span>
+    </div>
+  </div>
+  <div class="layer-row">
+    <div class="layer-tag l1">Layer 1 &middot; Core Data</div>
+    <div class="layer-chips">
+      <a class="layer-chip v1" href="#mod-diagnostics" style="text-decoration:none;color:inherit;"><span class="code">M1</span>Diagnostics Hub <span class="tag-inline mvp" style="margin-left:6px;">MVP</span></a>
+      <a class="layer-chip v1" href="#mod-therapies" style="text-decoration:none;color:inherit;"><span class="code">M2</span>Longevity Therapies <span class="tag-inline mvp" style="margin-left:6px;">MVP</span></a>
+    </div>
+  </div>
+  <div class="layer-row">
+    <div class="layer-tag l2">Layer 2 &middot; Intelligence</div>
+    <div class="layer-chips">
+      <a class="layer-chip v1" href="#mod-ai" style="text-decoration:none;color:inherit;"><span class="code">M3</span>CHAMP AI Coach <span class="tag-inline mvp" style="margin-left:6px;">MVP</span></a>
+    </div>
+  </div>
+  <div class="layer-row">
+    <div class="layer-tag l3">Layer 3 &middot; Programs</div>
+    <div class="layer-chips">
+      <a class="layer-chip v1" href="#mod-programs" style="text-decoration:none;color:inherit;"><span class="code">M4</span>Longevity Programs <span class="tag-inline mvp" style="margin-left:6px;">MVP</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TABLE OF CONTENTS ========== -->
+<section class="toc">
+  <h3>Module Index</h3>
+  <div class="toc-grid">
+    <div class="toc-row"><span class="num">M1</span><span class="name"><a href="#mod-diagnostics">Diagnostics Hub</a></span><span><span class="tag-inline mvp">MVP</span></span></div>
+    <div class="toc-row"><span class="num">M2</span><span class="name"><a href="#mod-therapies">Longevity Therapies</a></span><span><span class="tag-inline mvp">MVP</span></span></div>
+    <div class="toc-row"><span class="num">M3</span><span class="name"><a href="#mod-ai">CHAMP AI Coach</a></span><span><span class="tag-inline mvp">MVP</span></span></div>
+    <div class="toc-row"><span class="num">M4</span><span class="name"><a href="#mod-programs">Longevity Programs</a></span><span><span class="tag-inline mvp">MVP</span></span></div>
+    <div class="toc-row"><span class="num">INFRA</span><span class="name"><a href="#shared-infra">Shared Infrastructure</a></span><span><span class="tag-inline mvp">MVP</span></span></div>
+  </div>
+</section>
+
+
+<!-- ================================================================== -->
+<!-- MODULE 1 — DIAGNOSTICS HUB                                        -->
+<!-- ================================================================== -->
+<section class="card" id="mod-diagnostics">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 1 &mdash; Diagnostics Hub</div>
+      <div class="title">Diagnostics Hub</div>
+      <div class="summary">Comprehensive diagnostic profile with 3,500+ markers across 6 health systems (Metabolism, Cardiovascular, Body Composition, Biomechanics, Sleep, Genetics), scheduled diagnostics, physician-interpreted reports, and category-filtered exploration.</div>
+      <div class="phase">MVP &middot; Core Data</div>
+    </div>
+    <div><span class="tag mvp">MVP</span></div>
+  </div>
+
+  <div class="panes">
+    <!-- USER APP -->
+    <div class="pane user">
+      <div class="pane-title"><span class="dot"></span> User App
+        <span class="where">(Mobile &middot; iOS + Android)</span></div>
+      <ul class="items">
+        <li>
+          <div><div class="label">Diagnostic Profile overview</div><div class="desc">6 health system scores in radial gauge cards &mdash; Metabolism 91, Cardiovascular 87, Body Comp 84, Biomechanics 78, Sleep 82, Genetics 88</div></div>
+          <span class="fid">D-001</span>
+        </li>
+        <li>
+          <div><div class="label">Health system score cards</div><div class="desc">Each card shows score (0-100), marker count (e.g. 420 markers), icon, and colour-coded ring indicator</div></div>
+          <span class="fid">D-002</span>
+        </li>
+        <li>
+          <div><div class="label">"Up to Date" status badge</div><div class="desc">Green badge on profile when all scheduled diagnostics are current; switches to "Due Soon" / "Overdue" states</div></div>
+          <span class="fid">D-003</span>
+        </li>
+        <li>
+          <div><div class="label">Scheduled Diagnostics list</div><div class="desc">Upcoming tests: Blood Vision Full Panel (May 22, 100+ biomarkers), DEXA Body Composition (Jun 5, Full scan), VO2 Max Retest (Jun 12, 5-zone recalibration)</div></div>
+          <span class="fid">D-004</span>
+        </li>
+        <li>
+          <div><div class="label">"Due Soon" urgency indicator</div><div class="desc">Orange badge on upcoming diagnostic cards when test date is within 7 days</div></div>
+          <span class="fid">D-005</span>
+        </li>
+        <li>
+          <div><div class="label">Category filter tabs</div><div class="desc">Horizontal scrollable tabs: Overview, Blood Vision, Body Comp, Fitness &mdash; filters visible diagnostic data</div></div>
+          <span class="fid">D-006</span>
+        </li>
+        <li>
+          <div><div class="label">Biomarker detail drill-down</div><div class="desc">Tap any health system card to view individual markers, reference ranges, trend graphs, and physician notes</div></div>
+          <span class="fid">D-007</span>
+        </li>
+        <li>
+          <div><div class="label">Marker trend charts</div><div class="desc">Time-series charts for individual biomarkers showing historical values with optimal/warning zones</div></div>
+          <span class="fid">D-008</span>
+        </li>
+        <li>
+          <div><div class="label">Physician interpretation cards</div><div class="desc">Physician-authored narrative per diagnostic result &mdash; plain-language summary of what the data means</div></div>
+          <span class="fid">D-009</span>
+        </li>
+        <li>
+          <div><div class="label">Diagnostic report PDF export</div><div class="desc">Generate and share formatted PDF of full diagnostic profile with all marker values and interpretations</div></div>
+          <span class="fid">D-010</span>
+        </li>
+        <li>
+          <div><div class="label">Score change deltas</div><div class="desc">Show +/- change from last diagnostic round per health system (e.g. Metabolism +3 from last panel)</div></div>
+          <span class="fid">D-011</span>
+        </li>
+        <li>
+          <div><div class="label">Push notifications for results</div><div class="desc">Notify user when new diagnostic results are available and interpreted by physician</div></div>
+          <span class="fid">D-012</span>
+        </li>
+        <li>
+          <div><div class="label">Diagnostic scheduling CTA</div><div class="desc">Book or reschedule upcoming diagnostic tests from within the hub; deeplink to scheduling flow</div></div>
+          <span class="fid">D-013</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ADMIN CONSOLE -->
+    <div class="pane admin">
+      <div class="pane-title"><span class="dot"></span> Admin Console
+        <span class="where">(Web)</span></div>
+      <ul class="items">
+        <li>
+          <div><div class="label">Diagnostic catalog management</div><div class="desc">CRUD for diagnostic tests: name, description, marker count, category, pricing, frequency recommendation</div></div>
+          <span class="fid">D-A01</span>
+        </li>
+        <li>
+          <div><div class="label">Test scheduling &amp; calendar</div><div class="desc">Schedule diagnostics for users; view calendar of upcoming tests; bulk scheduling for program cohorts</div></div>
+          <span class="fid">D-A02</span>
+        </li>
+        <li>
+          <div><div class="label">Results entry &amp; upload</div><div class="desc">Upload lab results (CSV/PDF); map to biomarker schema; assign to user profile</div></div>
+          <span class="fid">D-A03</span>
+        </li>
+        <li>
+          <div><div class="label">Physician assignment</div><div class="desc">Assign interpreting physician per diagnostic type; manage physician roster and credentials</div></div>
+          <span class="fid">D-A04</span>
+        </li>
+        <li>
+          <div><div class="label">Interpretation workflow</div><div class="desc">Queue for physician review; draft interpretation; approve &amp; publish to user; track turnaround time</div></div>
+          <span class="fid">D-A05</span>
+        </li>
+        <li>
+          <div><div class="label">Biomarker reference config</div><div class="desc">Configure optimal/warning/critical ranges per marker; set age/sex-adjusted reference bands</div></div>
+          <span class="fid">D-A06</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Diagnostic Service</span>
+    <span class="chip">Biomarker Engine</span>
+    <span class="chip">Scheduling Service</span>
+    <span class="chip">Report Generator</span>
+    <span class="chip">Notification Service</span>
+    <span class="chip">PDF Export Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="sub">D-001 &middot; Diagnostic Profile</td>
+          <td class="actions-col">Load user's latest diagnostic results &rarr; compute 6 system scores from biomarker data &rarr; render radial gauge cards with score, marker count, and status ring.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Biomarker Engine</span></td>
+        </tr>
+        <tr>
+          <td class="sub">D-003 &middot; Status badge</td>
+          <td class="actions-col">Check all scheduled diagnostic dates against current date &rarr; compute overall status (Up to Date / Due Soon / Overdue) &rarr; render badge.</td>
+          <td class="role"><span class="role-chip system">Scheduling Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">D-004 &middot; Scheduled Diagnostics</td>
+          <td class="actions-col">Fetch upcoming tests from scheduling service &rarr; display date, test name, detail summary, urgency badge.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Scheduling Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">D-007 &middot; Biomarker drill-down</td>
+          <td class="actions-col">Tap system card &rarr; load all markers for that system &rarr; show values vs reference ranges &rarr; display trend chart and physician notes.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Diagnostic Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">D-009 &middot; Physician interpretation</td>
+          <td class="actions-col">Physician reviews raw results in admin queue &rarr; writes plain-language interpretation &rarr; approves &rarr; publishes to user profile &rarr; triggers push notification.</td>
+          <td class="role"><span class="role-chip staff">Physician</span><span class="role-chip system">Diagnostic Service</span><span class="role-chip system">Notification Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">D-A02 &middot; Test scheduling</td>
+          <td class="actions-col">Admin selects user or cohort &rarr; picks diagnostic type &rarr; sets date/time &rarr; scheduling service creates appointment &rarr; user receives confirmation push + calendar event.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Scheduling Service</span><span class="role-chip system">Notification Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">D-A03 &middot; Results upload</td>
+          <td class="actions-col">Admin uploads lab CSV/PDF &rarr; parser maps columns to biomarker schema &rarr; values stored &rarr; scores recomputed &rarr; enters physician review queue.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Biomarker Engine</span><span class="role-chip system">Diagnostic Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">D-A06 &middot; Reference config</td>
+          <td class="actions-col">Admin configures optimal/warning/critical thresholds per biomarker, segmented by age and sex &rarr; engine uses for scoring and alerts.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Biomarker Engine</span></td>
+        </tr>
+        <tr>
+          <td class="sub">D-010 &middot; PDF export</td>
+          <td class="actions-col">User taps export &rarr; PDF service compiles all diagnostic data + interpretations + charts &rarr; generates formatted PDF &rarr; share sheet.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">PDF Export Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">D-013 &middot; Diagnostic scheduling CTA</td>
+          <td class="actions-col">User taps "Book" on overdue/due diagnostic &rarr; selects preferred date/time &rarr; scheduling service creates appointment &rarr; confirmation displayed.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Scheduling Service</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list">
+        <span class="dep-chip in">INFRA &middot; Auth Service</span>
+        <span class="dep-chip in">INFRA &middot; User Service</span>
+        <span class="dep-chip in">INFRA &middot; Notification Service</span>
+        <span class="dep-chip in">INFRA &middot; Admin Console Base</span>
+      </div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list">
+        <span class="dep-chip out">M3 &middot; CHAMP AI Coach</span>
+        <span class="dep-chip out">M4 &middot; Longevity Programs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================== -->
+<!-- MODULE 2 — LONGEVITY THERAPIES                                     -->
+<!-- ================================================================== -->
+<section class="card" id="mod-therapies">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2 &mdash; Longevity Therapies</div>
+      <div class="title">Longevity Therapies</div>
+      <div class="summary">20+ therapies across 7 categories (Oxygen, Cold, Thermal, IV, Sleep, Cellular + Neural), with pricing, session booking, benefit tags, affected biomarker chips, and physician-guided frequency recommendations.</div>
+      <div class="phase">MVP &middot; Core Data</div>
+    </div>
+    <div><span class="tag mvp">MVP</span></div>
+  </div>
+
+  <div class="panes">
+    <!-- USER APP -->
+    <div class="pane user">
+      <div class="pane-title"><span class="dot"></span> User App
+        <span class="where">(Mobile &middot; iOS + Android)</span></div>
+      <ul class="items">
+        <li>
+          <div><div class="label">Recovery System overview</div><div class="desc">Header showing 7 therapy categories as chips: Oxygen, Cold, Thermal, IV, Sleep, Cellular &mdash; each with active status dot</div></div>
+          <span class="fid">T-001</span>
+        </li>
+        <li>
+          <div><div class="label">Category filter tabs</div><div class="desc">Horizontal tabs: All, Recovery, Cellular, Neural, Diagnostics &mdash; filter therapy card list by category</div></div>
+          <span class="fid">T-002</span>
+        </li>
+        <li>
+          <div><div class="label">Therapy card &mdash; header</div><div class="desc">Therapy name, icon, price in INR (e.g. ₹8,500/session), frequency tag (MOST POPULAR, DAILY)</div></div>
+          <span class="fid">T-003</span>
+        </li>
+        <li>
+          <div><div class="label">Therapy card &mdash; detail</div><div class="desc">Duration, sessions recommended, full description (e.g. "100% O2 under elevated pressure. Accelerates cellular repair...")</div></div>
+          <span class="fid">T-004</span>
+        </li>
+        <li>
+          <div><div class="label">Benefit tags</div><div class="desc">Pill-shaped tags per therapy: Cellular regeneration, Anti-inflammatory, Neuro-recovery, Wound healing, Skin rejuvenation, etc.</div></div>
+          <span class="fid">T-005</span>
+        </li>
+        <li>
+          <div><div class="label">Affected biomarker chips</div><div class="desc">Biomarker indicators per therapy: ROS, hs-CRP, VO2 Max, ATP proxy, HRV, Skin elasticity &mdash; with chart icon</div></div>
+          <span class="fid">T-006</span>
+        </li>
+        <li>
+          <div><div class="label">"Book Session" CTA</div><div class="desc">Primary action button per therapy card &rarr; opens booking flow with date/time picker</div></div>
+          <span class="fid">T-007</span>
+        </li>
+        <li>
+          <div><div class="label">Session booking flow</div><div class="desc">Date picker &rarr; time slot selection &rarr; provider assignment &rarr; payment &rarr; confirmation with calendar add</div></div>
+          <span class="fid">T-008</span>
+        </li>
+        <li>
+          <div><div class="label">Active therapy tracking</div><div class="desc">Show active status per therapy category with session count, next scheduled session, and progress</div></div>
+          <span class="fid">T-009</span>
+        </li>
+        <li>
+          <div><div class="label">Therapy detail page</div><div class="desc">Full-screen view: description, benefits, contraindications, preparation instructions, expected outcomes</div></div>
+          <span class="fid">T-010</span>
+        </li>
+        <li>
+          <div><div class="label">Session history log</div><div class="desc">List of past therapy sessions with dates, provider, notes, and post-session biomarker impact</div></div>
+          <span class="fid">T-011</span>
+        </li>
+        <li>
+          <div><div class="label">Quick Book from Home</div><div class="desc">Quick Book chips on Home screen (HBOT, RLT, IR Sauna, WBC, NAD+) &rarr; one-tap to booking flow</div></div>
+          <span class="fid">T-012</span>
+        </li>
+        <li>
+          <div><div class="label">Session reminder push</div><div class="desc">Push notification 24h and 1h before scheduled therapy session with preparation tips</div></div>
+          <span class="fid">T-013</span>
+        </li>
+        <li>
+          <div><div class="label">Therapy pricing display</div><div class="desc">Price per session in INR &mdash; e.g. Hyperbaric ₹8,500, Red Light ₹3,500 &mdash; with package pricing when applicable</div></div>
+          <span class="fid">T-014</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ADMIN CONSOLE -->
+    <div class="pane admin">
+      <div class="pane-title"><span class="dot"></span> Admin Console
+        <span class="where">(Web)</span></div>
+      <ul class="items">
+        <li>
+          <div><div class="label">Therapy catalog management</div><div class="desc">CRUD for therapies: name, description, category, pricing, duration, session count, benefit tags, biomarker mappings</div></div>
+          <span class="fid">T-A01</span>
+        </li>
+        <li>
+          <div><div class="label">Pricing &amp; package config</div><div class="desc">Set per-session pricing, multi-session packages, discount tiers; currency in INR</div></div>
+          <span class="fid">T-A02</span>
+        </li>
+        <li>
+          <div><div class="label">Provider scheduling</div><div class="desc">Manage provider calendars, availability blocks, room/equipment assignment per therapy type</div></div>
+          <span class="fid">T-A03</span>
+        </li>
+        <li>
+          <div><div class="label">Booking management</div><div class="desc">View all bookings, reschedule, cancel, no-show tracking, waitlist management</div></div>
+          <span class="fid">T-A04</span>
+        </li>
+        <li>
+          <div><div class="label">Provider assignment</div><div class="desc">Assign qualified providers to therapy types; manage credentials, certifications, and specializations</div></div>
+          <span class="fid">T-A05</span>
+        </li>
+        <li>
+          <div><div class="label">Revenue &amp; utilization dashboard</div><div class="desc">Session revenue by therapy, utilization rates, popular time slots, provider performance metrics</div></div>
+          <span class="fid">T-A06</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Therapy Service</span>
+    <span class="chip">Booking Engine</span>
+    <span class="chip">Provider Calendar</span>
+    <span class="chip">Payment Service</span>
+    <span class="chip">Notification Service</span>
+    <span class="chip">Inventory Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="sub">T-001 &middot; Recovery System</td>
+          <td class="actions-col">Load therapy categories &rarr; fetch user's active therapy statuses &rarr; render category chips with active dots for categories user has booked sessions in.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Therapy Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">T-003 &middot; Therapy card</td>
+          <td class="actions-col">Fetch therapy catalog &rarr; render card with name, icon, price (INR), frequency tag, duration, recommended sessions.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Therapy Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">T-007 &middot; Book Session</td>
+          <td class="actions-col">User taps "Book Session" &rarr; fetch available time slots from Provider Calendar &rarr; user selects date/time &rarr; payment processed &rarr; booking confirmed &rarr; confirmation push + calendar event.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Booking Engine</span><span class="role-chip system">Payment Service</span><span class="role-chip system">Provider Calendar</span></td>
+        </tr>
+        <tr>
+          <td class="sub">T-008 &middot; Booking flow</td>
+          <td class="actions-col">Date picker &rarr; filter available providers by therapy type &rarr; assign provider &rarr; hold slot &rarr; process payment via Payment Service &rarr; confirm booking &rarr; add to calendar.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Booking Engine</span><span class="role-chip system">Payment Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">T-011 &middot; Session history</td>
+          <td class="actions-col">Fetch completed sessions from Booking Engine &rarr; join with biomarker deltas from Diagnostic Service &rarr; render timeline with impact data.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Booking Engine</span><span class="role-chip system">Diagnostic Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">T-A01 &middot; Catalog mgmt</td>
+          <td class="actions-col">Admin creates/edits therapy &rarr; set name, description, category, pricing, benefit tags, biomarker mappings &rarr; publish to catalog &rarr; appears in user app.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Therapy Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">T-A03 &middot; Provider scheduling</td>
+          <td class="actions-col">Admin sets provider availability blocks &rarr; assigns rooms/equipment &rarr; Provider Calendar exposes slots to Booking Engine for user-facing availability.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Provider Calendar</span></td>
+        </tr>
+        <tr>
+          <td class="sub">T-A04 &middot; Booking mgmt</td>
+          <td class="actions-col">Admin views all bookings &rarr; reschedule (triggers user notification) &rarr; cancel (triggers refund via Payment Service) &rarr; mark no-shows &rarr; manage waitlist.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Booking Engine</span><span class="role-chip system">Payment Service</span><span class="role-chip system">Notification Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">T-013 &middot; Session reminder</td>
+          <td class="actions-col">Scheduling cron checks upcoming sessions &rarr; fires push 24h before (with prep tips) and 1h before &rarr; user taps to view session details.</td>
+          <td class="role"><span class="role-chip system">Notification Service</span><span class="role-chip system">Booking Engine</span></td>
+        </tr>
+        <tr>
+          <td class="sub">T-A06 &middot; Revenue dashboard</td>
+          <td class="actions-col">Aggregate session revenue by therapy type, time period, provider &rarr; compute utilization rates &rarr; render charts and KPI cards in admin console.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Payment Service</span><span class="role-chip system">Booking Engine</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list">
+        <span class="dep-chip in">INFRA &middot; Auth Service</span>
+        <span class="dep-chip in">INFRA &middot; User Service</span>
+        <span class="dep-chip in">INFRA &middot; Notification Service</span>
+        <span class="dep-chip in">INFRA &middot; Payment Infrastructure</span>
+        <span class="dep-chip in">INFRA &middot; Admin Console Base</span>
+      </div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list">
+        <span class="dep-chip out">M3 &middot; CHAMP AI Coach</span>
+        <span class="dep-chip out">M4 &middot; Longevity Programs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================== -->
+<!-- MODULE 3 — CHAMP AI COACH                                          -->
+<!-- ================================================================== -->
+<section class="card" id="mod-ai">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 3 &mdash; CHAMP AI Coach</div>
+      <div class="title">CHAMP AI Coach</div>
+      <div class="summary">Conversational AI assistant with full context of biomarkers, therapy sessions, and programs. Real-time Longevity Intelligence Engine with personalised health narratives, quick-prompt chips, and actionable recommendations on the Home screen.</div>
+      <div class="phase">MVP &middot; Intelligence</div>
+    </div>
+    <div><span class="tag mvp">MVP</span></div>
+  </div>
+
+  <div class="panes">
+    <!-- USER APP -->
+    <div class="pane user">
+      <div class="pane-title"><span class="dot"></span> User App
+        <span class="where">(Mobile &middot; iOS + Android)</span></div>
+      <ul class="items">
+        <li>
+          <div><div class="label">CHAMP AI chat interface</div><div class="desc">Full-screen conversational UI with CHAMP AI bot avatar, message bubbles, and text input with send button</div></div>
+          <span class="fid">AI-001</span>
+        </li>
+        <li>
+          <div><div class="label">Longevity Intelligence Engine header</div><div class="desc">"Longevity Intelligence Engine &middot; Real-time" subtitle with green LIVE indicator dot</div></div>
+          <span class="fid">AI-002</span>
+        </li>
+        <li>
+          <div><div class="label">Quick-prompt chips</div><div class="desc">Horizontally scrollable suggestion chips: "Why is my HRV improving?", "When should I do my next HBOT?", "Analyse my sleep trend"</div></div>
+          <span class="fid">AI-003</span>
+        </li>
+        <li>
+          <div><div class="label">Contextual greeting</div><div class="desc">Personalised greeting on open: "Hello [Name]. I'm CHAMP AI &mdash; your personalised longevity intelligence. I have full context of your biomarkers, sessions, and programs."</div></div>
+          <span class="fid">AI-004</span>
+        </li>
+        <li>
+          <div><div class="label">Full conversational AI</div><div class="desc">Natural language Q&amp;A about health metrics, therapy recommendations, program progress, biomarker explanations</div></div>
+          <span class="fid">AI-005</span>
+        </li>
+        <li>
+          <div><div class="label">Biomarker-aware responses</div><div class="desc">AI responses reference actual user biomarker data, trends, and recent diagnostic results for personalised answers</div></div>
+          <span class="fid">AI-006</span>
+        </li>
+        <li>
+          <div><div class="label">Session-aware responses</div><div class="desc">AI references therapy session history, upcoming bookings, and recommended next sessions in responses</div></div>
+          <span class="fid">AI-007</span>
+        </li>
+        <li>
+          <div><div class="label">Home screen AI insight card</div><div class="desc">CHAMP AI Coach card on Home: "Your HRV climbed 12% this week. Sleep consistency is the driver..." with actionable recommendation</div></div>
+          <span class="fid">AI-008</span>
+        </li>
+        <li>
+          <div><div class="label">"Ask CHAMP AI anything" CTA</div><div class="desc">Prominent button on Home AI card &rarr; navigates to full CHAMP AI chat screen</div></div>
+          <span class="fid">AI-009</span>
+        </li>
+        <li>
+          <div><div class="label">Health narrative generation</div><div class="desc">AI generates weekly personalised health narrative summarising biomarker changes, session impact, and program progress</div></div>
+          <span class="fid">AI-010</span>
+        </li>
+        <li>
+          <div><div class="label">Conversation history</div><div class="desc">Persistent chat history across sessions; user can scroll back to previous conversations and insights</div></div>
+          <span class="fid">AI-011</span>
+        </li>
+        <li>
+          <div><div class="label">Therapy recommendation engine</div><div class="desc">AI suggests specific therapies based on current biomarker state, goals, and historical response patterns</div></div>
+          <span class="fid">AI-012</span>
+        </li>
+        <li>
+          <div><div class="label">Streaming response display</div><div class="desc">Token-by-token streaming of AI responses with typing indicator for real-time feel</div></div>
+          <span class="fid">AI-013</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ADMIN CONSOLE -->
+    <div class="pane admin">
+      <div class="pane-title"><span class="dot"></span> Admin Console
+        <span class="where">(Web)</span></div>
+      <ul class="items">
+        <li>
+          <div><div class="label">Prompt template management</div><div class="desc">CRUD for system prompts, quick-prompt chips, greeting templates; version control for prompt iterations</div></div>
+          <span class="fid">AI-A01</span>
+        </li>
+        <li>
+          <div><div class="label">AI output review &amp; QA</div><div class="desc">Sample and review AI responses; flag inaccurate/harmful outputs; feedback loop to improve quality</div></div>
+          <span class="fid">AI-A02</span>
+        </li>
+        <li>
+          <div><div class="label">Model configuration</div><div class="desc">Select LLM model, adjust temperature, max tokens, context window settings; A/B test model versions</div></div>
+          <span class="fid">AI-A03</span>
+        </li>
+        <li>
+          <div><div class="label">Usage &amp; cost dashboard</div><div class="desc">Track token usage, API costs, response latency, user engagement metrics per AI feature</div></div>
+          <span class="fid">AI-A04</span>
+        </li>
+        <li>
+          <div><div class="label">Knowledge base management</div><div class="desc">Upload medical guidelines, therapy protocols, biomarker references for RAG context augmentation</div></div>
+          <span class="fid">AI-A05</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">LLM Gateway</span>
+    <span class="chip">Context Aggregator</span>
+    <span class="chip">Prompt Template Service</span>
+    <span class="chip">Conversation History</span>
+    <span class="chip">RAG / Vector Store</span>
+    <span class="chip">Streaming WebSocket</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="sub">AI-001 &middot; Chat interface</td>
+          <td class="actions-col">User opens CHAMP AI tab &rarr; load conversation history &rarr; render greeting with personalised context &rarr; display quick-prompt chips &rarr; ready for input.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Conversation History</span></td>
+        </tr>
+        <tr>
+          <td class="sub">AI-005 &middot; Conversational AI</td>
+          <td class="actions-col">User sends message &rarr; Context Aggregator pulls latest biomarkers, sessions, program data &rarr; prompt assembled with system template + user context + RAG results &rarr; LLM Gateway streams response &rarr; tokens rendered in real-time.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">LLM Gateway</span><span class="role-chip system">Context Aggregator</span><span class="role-chip system">RAG / Vector Store</span></td>
+        </tr>
+        <tr>
+          <td class="sub">AI-006 &middot; Biomarker-aware</td>
+          <td class="actions-col">Context Aggregator fetches user's latest biomarker values, trends, reference ranges from Diagnostic Service &rarr; injects as structured context into LLM prompt.</td>
+          <td class="role"><span class="role-chip system">Context Aggregator</span><span class="role-chip system">Diagnostic Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">AI-008 &middot; Home AI card</td>
+          <td class="actions-col">Daily cron runs insight generation &rarr; Context Aggregator pulls weekly deltas &rarr; LLM generates 2-3 sentence insight with actionable recommendation &rarr; cached for Home screen render.</td>
+          <td class="role"><span class="role-chip system">LLM Gateway</span><span class="role-chip system">Context Aggregator</span></td>
+        </tr>
+        <tr>
+          <td class="sub">AI-010 &middot; Health narrative</td>
+          <td class="actions-col">Weekly scheduled job &rarr; aggregate all biomarker changes, therapy sessions, program milestones &rarr; LLM generates comprehensive narrative &rarr; store &amp; notify user.</td>
+          <td class="role"><span class="role-chip system">LLM Gateway</span><span class="role-chip system">Context Aggregator</span><span class="role-chip system">Notification Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">AI-012 &middot; Therapy recommendations</td>
+          <td class="actions-col">User asks for therapy advice &rarr; AI analyses current biomarker gaps, past session outcomes, goal alignment &rarr; recommends specific therapies with reasoning &rarr; deeplink to booking.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">LLM Gateway</span><span class="role-chip system">Therapy Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">AI-A01 &middot; Prompt management</td>
+          <td class="actions-col">Admin creates/edits prompt templates &rarr; versioned &rarr; set active version &rarr; Prompt Template Service serves latest active version to LLM Gateway at request time.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Prompt Template Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">AI-A02 &middot; Output review</td>
+          <td class="actions-col">Admin samples random AI responses &rarr; flags inaccurate outputs &rarr; feedback stored &rarr; used to refine prompts and add to knowledge base guardrails.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Conversation History</span></td>
+        </tr>
+        <tr>
+          <td class="sub">AI-A05 &middot; Knowledge base</td>
+          <td class="actions-col">Admin uploads medical PDFs, therapy protocols, biomarker guides &rarr; chunked &amp; embedded into vector store &rarr; RAG retrieves relevant chunks at query time.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">RAG / Vector Store</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list">
+        <span class="dep-chip in">INFRA &middot; Auth Service</span>
+        <span class="dep-chip in">INFRA &middot; User Service</span>
+        <span class="dep-chip in">INFRA &middot; Notification Service</span>
+        <span class="dep-chip in">INFRA &middot; Admin Console Base</span>
+        <span class="dep-chip in">M1 &middot; Diagnostics Hub (biomarker data)</span>
+        <span class="dep-chip in">M2 &middot; Longevity Therapies (session data)</span>
+      </div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list">
+        <span class="dep-chip out">M4 &middot; Longevity Programs (AI personalisation)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================== -->
+<!-- MODULE 4 — LONGEVITY PROGRAMS                                      -->
+<!-- ================================================================== -->
+<section class="card" id="mod-programs">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 4 &mdash; Longevity Programs</div>
+      <div class="title">Longevity Programs</div>
+      <div class="summary">Multi-week physician-designed, AI-personalised, outcome-tracked programs with enrollment, weekly progress tracking, key metric deltas, and pricing. Programs: Executive Longevity Reset (12 wk), Biological Age Reversal (24 wk), Athlete Peak Performance (8 wk).</div>
+      <div class="phase">MVP &middot; Programs</div>
+    </div>
+    <div><span class="tag mvp">MVP</span></div>
+  </div>
+
+  <div class="panes">
+    <!-- USER APP -->
+    <div class="pane user">
+      <div class="pane-title"><span class="dot"></span> User App
+        <span class="where">(Mobile &middot; iOS + Android)</span></div>
+      <ul class="items">
+        <li>
+          <div><div class="label">Program catalog cards</div><div class="desc">Cards with: program name, duration, active participants, target metric, price, tag (MOST POPULAR / FLAGSHIP / PERFORMANCE)</div></div>
+          <span class="fid">P-001</span>
+        </li>
+        <li>
+          <div><div class="label">Executive Longevity Reset card</div><div class="desc">12 Weeks &middot; 24 active &middot; Target: 31.4&rarr;28.0 &middot; ₹2,85,000 &middot; MOST POPULAR &middot; Fat Loss + HRV Protocol</div></div>
+          <span class="fid">P-002</span>
+        </li>
+        <li>
+          <div><div class="label">Biological Age Reversal card</div><div class="desc">24 Weeks &middot; 12 active &middot; Target: 5+ yr reversal &middot; ₹4,80,000 &middot; FLAGSHIP &middot; Comprehensive biological age reduction</div></div>
+          <span class="fid">P-003</span>
+        </li>
+        <li>
+          <div><div class="label">Athlete Peak Performance card</div><div class="desc">8 Weeks &middot; 18 active &middot; Target: VO2+8 &middot; ₹1,85,000 &middot; PERFORMANCE &middot; VO2, body comp, cognitive edge</div></div>
+          <span class="fid">P-004</span>
+        </li>
+        <li>
+          <div><div class="label">"Enrol Now" CTA</div><div class="desc">Primary gold button per program card &rarr; opens enrollment flow with payment</div></div>
+          <span class="fid">P-005</span>
+        </li>
+        <li>
+          <div><div class="label">Active program tracker</div><div class="desc">ACTIVE PROGRAM badge, week progress (e.g. Week 6 of 12), circular progress indicator</div></div>
+          <span class="fid">P-006</span>
+        </li>
+        <li>
+          <div><div class="label">Key metric deltas strip</div><div class="desc">Real-time deltas for active program: waist (-2.4cm), body fat (-1.8%), HRV (+12%), bio age (-1.8yr)</div></div>
+          <span class="fid">P-007</span>
+        </li>
+        <li>
+          <div><div class="label">Program detail page</div><div class="desc">Full description, included therapies (bi-weekly diagnostics, NAD+ protocol, HBOT course, AI coaching), week-by-week schedule</div></div>
+          <span class="fid">P-008</span>
+        </li>
+        <li>
+          <div><div class="label">Weekly milestone check-ins</div><div class="desc">Weekly progress cards with target vs actual for key metrics; milestone celebrations on target hit</div></div>
+          <span class="fid">P-009</span>
+        </li>
+        <li>
+          <div><div class="label">Program enrollment flow</div><div class="desc">Select program &rarr; review schedule &amp; pricing &rarr; payment (full or installment) &rarr; confirm enrollment &rarr; onboarding instructions</div></div>
+          <span class="fid">P-010</span>
+        </li>
+        <li>
+          <div><div class="label">Physician-designed badge</div><div class="desc">"Physician-designed &middot; AI-personalised &middot; Outcome-tracked" header text establishing program credibility</div></div>
+          <span class="fid">P-011</span>
+        </li>
+        <li>
+          <div><div class="label">Program completion summary</div><div class="desc">End-of-program report: before/after metrics, total sessions, biomarker improvements, outcome vs target</div></div>
+          <span class="fid">P-012</span>
+        </li>
+        <li>
+          <div><div class="label">Milestones on Home screen</div><div class="desc">Milestone cards on Home: Bio Age -5 yrs (84%), VO2 Max 55+ (65%), 100 Days Protocol (48%), First HBOT Course (100%)</div></div>
+          <span class="fid">P-013</span>
+        </li>
+        <li>
+          <div><div class="label">PDF program report</div><div class="desc">Export program progress as formatted PDF with charts, metric deltas, and session log</div></div>
+          <span class="fid">P-014</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ADMIN CONSOLE -->
+    <div class="pane admin">
+      <div class="pane-title"><span class="dot"></span> Admin Console
+        <span class="where">(Web)</span></div>
+      <ul class="items">
+        <li>
+          <div><div class="label">Program creation &amp; editing</div><div class="desc">CRUD for programs: name, description, duration, target metrics, included therapies, week-by-week schedule, pricing</div></div>
+          <span class="fid">P-A01</span>
+        </li>
+        <li>
+          <div><div class="label">Enrollment management</div><div class="desc">View all enrollments, approve/reject, manage waitlists, track payment status, handle cancellations/refunds</div></div>
+          <span class="fid">P-A02</span>
+        </li>
+        <li>
+          <div><div class="label">Outcome tracking dashboard</div><div class="desc">Cohort-level outcome analytics: average metric improvements, completion rates, target achievement rates per program</div></div>
+          <span class="fid">P-A03</span>
+        </li>
+        <li>
+          <div><div class="label">Pricing &amp; payment config</div><div class="desc">Set program pricing, installment plans, early-bird discounts, referral codes; currency in INR</div></div>
+          <span class="fid">P-A04</span>
+        </li>
+        <li>
+          <div><div class="label">Milestone &amp; schedule config</div><div class="desc">Define weekly milestones, target metrics per week, diagnostic checkpoints, therapy session schedule within program</div></div>
+          <span class="fid">P-A05</span>
+        </li>
+        <li>
+          <div><div class="label">Participant progress view</div><div class="desc">Per-user progress within a program: current week, metric deltas, session attendance, compliance score</div></div>
+          <span class="fid">P-A06</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Program Service</span>
+    <span class="chip">Enrollment Engine</span>
+    <span class="chip">Progress Tracker</span>
+    <span class="chip">Outcome Analytics</span>
+    <span class="chip">Payment Service</span>
+    <span class="chip">Notification Service</span>
+    <span class="chip">PDF Export Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="sub">P-001 &middot; Program catalog</td>
+          <td class="actions-col">Fetch active programs from Program Service &rarr; render cards with name, duration, participant count, target, price, and tag (MOST POPULAR / FLAGSHIP / PERFORMANCE).</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Program Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">P-005 &middot; Enrol Now</td>
+          <td class="actions-col">User taps "Enrol Now" &rarr; review program details &amp; schedule &rarr; select payment option (full / installment) &rarr; Payment Service processes &rarr; Enrollment Engine creates enrollment &rarr; onboarding instructions displayed &rarr; confirmation push.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Enrollment Engine</span><span class="role-chip system">Payment Service</span><span class="role-chip system">Notification Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">P-006 &middot; Active tracker</td>
+          <td class="actions-col">Load user's active enrollment &rarr; compute current week from start date &rarr; render progress ring, week indicator, and ACTIVE PROGRAM badge.</td>
+          <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Progress Tracker</span></td>
+        </tr>
+        <tr>
+          <td class="sub">P-007 &middot; Metric deltas</td>
+          <td class="actions-col">Progress Tracker fetches baseline vs current values for key metrics (waist, body fat, HRV, bio age) from Diagnostic Service &rarr; compute deltas &rarr; render strip with directional indicators.</td>
+          <td class="role"><span class="role-chip system">Progress Tracker</span><span class="role-chip system">Diagnostic Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">P-009 &middot; Weekly check-ins</td>
+          <td class="actions-col">Weekly cron creates milestone check-in &rarr; pulls current metrics &rarr; compares to weekly target &rarr; generates progress card &rarr; push notification to user &rarr; celebration animation if target met.</td>
+          <td class="role"><span class="role-chip system">Progress Tracker</span><span class="role-chip system">Notification Service</span><span class="role-chip user">End User</span></td>
+        </tr>
+        <tr>
+          <td class="sub">P-012 &middot; Completion summary</td>
+          <td class="actions-col">Program end date reached &rarr; Outcome Analytics computes before/after for all tracked metrics &rarr; generate summary card + PDF report &rarr; notify user of completion.</td>
+          <td class="role"><span class="role-chip system">Outcome Analytics</span><span class="role-chip system">PDF Export Service</span><span class="role-chip user">End User</span></td>
+        </tr>
+        <tr>
+          <td class="sub">P-A01 &middot; Program creation</td>
+          <td class="actions-col">Admin creates program &rarr; define duration, weekly schedule, included therapies, target metrics &rarr; set pricing &amp; payment options &rarr; publish to catalog &rarr; appears in user app.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Program Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">P-A02 &middot; Enrollment mgmt</td>
+          <td class="actions-col">Admin views all enrollments &rarr; approve pending enrollments &rarr; manage waitlist ordering &rarr; handle cancellation with refund via Payment Service &rarr; track payment installment status.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Enrollment Engine</span><span class="role-chip system">Payment Service</span></td>
+        </tr>
+        <tr>
+          <td class="sub">P-A03 &middot; Outcome analytics</td>
+          <td class="actions-col">Aggregate all participants' metric improvements across cohort &rarr; compute averages, completion rates, target achievement &rarr; render dashboard with trend charts.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Outcome Analytics</span></td>
+        </tr>
+        <tr>
+          <td class="sub">P-A06 &middot; Participant progress</td>
+          <td class="actions-col">Admin selects user &rarr; view current week, all metric deltas, session attendance log, compliance score, AI-generated progress narrative.</td>
+          <td class="role"><span class="role-chip staff">Admin / Staff</span><span class="role-chip system">Progress Tracker</span><span class="role-chip system">LLM Gateway</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list">
+        <span class="dep-chip in">INFRA &middot; Auth Service</span>
+        <span class="dep-chip in">INFRA &middot; User Service</span>
+        <span class="dep-chip in">INFRA &middot; Payment Infrastructure</span>
+        <span class="dep-chip in">INFRA &middot; Notification Service</span>
+        <span class="dep-chip in">INFRA &middot; Admin Console Base</span>
+        <span class="dep-chip in">M1 &middot; Diagnostics Hub (metric data)</span>
+        <span class="dep-chip in">M2 &middot; Longevity Therapies (session scheduling)</span>
+        <span class="dep-chip in">M3 &middot; CHAMP AI Coach (personalisation)</span>
+      </div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list">
+        <span class="dep-chip out">None in MVP scope</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================== -->
+<!-- SHARED INFRASTRUCTURE                                              -->
+<!-- ================================================================== -->
+<section class="infra-section" id="shared-infra">
+  <h3>Shared Infrastructure</h3>
+  <div class="sub">Foundation services that all 4 MVP modules depend on. Built in Layer 0 before any module work begins.</div>
+
+  <div class="infra-grid">
+    <div class="infra-box">
+      <h4>Authentication &amp; Identity</h4>
+      <ul>
+        <li><b>Auth Service</b> &mdash; Email + OTP signup, Apple / Google SSO, JWT issuance, refresh token rotation</li>
+        <li><b>User Service</b> &mdash; Profile storage, demographic data, goals, preferences, timezone</li>
+        <li><b>RBAC</b> &mdash; 6 admin roles (Super Admin, Ops, Content, Finance, Support, Clinician)</li>
+        <li><b>Biometric re-auth</b> &mdash; FaceID / TouchID for sensitive actions</li>
+        <li><b>Audit Log Service</b> &mdash; Immutable trail of PII access &amp; admin mutations</li>
+      </ul>
+    </div>
+    <div class="infra-box">
+      <h4>Backend Services</h4>
+      <ul>
+        <li><b>API Gateway</b> &mdash; Rate limiting, request routing, authentication middleware</li>
+        <li><b>Notification Service</b> &mdash; Push notifications (FCM/APNs), email (transactional + marketing), in-app</li>
+        <li><b>Payment Infrastructure</b> &mdash; Payment gateway integration (INR), subscription billing, refund handling</li>
+        <li><b>File Storage</b> &mdash; S3-compatible storage for PDFs, lab results, images</li>
+        <li><b>Job Scheduler</b> &mdash; Cron-based jobs for daily insights, weekly narratives, session reminders</li>
+        <li><b>Event Bus</b> &mdash; Async messaging between services (booking confirmed, results uploaded, etc.)</li>
+      </ul>
+    </div>
+    <div class="infra-box">
+      <h4>Admin Console Base</h4>
+      <ul>
+        <li><b>Admin shell</b> &mdash; Authenticated web app with role-based navigation and layout</li>
+        <li><b>User search &amp; management</b> &mdash; Lookup by email / phone / ID, view profile + devices</li>
+        <li><b>Dashboard framework</b> &mdash; Reusable chart components, KPI cards, data tables</li>
+        <li><b>Content management</b> &mdash; Rich text editor for descriptions, protocol docs, therapy details</li>
+        <li><b>Support ticket inbox</b> &mdash; Tickets tied to user record + history for support agents</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== FOOTER ========== -->
+<p class="doc-foot">
+  Champions Longevity &mdash; MVP Scope of Work &nbsp;&bull;&nbsp; 4 modules &nbsp;&bull;&nbsp; Generated 2026-05-16 &nbsp;&bull;&nbsp; Brilworks Software LLP
+</p>
+
+</div><!-- /.page -->
+</body>
+</html>

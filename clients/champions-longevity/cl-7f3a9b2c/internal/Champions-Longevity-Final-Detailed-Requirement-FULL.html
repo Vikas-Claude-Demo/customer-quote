@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Champions Longevity — Module Cards (Full)</title>
+<style>
+:root {
+  --brand-deep:   #1F3A5F;
+  --brand-mid:    #2C4D7A;
+  --brand-soft:   #EAF2FC;
+  --ink:          #0F172A;
+  --muted:        #475569;
+  --line:         #CBD5E1;
+  --line-soft:    #E2E8F0;
+  --paper:        #FFFFFF;
+  --paper-tint:   #F8FAFC;
+  --tint:         #F1F5F9;
+
+  --v1-bg: #DCFCE7; --v1-fg: #166534;
+  --v2-bg: #FEF3C7; --v2-fg: #92400E;
+  --mx-bg: #E0E7FF; --mx-fg: #3730A3;
+
+  --admin:    #5B21B6;
+  --provider: #BE185D;
+  --integ:    #0E7490;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--ink);
+  background: #F4F6FB;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 1280px; margin: 0 auto; padding: 40px 28px 80px 28px; }
+
+/* COVER */
+.cover {
+  background: linear-gradient(135deg, var(--brand-deep) 0%, var(--brand-mid) 60%, #3a679f 100%);
+  color: #fff; border-radius: 18px; padding: 36px 36px 30px 36px;
+  margin-bottom: 32px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+.cover .eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: #cfe0f5; margin-bottom: 8px;
+}
+.cover h1 { font-size: 38px; font-weight: 800; margin: 0 0 4px 0; letter-spacing: -1px; }
+.cover h2 { font-size: 20px; font-weight: 500; margin: 0 0 18px 0; color: #cfe0f5; }
+.cover .meta { font-size: 12.5px; color: #b3c7e3; margin-bottom: 22px; }
+.cover-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; margin-top: 12px; }
+.cover-box {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px; padding: 16px 18px; color: #f8fafc;
+}
+.cover-box h3 {
+  font-size: 13px; font-weight: 700; margin: 0 0 8px 0;
+  letter-spacing: 0.6px; text-transform: uppercase; color: #cfe0f5;
+}
+.cover-box ul { margin: 0; padding-left: 16px; }
+.cover-box li { margin-bottom: 4px; font-size: 13px; }
+.cover-box b { color: #fff; }
+
+.tag-inline {
+  display: inline-block; padding: 2px 8px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+  vertical-align: 1px;
+}
+.tag-inline.v1 { background: var(--v1-bg); color: var(--v1-fg); }
+.tag-inline.v2 { background: var(--v2-bg); color: var(--v2-fg); }
+.tag-inline.mx { background: var(--mx-bg); color: var(--mx-fg); }
+
+/* Dependency-graph block */
+.depgraph {
+  background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  padding: 22px 26px; margin-bottom: 28px;
+}
+.depgraph h3 { margin: 0 0 4px 0; color: var(--brand-deep); font-size: 14px; text-transform: uppercase; letter-spacing: 1.2px; }
+.depgraph .sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+.layer-row {
+  display: grid; grid-template-columns: 130px 1fr; gap: 18px;
+  padding: 12px 0; border-top: 1px dashed var(--line-soft); align-items: center;
+}
+.layer-row:first-of-type { border-top: none; }
+.layer-tag {
+  font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+  color: #fff; padding: 6px 10px; border-radius: 8px; text-align: center;
+}
+.layer-tag.l0 { background: #0E7490; }
+.layer-tag.l1 { background: #1F3A5F; }
+.layer-tag.l2 { background: #B45309; }
+.layer-tag.l3 { background: #6D28D9; }
+.layer-tag.l4 { background: #15803D; }
+.layer-tag.l5 { background: #BE185D; }
+.layer-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.layer-chip {
+  background: var(--paper-tint); border: 1px solid var(--line);
+  padding: 5px 10px; border-radius: 8px; font-size: 12.5px; font-weight: 600;
+}
+.layer-chip .code { color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-right: 4px; }
+.layer-chip.v1 { border-color: #BBF7D0; background: #F0FDF4; }
+.layer-chip.v2 { border-color: #FDE68A; background: #FFFBEB; }
+.layer-chip.mx { border-color: #C7D2FE; background: #EEF2FF; }
+
+/* TOC */
+.toc { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-bottom: 28px; }
+.toc h3 { margin: 0 0 10px 0; font-size: 12px; color: var(--brand-deep); text-transform: uppercase; letter-spacing: 1.2px; }
+.toc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 22px; }
+.toc-row { display: grid; grid-template-columns: 50px 1fr auto; padding: 5px 0; border-bottom: 1px dotted var(--line-soft); font-size: 13px; align-items: baseline; gap: 10px; }
+.toc-row:last-child { border-bottom: none; }
+.toc-row .num { color: var(--brand-deep); font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.toc-row .name { color: var(--ink); font-weight: 600; }
+.toc-row a { color: inherit; text-decoration: none; }
+.toc-row a:hover { color: var(--brand-deep); }
+
+/* MODULE CARD */
+.card {
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 16px; overflow: hidden; margin-bottom: 36px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  scroll-margin-top: 20px;
+}
+.card-header {
+  background: linear-gradient(135deg, var(--brand-deep) 0%, var(--brand-mid) 100%);
+  color: #fff; padding: 18px 24px 16px 24px;
+  display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+}
+.card-header .code {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: #cfe0f5; letter-spacing: 1px; text-transform: uppercase;
+}
+.card-header .title { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; margin-top: 2px; }
+.card-header .summary { font-size: 13px; color: #d9e6f7; margin-top: 6px; max-width: 800px; }
+.card-header .phase {
+  font-size: 11px; color: #cfe0f5; margin-top: 8px; letter-spacing: 0.6px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.card-header .tag {
+  display: inline-block; padding: 6px 14px; border-radius: 999px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
+}
+.card-header .tag.v1 { background: var(--v1-bg); color: var(--v1-fg); }
+.card-header .tag.v2 { background: var(--v2-bg); color: var(--v2-fg); }
+.card-header .tag.mx { background: var(--mx-bg); color: var(--mx-fg); }
+
+/* Panes */
+.panes { display: grid; grid-template-columns: 1fr 1fr; }
+.panes.three { grid-template-columns: 1.15fr 1fr 0.9fr; }
+.pane { padding: 18px 22px 16px 22px; border-right: 1px dashed var(--line); }
+.pane:last-child { border-right: none; }
+.pane.admin    { background: #FBFAFE; }
+.pane.provider { background: #FDF7FB; }
+
+.pane-title {
+  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.4px;
+  color: var(--brand-deep); margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.pane.admin    .pane-title { color: var(--admin); }
+.pane.provider .pane-title { color: var(--provider); }
+.pane-title .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--brand-deep); }
+.pane.admin    .pane-title .dot { background: var(--admin); }
+.pane.provider .pane-title .dot { background: var(--provider); }
+.pane-title .where { font-weight: 500; color: var(--muted); letter-spacing: 0; text-transform: none; font-size: 11px; }
+
+.items { list-style: none; padding: 0; margin: 0; }
+.items li { padding: 7px 0; border-bottom: 1px dotted var(--line-soft); display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: baseline; }
+.items li:last-child { border-bottom: none; }
+.items .label { font-weight: 600; color: var(--ink); font-size: 13px; }
+.items .desc  { color: var(--muted); font-size: 12px; margin-top: 2px; }
+.fid { font-family: 'JetBrains Mono', 'Menlo', monospace; font-size: 10.5px; color: var(--muted);
+  background: var(--tint); padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+.v2-chip { display: inline-block; background: var(--v2-bg); color: var(--v2-fg);
+  padding: 1px 6px; border-radius: 4px; font-size: 9.5px; font-weight: 800;
+  letter-spacing: 0.4px; margin-left: 6px; vertical-align: 1px; }
+.v1-chip { display: inline-block; background: var(--v1-bg); color: var(--v1-fg);
+  padding: 1px 6px; border-radius: 4px; font-size: 9.5px; font-weight: 800;
+  letter-spacing: 0.4px; margin-left: 6px; vertical-align: 1px; }
+
+/* Backend strip */
+.backend { background: var(--tint); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.backend .label { color: var(--muted); font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; font-size: 10.5px; margin-right: 4px; }
+.chip { background: #fff; border: 1px solid var(--line); color: var(--ink);
+  padding: 4px 11px; border-radius: 999px; font-size: 11.5px; font-weight: 500; }
+
+/* Actions table */
+.actions-wrap { padding: 18px 24px 20px 24px; background: #fff; }
+.actions-title { font-size: 11px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: var(--brand-deep); margin-bottom: 8px; }
+table.actions { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.actions th { text-align: left; background: #F1F5F9; color: var(--brand-deep);
+  font-weight: 700; padding: 8px 12px; border-bottom: 1px solid var(--line);
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.7px; }
+table.actions td { padding: 9px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+table.actions tr:last-child td { border-bottom: none; }
+table.actions td.sub { font-weight: 600; color: var(--ink); width: 26%; }
+table.actions td.actions-col { color: var(--muted); width: 50%; }
+table.actions td.role { color: var(--ink); font-size: 12px; width: 24%; }
+.role-chip { display: inline-block; padding: 2px 8px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 600; margin: 1px 3px 1px 0; }
+.role-chip.user   { background: #DCFCE7; color: #166534; }
+.role-chip.staff  { background: #F3E8FF; color: #6B21A8; }
+.role-chip.system { background: #ECFEFF; color: #155E75; }
+.role-chip.prov   { background: #FCE7F3; color: #9D174D; }
+
+/* Dependency footer */
+.deps { display: grid; grid-template-columns: 1fr 1fr; background: #F8FAFC; border-top: 1px solid var(--line); }
+.deps-pane { padding: 14px 24px 16px 24px; }
+.deps-pane.left { border-right: 1px dashed var(--line); }
+.deps-title { font-size: 11px; font-weight: 800; letter-spacing: 1.4px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px; }
+.deps-title.in  { color: #B45309; }
+.deps-title.out { color: #0E7490; }
+.deps-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.dep-chip { border: 1px solid var(--line); background: #fff; color: var(--ink);
+  font-size: 11.5px; padding: 4px 10px; border-radius: 7px; font-weight: 500; }
+.dep-chip.in  { border-color: #FCD34D; background: #FFFBEB; color: #78350F; }
+.dep-chip.out { border-color: #67E8F9; background: #ECFEFF; color: #155E75; }
+
+/* Footer note */
+.doc-foot { text-align: center; color: var(--muted); font-size: 12px; margin-top: 32px; }
+
+@media print {
+  body { background: #fff; }
+  .page { padding: 0; max-width: none; }
+  .card { page-break-inside: avoid; box-shadow: none; }
+  .cover { page-break-after: always; box-shadow: none; }
+  .depgraph, .toc { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<section class="cover">
+  <div class="eyebrow">Champions Longevity — Brilworks Software LLP</div>
+  <h1>Module Cards</h1>
+  <h2>All 14 modules · User App · Admin · Provider · Backend · Dependencies</h2>
+  <div class="meta">
+    Source: V1 Plan v1.2 + Execution Plan v1.0 &nbsp;•&nbsp; Generated 2026-05-14 &nbsp;•&nbsp;
+    138 features &nbsp;•&nbsp; 14 modules &nbsp;•&nbsp; 6 build layers
+  </div>
+  <div class="cover-grid">
+    <div class="cover-box">
+      <h3>What's in this document</h3>
+      <ul>
+        <li><b>Dependency-layered build order</b> — 6 layers, foundation up to V2 expansion.</li>
+        <li><b>14 module cards</b> — each with User App / Admin Console / Provider Console (when applicable), backend strip, per-feature Actions &amp; Roles table, and Depends-on / Depended-on-by footer.</li>
+        <li><b>V1 / V2 tagged at every level</b> — module header, individual features (inline <span class="v2-chip">V2</span> chips), and the build-phase chip.</li>
+      </ul>
+    </div>
+    <div class="cover-box">
+      <h3>Tags</h3>
+      <ul>
+        <li><span class="tag-inline v1">V1</span> Phase 1 build (89 features). 6-week timeline.</li>
+        <li><span class="tag-inline v2">V2</span> Phase 2 build (49 features). Post-V1 launch.</li>
+        <li><span class="tag-inline mx">V1 + V2</span> Module has features in both phases.</li>
+        <li>Role chips on every action: <span class="role-chip user">End User</span> <span class="role-chip staff">Admin / Staff</span> <span class="role-chip system">Service</span> <span class="role-chip prov">Provider</span>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="depgraph">
+  <h3>Dependency Layers · Build Order</h3>
+  <div class="sub">Each layer can be built on top of the ones above. Click any chip to jump to its card. <b>V1+V2</b> means the module exists in both phases but with different features inside.</div>
+  
+        <div class="layer-row">
+          <div class="layer-tag l0">Layer 0 · Foundation</div>
+          <div class="layer-chips"><a class="layer-chip v1" href="#m2-11" style="text-decoration:none;color:inherit;"><span class="code">2.11</span>Backend Services <span class="tag-inline v1" style="margin-left:6px;">V1</span></a><a class="layer-chip v1" href="#m2-10" style="text-decoration:none;color:inherit;"><span class="code">2.10</span>Cross-App Infrastructure <span class="tag-inline v1" style="margin-left:6px;">V1</span></a><a class="layer-chip v1" href="#m2-12" style="text-decoration:none;color:inherit;"><span class="code">2.12</span>Admin Console <span class="tag-inline v1" style="margin-left:6px;">V1</span></a></div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-tag l1">Layer 1 · Identity</div>
+          <div class="layer-chips"><a class="layer-chip mx" href="#m2-1" style="text-decoration:none;color:inherit;"><span class="code">2.1</span>Authentication &amp; Onboarding <span class="tag-inline mx" style="margin-left:6px;">V1+V2</span></a><a class="layer-chip mx" href="#m2-6" style="text-decoration:none;color:inherit;"><span class="code">2.6</span>Profile <span class="tag-inline mx" style="margin-left:6px;">V1+V2</span></a></div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-tag l2">Layer 2 · Data Sources</div>
+          <div class="layer-chips"><a class="layer-chip v1" href="#m2-7" style="text-decoration:none;color:inherit;"><span class="code">2.7</span>Ring Integration <span class="tag-inline v1" style="margin-left:6px;">V1</span></a><a class="layer-chip v1" href="#m2-8" style="text-decoration:none;color:inherit;"><span class="code">2.8</span>CGM Integration <span class="tag-inline v1" style="margin-left:6px;">V1</span></a><a class="layer-chip v1" href="#m2-9" style="text-decoration:none;color:inherit;"><span class="code">2.9</span>Nutrition Engine <span class="tag-inline v1" style="margin-left:6px;">V1</span></a></div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-tag l3">Layer 3 · Data Display</div>
+          <div class="layer-chips"><a class="layer-chip mx" href="#m2-3" style="text-decoration:none;color:inherit;"><span class="code">2.3</span>Track Tab <span class="tag-inline mx" style="margin-left:6px;">V1+V2</span></a><a class="layer-chip mx" href="#m2-4" style="text-decoration:none;color:inherit;"><span class="code">2.4</span>Insights Tab <span class="tag-inline mx" style="margin-left:6px;">V1+V2</span></a></div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-tag l4">Layer 4 · Daily Surface</div>
+          <div class="layer-chips"><a class="layer-chip mx" href="#m2-2" style="text-decoration:none;color:inherit;"><span class="code">2.2</span>App Shell + Home Tab <span class="tag-inline mx" style="margin-left:6px;">V1+V2</span></a><a class="layer-chip v1" href="#m2-5" style="text-decoration:none;color:inherit;"><span class="code">2.5</span>Programs Tab <span class="tag-inline v1" style="margin-left:6px;">V1</span></a></div>
+        </div>
+        <div class="layer-row">
+          <div class="layer-tag l5">Layer 5 · V2 Expansion</div>
+          <div class="layer-chips"><a class="layer-chip v2" href="#m2-13" style="text-decoration:none;color:inherit;"><span class="code">2.13</span>Act Tab — Marketplace <span class="tag-inline v2" style="margin-left:6px;">V2</span></a><a class="layer-chip v2" href="#m2-14" style="text-decoration:none;color:inherit;"><span class="code">2.14</span>Provider Console <span class="tag-inline v2" style="margin-left:6px;">V2</span></a></div>
+        </div>
+</section>
+
+<section class="toc">
+  <h3>Module Index</h3>
+  <div class="toc-grid"><div class="toc-row"><span class="num">2.1</span><span class="name"><a href="#m2-1">Authentication &amp; Onboarding</a></span><span><span class="tag-inline mx">V1+V2</span></span></div><div class="toc-row"><span class="num">2.2</span><span class="name"><a href="#m2-2">App Shell + Home Tab</a></span><span><span class="tag-inline mx">V1+V2</span></span></div><div class="toc-row"><span class="num">2.3</span><span class="name"><a href="#m2-3">Track Tab</a></span><span><span class="tag-inline mx">V1+V2</span></span></div><div class="toc-row"><span class="num">2.4</span><span class="name"><a href="#m2-4">Insights Tab</a></span><span><span class="tag-inline mx">V1+V2</span></span></div><div class="toc-row"><span class="num">2.5</span><span class="name"><a href="#m2-5">Programs Tab</a></span><span><span class="tag-inline v1">V1</span></span></div><div class="toc-row"><span class="num">2.6</span><span class="name"><a href="#m2-6">Profile</a></span><span><span class="tag-inline mx">V1+V2</span></span></div><div class="toc-row"><span class="num">2.7</span><span class="name"><a href="#m2-7">Ring Integration</a></span><span><span class="tag-inline v1">V1</span></span></div><div class="toc-row"><span class="num">2.8</span><span class="name"><a href="#m2-8">CGM Integration</a></span><span><span class="tag-inline v1">V1</span></span></div><div class="toc-row"><span class="num">2.9</span><span class="name"><a href="#m2-9">Nutrition Engine</a></span><span><span class="tag-inline v1">V1</span></span></div><div class="toc-row"><span class="num">2.10</span><span class="name"><a href="#m2-10">Cross-App Infrastructure</a></span><span><span class="tag-inline v1">V1</span></span></div><div class="toc-row"><span class="num">2.11</span><span class="name"><a href="#m2-11">Backend Services</a></span><span><span class="tag-inline v1">V1</span></span></div><div class="toc-row"><span class="num">2.12</span><span class="name"><a href="#m2-12">Admin Console</a></span><span><span class="tag-inline v1">V1</span></span></div><div class="toc-row"><span class="num">2.13</span><span class="name"><a href="#m2-13">Act Tab — Marketplace</a></span><span><span class="tag-inline v2">V2</span></span></div><div class="toc-row"><span class="num">2.14</span><span class="name"><a href="#m2-14">Provider Console</a></span><span><span class="tag-inline v2">V2</span></span></div></div>
+</section>
+
+<section class="card" id="m2-1">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.1</div>
+      <div class="title">Authentication &amp; Onboarding</div>
+      <div class="summary">Account creation, identity, consent capture, baseline profile, and first-time HealthKit / Health Connect setup. The gate every other module sits behind.</div>
+      <div class="phase">Phase 1 · Identity</div>
+    </div>
+    <div><span class="tag mx">V1 + V2</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Email + OTP signup</div><div class="desc">Email → OTP → verify → JWT issued</div></div>
+        <span class="fid">F-001</span>
+      </li><li>
+        <div><div class="label">Apple / Google SSO</div><div class="desc">OAuth identity mapping · refresh token persisted</div></div>
+        <span class="fid">F-002 / F-003</span>
+      </li><li>
+        <div><div class="label">Name capture</div><div class="desc">First + last name on profile</div></div>
+        <span class="fid">F-004</span>
+      </li><li>
+        <div><div class="label">Goals picker</div><div class="desc">Fat Loss · Longevity · Diabetes · Stress · Performance</div></div>
+        <span class="fid">F-005</span>
+      </li><li>
+        <div><div class="label">Demographic intake</div><div class="desc">DOB, sex, height, weight, ethnicity, TZ, units</div></div>
+        <span class="fid">F-006</span>
+      </li><li>
+        <div><div class="label">Device pairing intro</div><div class="desc">HealthKit / Health Connect / Ring / CGM walkthrough</div></div>
+        <span class="fid">F-007</span>
+      </li><li>
+        <div><div class="label">HealthKit permission (iOS)</div><div class="desc">Sleep, HRV, HR, Steps, Energy, Workouts, Glucose, Mass</div></div>
+        <span class="fid">F-008</span>
+      </li><li>
+        <div><div class="label">Health Connect (Android)</div><div class="desc">Same scopes + not-installed fallback</div></div>
+        <span class="fid">F-009</span>
+      </li><li>
+        <div><div class="label">Notification permission</div><div class="desc">Push opt-in + in-app explainer</div></div>
+        <span class="fid">F-010</span>
+      </li><li>
+        <div><div class="label">Onboarding complete</div><div class="desc">Set onboarded_at · welcome push + email</div></div>
+        <span class="fid">F-011</span>
+      </li><li>
+        <div><div class="label">Program-led funnel</div><div class="desc">Deep-link entry from program ad → catalogue</div></div>
+        <span class="fid">F-012</span>
+      </li><li>
+        <div><div class="label">Device-first funnel</div><div class="desc">Deep-link entry from device ad → pairing</div></div>
+        <span class="fid">F-013</span>
+      </li><li>
+        <div><div class="label">Coach-led funnel <span class="v2-chip">V2</span></div><div class="desc">Provider invite link seats user into a roster</div></div>
+        <span class="fid">F-014</span>
+      </li><li>
+        <div><div class="label">Biometric re-auth</div><div class="desc">FaceID/TouchID for re-open + sensitive actions</div></div>
+        <span class="fid">F-015</span>
+      </li><li>
+        <div><div class="label">Sign-out</div><div class="desc">Revoke refresh token · clear cache · unregister push</div></div>
+        <span class="fid">F-016</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Auth + RBAC (6 roles)</div><div class="desc">Super Admin · Ops · Content · Finance · Support · Clinician</div></div>
+        <span class="fid">F-901</span>
+      </li><li>
+        <div><div class="label">User search</div><div class="desc">Lookup by email / phone / ID → profile + devices</div></div>
+        <span class="fid">F-903</span>
+      </li><li>
+        <div><div class="label">Audit log</div><div class="desc">Immutable trail of PII access &amp; admin actions</div></div>
+        <span class="fid">F-914</span>
+      </li><li>
+        <div><div class="label">2FA / recovery tooling</div><div class="desc">Force 2FA reset for support cases</div></div>
+        <span class="fid">F-513-admin</span>
+      </li><li>
+        <div><div class="label">Support ticket inbox</div><div class="desc">Tickets tied to user record + history</div></div>
+        <span class="fid">F-916</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Auth Service</span><span class="chip">User Service</span><span class="chip">Notification Service</span><span class="chip">LLM Gateway · welcome msg</span><span class="chip">Audit Log Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-001 · Email + OTP signup</td>
+        <td class="actions-col">Enter email → receive OTP → verify → create user row → issue JWT + refresh token.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Auth Service</span></td>
+      </tr><tr>
+        <td class="sub">F-002 / F-003 · SSO</td>
+        <td class="actions-col">Apple / Google OAuth handshake → map identity to user → fall back to OTP on failure.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Auth Service</span></td>
+      </tr><tr>
+        <td class="sub">F-005 · Goals picker</td>
+        <td class="actions-col">Multi-select goals → seed recommendation engine for first Home render.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Recommendation Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-006 · Demographic intake</td>
+        <td class="actions-col">Capture DOB, sex, height, weight, ethnicity, TZ, units → feed BMR/TDEE + reference bands.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">User Service</span></td>
+      </tr><tr>
+        <td class="sub">F-008 · HealthKit (iOS)</td>
+        <td class="actions-col">Native bridge requests read/write scopes; missing scopes block dependent metrics.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">iOS Native Bridge</span></td>
+      </tr><tr>
+        <td class="sub">F-009 · Health Connect (Android)</td>
+        <td class="actions-col">Same scopes via Health Connect; handles ‘not installed’ fallback to Google Fit.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Android Native Bridge</span></td>
+      </tr><tr>
+        <td class="sub">F-011 · Onboarding complete</td>
+        <td class="actions-col">Set onboarded_at · route to Home · fire welcome push + email · prime daily insight job.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Auth Service</span><span class="role-chip system">Notification Service</span></td>
+      </tr><tr>
+        <td class="sub">F-014 · Coach-led funnel <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Provider invite link → auto-seat user into a Provider Console roster on signup.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip prov">Provider</span><span class="role-chip staff">Provider Console</span></td>
+      </tr><tr>
+        <td class="sub">F-015 · Biometric re-auth</td>
+        <td class="actions-col">FaceID/TouchID prompt on re-open + before subscription / data-export actions.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Auth Service</span></td>
+      </tr><tr>
+        <td class="sub">F-901 · Admin RBAC</td>
+        <td class="actions-col">SSO into admin console; role assignment maps to scoped CRUD/read-only capabilities.</td>
+        <td class="role"><span class="role-chip staff">Admin User</span><span class="role-chip system">Auth Service</span></td>
+      </tr><tr>
+        <td class="sub">F-903 · User search</td>
+        <td class="actions-col">Support agent looks up user → impersonation-free view of profile, devices, programs.</td>
+        <td class="role"><span class="role-chip staff">Support Agent</span></td>
+      </tr><tr>
+        <td class="sub">F-914 · Audit log</td>
+        <td class="actions-col">Every PII access + admin mutation appended to append-only log with actor + reason.</td>
+        <td class="role"><span class="role-chip staff">Compliance</span><span class="role-chip system">Audit Log Service</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend Services (Auth · User)</span><span class="dep-chip in">2.12 Admin Console (RBAC · Audit)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.2 App Shell + Home</span><span class="dep-chip out">2.3 Track Tab</span><span class="dep-chip out">2.4 Insights Tab</span><span class="dep-chip out">2.5 Programs</span><span class="dep-chip out">2.6 Profile</span><span class="dep-chip out">2.7 Ring</span><span class="dep-chip out">2.8 CGM</span><span class="dep-chip out">2.9 Nutrition</span><span class="dep-chip out">2.13 Marketplace (V2)</span><span class="dep-chip out">2.14 Provider Console (V2)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-2">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.2</div>
+      <div class="title">App Shell + Home Tab</div>
+      <div class="summary">Top-level chrome plus the daily landing surface: greeting, recovery state, daily AI insight, key metrics strip, Today's Plan, and Fix-Today nudge.</div>
+      <div class="phase">Phase 4 · Daily Surface</div>
+    </div>
+    <div><span class="tag mx">V1 + V2</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Top bar</div><div class="desc">Avatar · notification bell · streak chip</div></div>
+        <span class="fid">F-101</span>
+      </li><li>
+        <div><div class="label">Bottom nav · 4 tabs</div><div class="desc">Home / Track / Insights / Programs</div></div>
+        <span class="fid">F-102</span>
+      </li><li>
+        <div><div class="label">Bell dot indicator</div><div class="desc">Red dot when inbox has unread items</div></div>
+        <span class="fid">F-103</span>
+      </li><li>
+        <div><div class="label">Greeting block</div><div class="desc">Time-of-day greeting + first name + weather chip</div></div>
+        <span class="fid">F-104</span>
+      </li><li>
+        <div><div class="label">Recovery badge</div><div class="desc">Today's recovery (Optimal / Strained / Low) from HRV+Sleep+RHR</div></div>
+        <span class="fid">F-105</span>
+      </li><li>
+        <div><div class="label">AI Insight card</div><div class="desc">Rotating daily insight (LLM) · tap → Insights tab</div></div>
+        <span class="fid">F-106</span>
+      </li><li>
+        <div><div class="label">Metrics strip</div><div class="desc">Sleep / HRV / Glucose / Activity with 7d delta</div></div>
+        <span class="fid">F-107</span>
+      </li><li>
+        <div><div class="label">Today's Plan cards</div><div class="desc">Stack of action cards from active programs</div></div>
+        <span class="fid">F-108</span>
+      </li><li>
+        <div><div class="label">Adaptive plan re-ordering <span class="v2-chip">V2</span></div><div class="desc">ML re-rank by completion + recovery</div></div>
+        <span class="fid">F-109</span>
+      </li><li>
+        <div><div class="label">Fix Today banner</div><div class="desc">Single recovery-aware corrective action</div></div>
+        <span class="fid">F-110</span>
+      </li><li>
+        <div><div class="label">Streak + weekly ribbon <span class="v2-chip">V2</span></div><div class="desc">Streak count + week completion %</div></div>
+        <span class="fid">F-111</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Push template editor</div><div class="desc">Schedule / A/B test daily insight push</div></div>
+        <span class="fid">F-906</span>
+      </li><li>
+        <div><div class="label">Insights rule editor</div><div class="desc">Edit 20 deterministic rules behind the daily plan</div></div>
+        <span class="fid">F-907</span>
+      </li><li>
+        <div><div class="label">Feature flags dashboard</div><div class="desc">Gate Home variants per cohort / version</div></div>
+        <span class="fid">F-913</span>
+      </li><li>
+        <div><div class="label">Analytics &amp; cohort</div><div class="desc">DAU · Home engagement · plan-card CTR</div></div>
+        <span class="fid">F-910</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Plan Service</span><span class="chip">Insights Engine</span><span class="chip">Recommendation Engine</span><span class="chip">LLM Gateway</span><span class="chip">Metrics Aggregator</span><span class="chip">Notification Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-105 · Recovery badge</td>
+        <td class="actions-col">Composite of last-night HRV, Sleep efficiency, RHR delta → 3-bucket label rendered on Home.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-106 · AI Insight card</td>
+        <td class="actions-col">Daily rule-based insight wrapped in LLM narrative · tap deep-links to expanded view.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">LLM Gateway</span><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-107 · Metrics strip</td>
+        <td class="actions-col">Pre-aggregated 24h values + 7d delta · cached by Metrics Aggregator for fast render.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Metrics Aggregator</span></td>
+      </tr><tr>
+        <td class="sub">F-108 · Today's Plan cards</td>
+        <td class="actions-col">Compile from active programs · order by chronotype + earliest required time.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Plan Service</span></td>
+      </tr><tr>
+        <td class="sub">F-109 · Adaptive re-ranking <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">ML model re-orders cards based on past completion × recovery state.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Recommendation Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-110 · Fix Today banner</td>
+        <td class="actions-col">If recovery low → swap top card (e.g. HIIT → Zone 2) with explanatory copy.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-111 · Streak ribbon <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Render streak count + % week complete · animates on milestone reached.</td>
+        <td class="role"><span class="role-chip user">End User</span></td>
+      </tr><tr>
+        <td class="sub">F-906 · Push template editor</td>
+        <td class="actions-col">Marketing/Ops authors template · stage-promote to prod · A/B variants supported.</td>
+        <td class="role"><span class="role-chip staff">Marketing</span><span class="role-chip staff">Ops</span></td>
+      </tr><tr>
+        <td class="sub">F-907 · Insights rule editor</td>
+        <td class="actions-col">Edit / version the 20 deterministic rules · clinician sign-off required before publish.</td>
+        <td class="role"><span class="role-chip staff">Clinician</span><span class="role-chip staff">Ops</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth &amp; Onboarding</span><span class="dep-chip in">2.3 Track Tab</span><span class="dep-chip in">2.4 Insights Tab</span><span class="dep-chip in">2.5 Programs</span><span class="dep-chip in">2.7 Ring</span><span class="dep-chip in">2.8 CGM</span><span class="dep-chip in">2.9 Nutrition</span><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend Services</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip">— terminal surface —</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-3">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.3</div>
+      <div class="title">Track Tab</div>
+      <div class="summary">Biometric review surface — biological-age hero, four primary metric tiles, and per-metric detail screens with charts, reference bands, and distributions.</div>
+      <div class="phase">Phase 3 · Data Display</div>
+    </div>
+    <div><span class="tag mx">V1 + V2</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Biological Age hero</div><div class="desc">Current bio age vs chronological + 30-day trend arrow</div></div>
+        <span class="fid">F-201</span>
+      </li><li>
+        <div><div class="label">Bio Age detail screen <span class="v2-chip">V2</span></div><div class="desc">Contributing inputs (HRV · VO2max · RHR · glucose variance · sleep efficiency)</div></div>
+        <span class="fid">F-202</span>
+      </li><li>
+        <div><div class="label">Metrics 2×2 grid</div><div class="desc">Sleep · HRV · Glucose · Activity tiles with sparkline</div></div>
+        <span class="fid">F-203</span>
+      </li><li>
+        <div><div class="label">Sleep detail</div><div class="desc">Stages · efficiency · duration · debt · awakenings</div></div>
+        <span class="fid">F-204</span>
+      </li><li>
+        <div><div class="label">HRV detail</div><div class="desc">Nightly RMSSD trend · distribution · age/sex band</div></div>
+        <span class="fid">F-205</span>
+      </li><li>
+        <div><div class="label">Glucose detail</div><div class="desc">TIR · AGP · hypo/hyper counts · meal-tagged spikes</div></div>
+        <span class="fid">F-206</span>
+      </li><li>
+        <div><div class="label">Activity detail</div><div class="desc">Steps · active energy · Zone 2 mins · workout list</div></div>
+        <span class="fid">F-207</span>
+      </li><li>
+        <div><div class="label">Range selector</div><div class="desc">Day / Week / Month / 90d toggle on every detail</div></div>
+        <span class="fid">F-208</span>
+      </li><li>
+        <div><div class="label">Time-series crosshair</div><div class="desc">Tap-and-drag value readout on any chart</div></div>
+        <span class="fid">F-209</span>
+      </li><li>
+        <div><div class="label">Distribution histogram</div><div class="desc">Today vs personal 30-day distribution</div></div>
+        <span class="fid">F-210</span>
+      </li><li>
+        <div><div class="label">Reference band explainer</div><div class="desc">Info sheet on green/yellow/red zones</div></div>
+        <span class="fid">F-211</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Insights rule editor</div><div class="desc">Rules feeding metric anomalies + bio-age hero</div></div>
+        <span class="fid">F-907</span>
+      </li><li>
+        <div><div class="label">AI moderation queue</div><div class="desc">Review LLM narrative on metric detail screens</div></div>
+        <span class="fid">F-911</span>
+      </li><li>
+        <div><div class="label">Audit log</div><div class="desc">Health-data access for compliance</div></div>
+        <span class="fid">F-914</span>
+      </li><li>
+        <div><div class="label">Analytics &amp; cohort</div><div class="desc">Track-tab engagement · drill-down rate</div></div>
+        <span class="fid">F-910</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Biometrics Service · TimescaleDB</span><span class="chip">Metrics Aggregator</span><span class="chip">Bio Age Service</span><span class="chip">Insights Engine</span><span class="chip">LLM Gateway</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-201 · Bio Age hero</td>
+        <td class="actions-col">Nightly batch computes composite bio-age score · render delta vs chronological + 30-day trend.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Bio Age Service</span></td>
+      </tr><tr>
+        <td class="sub">F-202 · Bio Age detail <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Drill-down view of contributing inputs · explains scoring weights per dimension.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Bio Age Service</span></td>
+      </tr><tr>
+        <td class="sub">F-204 · Sleep detail</td>
+        <td class="actions-col">Pull HealthKit/Health Connect sleep stages + supplement with Ring data when paired.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Metrics Aggregator</span></td>
+      </tr><tr>
+        <td class="sub">F-206 · Glucose detail</td>
+        <td class="actions-col">Pull CGM time-series · compute TIR + AGP + spike tags · render percentile bands.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">CGM Service</span></td>
+      </tr><tr>
+        <td class="sub">F-209 · Crosshair</td>
+        <td class="actions-col">Pan / pinch / tap value readout · scrubs synced across companion charts.</td>
+        <td class="role"><span class="role-chip user">End User</span></td>
+      </tr><tr>
+        <td class="sub">F-210 · Distribution histogram</td>
+        <td class="actions-col">Compare today vs personal 30-day distribution · powered by aggregator percentiles.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Metrics Aggregator</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth &amp; Onboarding</span><span class="dep-chip in">2.7 Ring</span><span class="dep-chip in">2.8 CGM</span><span class="dep-chip in">2.9 Nutrition</span><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend (Biometrics · Bio Age · Metrics)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.2 App Shell + Home</span><span class="dep-chip out">2.4 Insights Tab</span><span class="dep-chip out">2.5 Programs</span><span class="dep-chip out">2.14 Provider Console (V2)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-4">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.4</div>
+      <div class="title">Insights Tab</div>
+      <div class="summary">Narrative layer — expanded AI insights, top weekly issues, weekly review, correlation discoveries, bio-age trend, and the AI Coach entry point.</div>
+      <div class="phase">Phase 3 · Data Display</div>
+    </div>
+    <div><span class="tag mx">V1 + V2</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Expanded AI Insight cards</div><div class="desc">Full read of daily insight + why-it-matters + action</div></div>
+        <span class="fid">F-301</span>
+      </li><li>
+        <div><div class="label">Top Issues This Week</div><div class="desc">Ranked 3-5 issues with severity chips + quick actions</div></div>
+        <span class="fid">F-302</span>
+      </li><li>
+        <div><div class="label">Weekly Review summary</div><div class="desc">Sunday auto-generated wins / drift / next-week focus</div></div>
+        <span class="fid">F-303</span>
+      </li><li>
+        <div><div class="label">Correlation discoveries</div><div class="desc">Plain-English hints (late caffeine → −18% deep sleep)</div></div>
+        <span class="fid">F-304</span>
+      </li><li>
+        <div><div class="label">Bio Age inline trend</div><div class="desc">Sparkline of 90-day bio-age trajectory</div></div>
+        <span class="fid">F-305</span>
+      </li><li>
+        <div><div class="label">AI Coach entry <span class="v2-chip">V2</span></div><div class="desc">Chat surface · V1 pre-canned, V2 LLM dialogue</div></div>
+        <span class="fid">F-306</span>
+      </li><li>
+        <div><div class="label">Insight feedback <span class="v2-chip">V2</span></div><div class="desc">Thumbs / irrelevant / wrong tags · feeds prompt tuning</div></div>
+        <span class="fid">F-307</span>
+      </li><li>
+        <div><div class="label">Goal-aware filter <span class="v2-chip">V2</span></div><div class="desc">Re-rank by active program goals</div></div>
+        <span class="fid">F-308</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Insights rule editor</div><div class="desc">Edit 20 deterministic rules · stage rollout</div></div>
+        <span class="fid">F-907</span>
+      </li><li>
+        <div><div class="label">AI moderation queue</div><div class="desc">Review thumbs-down items + flagged outputs</div></div>
+        <span class="fid">F-911</span>
+      </li><li>
+        <div><div class="label">Clinician review</div><div class="desc">Sign-off on rule changes before publish</div></div>
+        <span class="fid">F-912</span>
+      </li><li>
+        <div><div class="label">Analytics</div><div class="desc">Insight CTR · feedback rate · cohort impact</div></div>
+        <span class="fid">F-910</span>
+      </li><li>
+        <div><div class="label">Audit log</div><div class="desc">LLM call trace surface for compliance</div></div>
+        <span class="fid">F-914</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Insights Engine</span><span class="chip">Correlation Service</span><span class="chip">Weekly Review Generator</span><span class="chip">LLM Gateway</span><span class="chip">Langfuse Observability</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-301 · Expanded AI Insight</td>
+        <td class="actions-col">Render daily insight in detail + why-it-matters + recommended action.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">LLM Gateway</span></td>
+      </tr><tr>
+        <td class="sub">F-302 · Top Issues This Week</td>
+        <td class="actions-col">Rule engine ranks issues by severity · LLM narrates · render with quick-action chips.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-303 · Weekly Review</td>
+        <td class="actions-col">Sunday job compiles wins / drift / next-week focus · email digest + in-app entry.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Weekly Review Generator</span></td>
+      </tr><tr>
+        <td class="sub">F-304 · Correlation discoveries</td>
+        <td class="actions-col">Nightly Pearson + Spearman on user time-series · LLM narrates top causal hints.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Correlation Service</span><span class="role-chip system">LLM Gateway</span></td>
+      </tr><tr>
+        <td class="sub">F-306 · AI Coach <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Chat surface · V1 ships pre-canned replies · V2 ships full LLM dialogue with safety rails.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">LLM Gateway</span></td>
+      </tr><tr>
+        <td class="sub">F-307 · Insight feedback <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Thumbs / irrelevant / wrong tags · failed items routed to AI moderation queue.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip staff">Trust &amp;amp; Safety</span></td>
+      </tr><tr>
+        <td class="sub">F-911 · AI moderation</td>
+        <td class="actions-col">Reviewers triage thumbs-down items · accept / reject / send to prompt-tuning backlog.</td>
+        <td class="role"><span class="role-chip staff">Trust &amp;amp; Safety</span><span class="role-chip staff">Clinician</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth &amp; Onboarding</span><span class="dep-chip in">2.3 Track Tab</span><span class="dep-chip in">2.7 Ring</span><span class="dep-chip in">2.8 CGM</span><span class="dep-chip in">2.9 Nutrition</span><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend (Insights · Correlation · LLM Gateway)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.2 App Shell + Home</span><span class="dep-chip out">2.5 Programs</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-5">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.5</div>
+      <div class="title">Programs Tab</div>
+      <div class="summary">Curated multi-week protocols — daily actions, success metrics, weekly check-ins, and a browseable library. Where outcomes get earned.</div>
+      <div class="phase">Phase 4 · Daily Surface</div>
+    </div>
+    <div><span class="tag v1">V1</span></div>
+  </div>
+
+  <div class="panes three">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Active Programs grid</div><div class="desc">Enrolled programs · progress · adherence %</div></div>
+        <span class="fid">F-401</span>
+      </li><li>
+        <div><div class="label">Daily protocol view</div><div class="desc">Workout · meal · breath · supplement · sleep target</div></div>
+        <span class="fid">F-402</span>
+      </li><li>
+        <div><div class="label">Curriculum view</div><div class="desc">Week-by-week theme + target + expected outcome</div></div>
+        <span class="fid">F-403</span>
+      </li><li>
+        <div><div class="label">Success metric tracker</div><div class="desc">Auto-populated KPI + progress chart</div></div>
+        <span class="fid">F-404</span>
+      </li><li>
+        <div><div class="label">Weekly check-in</div><div class="desc">Sunday self-rated adherence + symptoms</div></div>
+        <span class="fid">F-405</span>
+      </li><li>
+        <div><div class="label">Pause / quit</div><div class="desc">Pause ≤14d or quit with exit survey</div></div>
+        <span class="fid">F-406</span>
+      </li><li>
+        <div><div class="label">Library</div><div class="desc">Browse catalogue with fit-score chip</div></div>
+        <span class="fid">F-407</span>
+      </li><li>
+        <div><div class="label">Fat Loss · 12 wk</div><div class="desc">Macros + Zone 2 + weekly weigh-in</div></div>
+        <span class="fid">F-408</span>
+      </li><li>
+        <div><div class="label">Diabetes Reversal · 16 wk</div><div class="desc">CGM-anchored low-GI plan + clinician touch-points</div></div>
+        <span class="fid">F-409</span>
+      </li><li>
+        <div><div class="label">Longevity · ongoing</div><div class="desc">Zone 2 + strength + sleep + supplements</div></div>
+        <span class="fid">F-410</span>
+      </li><li>
+        <div><div class="label">Stress Reset · 4 wk</div><div class="desc">HRV-driven breath + walk + caffeine-cutoff</div></div>
+        <span class="fid">F-411</span>
+      </li><li>
+        <div><div class="label">Optional 5th program</div><div class="desc">Performance or Sleep-Lab slot (TBD at launch)</div></div>
+        <span class="fid">F-412</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Program CMS</div><div class="desc">Author / version curriculum, protocols, metrics</div></div>
+        <span class="fid">F-905</span>
+      </li><li>
+        <div><div class="label">Insights rule editor</div><div class="desc">Edit 20 deterministic rules feeding daily plan</div></div>
+        <span class="fid">F-907</span>
+      </li><li>
+        <div><div class="label">Analytics &amp; cohort</div><div class="desc">Program adherence + outcome dashboards</div></div>
+        <span class="fid">F-910</span>
+      </li><li>
+        <div><div class="label">Clinician review</div><div class="desc">Flagged Diabetes Reversal users surfaced</div></div>
+        <span class="fid">F-912</span>
+      </li><li>
+        <div><div class="label">Broadcast messaging</div><div class="desc">Segment by program → push / email</div></div>
+        <span class="fid">F-915</span>
+      </li></ul>
+      </div>
+    <div class="pane provider">
+        <div class="pane-title"><span class="dot"></span> Provider Console
+          <span class="where">(Web · V2)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Program assignment <span class="v2-chip">V2</span></div><div class="desc">Assign / pause / swap programs on behalf of client (audited)</div></div>
+        <span class="fid">F-1007</span>
+      </li><li>
+        <div><div class="label">Outcome reporting <span class="v2-chip">V2</span></div><div class="desc">Per-client KPI movement over time</div></div>
+        <span class="fid">F-1008</span>
+      </li><li>
+        <div><div class="label">Client deep-dive <span class="v2-chip">V2</span></div><div class="desc">Adherence × biomarker correlation view</div></div>
+        <span class="fid">F-1003</span>
+      </li><li>
+        <div><div class="label">Care notes <span class="v2-chip">V2</span></div><div class="desc">Time-stamped notes scoped to program</div></div>
+        <span class="fid">F-1004</span>
+      </li></ul>
+      </div>
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Program Service</span><span class="chip">Plan Service</span><span class="chip">Metrics Aggregator</span><span class="chip">Insights Engine</span><span class="chip">Notification Service</span><span class="chip">CGM Service · Diabetes Reversal</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-401 · Active Programs grid</td>
+        <td class="actions-col">Show enrolled programs with adherence + progress · tap drills into daily protocol.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Program Service</span></td>
+      </tr><tr>
+        <td class="sub">F-402 · Daily protocol</td>
+        <td class="actions-col">Compile today's checklist from active programs · mark items complete with haptic.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Plan Service</span></td>
+      </tr><tr>
+        <td class="sub">F-404 · Success metric tracker</td>
+        <td class="actions-col">Auto-pull KPI (body fat % · HbA1c · RHR) from Metrics Aggregator · render trend.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Metrics Aggregator</span></td>
+      </tr><tr>
+        <td class="sub">F-405 · Weekly check-in</td>
+        <td class="actions-col">Sunday mandatory form · feeds Weekly Review and Provider Console (V2).</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Program Service</span></td>
+      </tr><tr>
+        <td class="sub">F-409 · Diabetes Reversal</td>
+        <td class="actions-col">16-wk plan anchored to CGM · clinician review triggered on flagged TIR patterns.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip staff">Clinician</span><span class="role-chip system">CGM Service</span></td>
+      </tr><tr>
+        <td class="sub">F-905 · Program CMS</td>
+        <td class="actions-col">Content editor authors curriculum + protocols · stage → review → publish.</td>
+        <td class="role"><span class="role-chip staff">Content Editor</span></td>
+      </tr><tr>
+        <td class="sub">F-907 · Insights rule editor</td>
+        <td class="actions-col">Edit the 20 deterministic rules · clinician sign-off required.</td>
+        <td class="role"><span class="role-chip staff">Clinician</span><span class="role-chip staff">Ops</span></td>
+      </tr><tr>
+        <td class="sub">F-912 · Clinician review</td>
+        <td class="actions-col">Auto-surface Diabetes Reversal users with abnormal CGM patterns.</td>
+        <td class="role"><span class="role-chip staff">Clinician</span></td>
+      </tr><tr>
+        <td class="sub">F-1007 · Program assignment <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Provider assigns / pauses / swaps client program · action audited + notified to user.</td>
+        <td class="role"><span class="role-chip prov">Provider</span><span class="role-chip system">Program Service</span></td>
+      </tr><tr>
+        <td class="sub">F-1008 · Outcome reporting <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Per-client KPI movement (HbA1c · weight · RHR) charted across program window.</td>
+        <td class="role"><span class="role-chip prov">Provider</span><span class="role-chip system">Analytics</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth &amp; Onboarding</span><span class="dep-chip in">2.3 Track Tab</span><span class="dep-chip in">2.4 Insights Tab</span><span class="dep-chip in">2.7 Ring</span><span class="dep-chip in">2.8 CGM</span><span class="dep-chip in">2.9 Nutrition</span><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend (Program · Plan)</span><span class="dep-chip in">2.12 Admin (Program CMS)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.2 App Shell (Today's Plan)</span><span class="dep-chip out">2.4 Insights (program-aware ranking)</span><span class="dep-chip out">2.13 Marketplace (V2)</span><span class="dep-chip out">2.14 Provider Console (V2)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-6">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.6</div>
+      <div class="title">Profile</div>
+      <div class="summary">Account, paired devices, subscription, settings, and legal surfaces. The user's self-service surface.</div>
+      <div class="phase">Phase 1 · Identity</div>
+    </div>
+    <div><span class="tag mx">V1 + V2</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Profile hero</div><div class="desc">Avatar · name · age · member-since · edit entry</div></div>
+        <span class="fid">F-501</span>
+      </li><li>
+        <div><div class="label">Connected devices <span class="v2-chip">V2</span></div><div class="desc">Paired Ring / CGM / phone health source · last-sync</div></div>
+        <span class="fid">F-502</span>
+      </li><li>
+        <div><div class="label">Subscription view / change <span class="v2-chip">V2</span></div><div class="desc">Current plan · next renewal · change tier · cancel</div></div>
+        <span class="fid">F-503</span>
+      </li><li>
+        <div><div class="label">Invoice history <span class="v2-chip">V2</span></div><div class="desc">Downloadable past invoices (PDF) via IAP provider</div></div>
+        <span class="fid">F-504</span>
+      </li><li>
+        <div><div class="label">Notifications settings</div><div class="desc">Per-channel toggles: daily / plan / anomaly / digest</div></div>
+        <span class="fid">F-505</span>
+      </li><li>
+        <div><div class="label">Privacy &amp; data <span class="v2-chip">V2</span></div><div class="desc">Export (CSV/JSON) · delete account · share toggles</div></div>
+        <span class="fid">F-506</span>
+      </li><li>
+        <div><div class="label">Language</div><div class="desc">EN at launch · ES / HI planned</div></div>
+        <span class="fid">F-507</span>
+      </li><li>
+        <div><div class="label">Units</div><div class="desc">Metric vs Imperial · mg/dL vs mmol/L</div></div>
+        <span class="fid">F-508</span>
+      </li><li>
+        <div><div class="label">About + legal</div><div class="desc">Version · build · ToS · Privacy Policy · attributions</div></div>
+        <span class="fid">F-509</span>
+      </li><li>
+        <div><div class="label">Help / support</div><div class="desc">FAQ + contact form (creates support ticket)</div></div>
+        <span class="fid">F-510</span>
+      </li><li>
+        <div><div class="label">Edit profile</div><div class="desc">Update DOB · weight · height · sex · goals</div></div>
+        <span class="fid">F-511</span>
+      </li><li>
+        <div><div class="label">Re-pair / unpair devices</div><div class="desc">Force re-pair when sync drift detected</div></div>
+        <span class="fid">F-512</span>
+      </li><li>
+        <div><div class="label">Two-factor settings</div><div class="desc">Enable/disable 2FA + recovery codes</div></div>
+        <span class="fid">F-513</span>
+      </li><li>
+        <div><div class="label">Push diagnostics</div><div class="desc">Last 5 pushes received + opt-out · debug aid</div></div>
+        <span class="fid">F-514</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">User search</div><div class="desc">Lookup + view profile · devices · programs</div></div>
+        <span class="fid">F-903</span>
+      </li><li>
+        <div><div class="label">Refunds &amp; credits</div><div class="desc">Issue refund via IAP + manual credit on next invoice</div></div>
+        <span class="fid">F-904</span>
+      </li><li>
+        <div><div class="label">Subscription &amp; finance</div><div class="desc">MRR · ARR · churn · dunning queue</div></div>
+        <span class="fid">F-909</span>
+      </li><li>
+        <div><div class="label">Audit log</div><div class="desc">Profile mutations + PII access traced</div></div>
+        <span class="fid">F-914</span>
+      </li><li>
+        <div><div class="label">Support ticket inbox</div><div class="desc">Conversation history tied to user</div></div>
+        <span class="fid">F-916</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">User Service</span><span class="chip">Auth Service</span><span class="chip">Subscription Service</span><span class="chip">Device Service</span><span class="chip">Notification Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-501 · Profile hero</td>
+        <td class="actions-col">Read user fields + membership tier · cache locally for offline render.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">User Service</span></td>
+      </tr><tr>
+        <td class="sub">F-502 · Connected devices <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">List paired devices with last-sync · tap → re-pair / unpair / diagnostics.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Device Service</span></td>
+      </tr><tr>
+        <td class="sub">F-503 · Subscription change <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Route to native IAP for tier change · backend syncs entitlement via webhook.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Subscription Service</span></td>
+      </tr><tr>
+        <td class="sub">F-506 · Privacy &amp; data <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Trigger export job · email link when CSV/JSON ready · delete account with cooldown.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">User Service</span></td>
+      </tr><tr>
+        <td class="sub">F-510 · Help / support</td>
+        <td class="actions-col">FAQ + contact form · creates Admin support ticket with conversation history.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Support Ticket Inbox</span></td>
+      </tr><tr>
+        <td class="sub">F-513 · 2FA settings</td>
+        <td class="actions-col">Enable/disable 2FA · generate recovery codes (one-time view).</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Auth Service</span></td>
+      </tr><tr>
+        <td class="sub">F-904 · Refunds &amp; credits</td>
+        <td class="actions-col">Issue refund via IAP provider + apply manual credit on next invoice.</td>
+        <td class="role"><span class="role-chip staff">Finance</span><span class="role-chip staff">Support Agent</span></td>
+      </tr><tr>
+        <td class="sub">F-909 · Subscription &amp; finance</td>
+        <td class="actions-col">Finance reviews MRR / ARR / churn · drives dunning queue export.</td>
+        <td class="role"><span class="role-chip staff">Finance</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth &amp; Onboarding</span><span class="dep-chip in">2.7 Ring (device pairing surface)</span><span class="dep-chip in">2.8 CGM (device pairing surface)</span><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend (User · Subscription · Device)</span><span class="dep-chip in">2.12 Admin (Refunds · Finance)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.7 Ring (re-pair entry)</span><span class="dep-chip out">2.8 CGM (re-pair entry)</span><span class="dep-chip out">2.13 Marketplace (V2)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-7">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.7</div>
+      <div class="title">Ring Integration <span style='color:#cfe0f5; font-size:14px; font-weight:500; margin-left:6px;'>— Ultrahuman SDK</span></div>
+      <div class="summary">Pair, sync, decode Ultrahuman Ring streams and expose Sleep Index, Recovery, Movement, Stimulants Window, and Phase Advisor to the rest of the app.</div>
+      <div class="phase">Phase 2 · Data Sources</div>
+    </div>
+    <div><span class="tag v1">V1</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Ring SDK pairing</div><div class="desc">Initialize Ultrahuman SDK · scan · link account</div></div>
+        <span class="fid">F-601</span>
+      </li><li>
+        <div><div class="label">Ring BLE sync</div><div class="desc">Background BLE pull of raw streams + retry/reconnect</div></div>
+        <span class="fid">F-602</span>
+      </li><li>
+        <div><div class="label">Ring native scores</div><div class="desc">Sleep Index · Recovery · Movement · Stimulants · Phase Advisor</div></div>
+        <span class="fid">F-603</span>
+      </li><li>
+        <div><div class="label">HealthKit bridge</div><div class="desc">Write Ring-sourced data into HealthKit</div></div>
+        <span class="fid">F-604</span>
+      </li><li>
+        <div><div class="label">Health Connect bridge</div><div class="desc">Write Ring-sourced data into Health Connect</div></div>
+        <span class="fid">F-605</span>
+      </li><li>
+        <div><div class="label">Re-pair / unpair from Profile</div><div class="desc">Force re-pair when sync drift detected</div></div>
+        <span class="fid">F-512</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Device inventory</div><div class="desc">Shipped Rings · pairing status · stalled activations</div></div>
+        <span class="fid">F-908</span>
+      </li><li>
+        <div><div class="label">Device manifest endpoint</div><div class="desc">Capability flags + firmware version</div></div>
+        <span class="fid">F-619</span>
+      </li><li>
+        <div><div class="label">Vendor webhook dispatcher</div><div class="desc">Re-dispatch Ultrahuman webhooks to internal services</div></div>
+        <span class="fid">F-620 / F-821</span>
+      </li><li>
+        <div><div class="label">Audit log (health data)</div><div class="desc">PHI-style trace of Ring read/access</div></div>
+        <span class="fid">F-914</span>
+      </li><li>
+        <div><div class="label">Analytics</div><div class="desc">Ring adoption · sync health · drop-off</div></div>
+        <span class="fid">F-910</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Ring SDK Bridge (iOS/Android)</span><span class="chip">Biometrics Service · TimescaleDB</span><span class="chip">Device Service</span><span class="chip">Vendor Webhook Dispatcher</span><span class="chip">Notification Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-601 · Ring pairing</td>
+        <td class="actions-col">Initialize Ultrahuman SDK · BLE scan · OAuth into Ultrahuman account · register device.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Ring SDK Bridge</span></td>
+      </tr><tr>
+        <td class="sub">F-602 · BLE sync</td>
+        <td class="actions-col">Background BLE pull of raw streams · idempotent insert into Timescale · auto reconnect.</td>
+        <td class="role"><span class="role-chip system">Ring SDK Bridge</span><span class="role-chip system">Biometrics Service</span></td>
+      </tr><tr>
+        <td class="sub">F-603 · Native scores</td>
+        <td class="actions-col">Pull Sleep Index · Recovery · Movement · Stimulants Window · Phase Advisor (Ultrahuman composites only).</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Ring SDK Bridge</span></td>
+      </tr><tr>
+        <td class="sub">F-604 · HealthKit bridge</td>
+        <td class="actions-col">Write Ring-sourced sleep/HRV/HR into HealthKit so iOS surfaces stay consistent.</td>
+        <td class="role"><span class="role-chip system">iOS Native Bridge</span></td>
+      </tr><tr>
+        <td class="sub">F-605 · Health Connect bridge</td>
+        <td class="actions-col">Same surfaces via Health Connect on Android.</td>
+        <td class="role"><span class="role-chip system">Android Native Bridge</span></td>
+      </tr><tr>
+        <td class="sub">F-619 · Device manifest</td>
+        <td class="actions-col">Backend exposes supported Ring versions + capability flags to the app.</td>
+        <td class="role"><span class="role-chip system">Device Service</span></td>
+      </tr><tr>
+        <td class="sub">F-620 / F-821 · Webhook dispatch</td>
+        <td class="actions-col">Inbound Ultrahuman webhooks → validate signature → fan out to Biometrics + Insights workers.</td>
+        <td class="role"><span class="role-chip system">Vendor Webhook Dispatcher</span></td>
+      </tr><tr>
+        <td class="sub">F-908 · Device inventory</td>
+        <td class="actions-col">Ops tracks shipped Rings + pairing status · alerts on stalled activations.</td>
+        <td class="role"><span class="role-chip staff">Ops</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth &amp; Onboarding (consent)</span><span class="dep-chip in">2.6 Profile (re-pair entry)</span><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend (Device · Biometrics · Webhook)</span><span class="dep-chip in">2.12 Admin (Inventory · Audit)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.2 App Shell (recovery + metrics)</span><span class="dep-chip out">2.3 Track Tab</span><span class="dep-chip out">2.4 Insights Tab</span><span class="dep-chip out">2.5 Programs</span><span class="dep-chip out">2.14 Provider Console (V2)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-8">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.8</div>
+      <div class="title">CGM Integration <span style='color:#cfe0f5; font-size:14px; font-weight:500; margin-left:6px;'>— Dexcom G7</span></div>
+      <div class="summary">Pair, sync, analyse, and alert on continuous glucose data. Anchors Diabetes Reversal and feeds Track + Insights.</div>
+      <div class="phase">Phase 2 · Data Sources</div>
+    </div>
+    <div><span class="tag v1">V1</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Dexcom G7 pairing</div><div class="desc">Dexcom Share OAuth + BLE direct pairing</div></div>
+        <span class="fid">F-606</span>
+      </li><li>
+        <div><div class="label">CGM BLE + cloud sync</div><div class="desc">Hybrid: BLE for live, cloud for backfill</div></div>
+        <span class="fid">F-607</span>
+      </li><li>
+        <div><div class="label">Time-in-Range (TIR)</div><div class="desc">Daily / weekly TIR with personalised target band</div></div>
+        <span class="fid">F-608</span>
+      </li><li>
+        <div><div class="label">AGP report</div><div class="desc">Ambulatory Glucose Profile · 14d / 30d</div></div>
+        <span class="fid">F-609</span>
+      </li><li>
+        <div><div class="label">Hypo / hyper alerts</div><div class="desc">Threshold-cross push · rate-limited</div></div>
+        <span class="fid">F-610</span>
+      </li><li>
+        <div><div class="label">Glucose detail screen</div><div class="desc">TIR · AGP · hypo/hyper · meal-tagged spikes</div></div>
+        <span class="fid">F-206</span>
+      </li><li>
+        <div><div class="label">Re-pair from Profile</div><div class="desc">Force re-pair on drift / sensor swap</div></div>
+        <span class="fid">F-512</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Device inventory (CGMs)</div><div class="desc">Shipped CGMs · pairing · sensor-end dates</div></div>
+        <span class="fid">F-908</span>
+      </li><li>
+        <div><div class="label">Device manifest</div><div class="desc">Capability flags + supported sensor versions</div></div>
+        <span class="fid">F-619</span>
+      </li><li>
+        <div><div class="label">Vendor webhook dispatcher</div><div class="desc">Dexcom webhook re-dispatch</div></div>
+        <span class="fid">F-620 / F-821</span>
+      </li><li>
+        <div><div class="label">Clinician review queue</div><div class="desc">Flagged Diabetes Reversal users surfaced</div></div>
+        <span class="fid">F-912</span>
+      </li><li>
+        <div><div class="label">AI moderation queue</div><div class="desc">Review LLM hypo/hyper insight copy for safety</div></div>
+        <span class="fid">F-911</span>
+      </li><li>
+        <div><div class="label">Audit log (health data)</div><div class="desc">PHI-style trace of CGM read/access</div></div>
+        <span class="fid">F-914</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">CGM Service</span><span class="chip">Biometrics Service · TimescaleDB</span><span class="chip">Vendor Webhook Dispatcher</span><span class="chip">Notification Service</span><span class="chip">Insights Engine · TIR rules</span><span class="chip">LLM Gateway · narrative</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-606 · Dexcom G7 pairing</td>
+        <td class="actions-col">OAuth into Dexcom Share + BLE direct pairing · register sensor + transmitter IDs.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">CGM Service</span></td>
+      </tr><tr>
+        <td class="sub">F-607 · BLE + cloud sync</td>
+        <td class="actions-col">Hybrid: BLE for live values · cloud backfill for missed windows · idempotent insert into Timescale.</td>
+        <td class="role"><span class="role-chip system">CGM Service</span><span class="role-chip system">iOS / Android Bridges</span></td>
+      </tr><tr>
+        <td class="sub">F-608 · Time-in-Range</td>
+        <td class="actions-col">Compute daily + 7-day TIR vs personalised target band · surface on Track tile + Glucose detail.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-609 · AGP report</td>
+        <td class="actions-col">Render Ambulatory Glucose Profile over 14d / 30d with percentile bands.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Metrics Aggregator</span></td>
+      </tr><tr>
+        <td class="sub">F-610 · Hypo / hyper alerts</td>
+        <td class="actions-col">Threshold crossing → rate-limited push with action card (eat 15g carbs · walk 10 min).</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Notification Service</span><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-908 · Device inventory</td>
+        <td class="actions-col">Ops tracks shipped CGMs + pairing status · monitors sensor-end dates.</td>
+        <td class="role"><span class="role-chip staff">Ops</span></td>
+      </tr><tr>
+        <td class="sub">F-620 / F-821 · Webhook dispatch</td>
+        <td class="actions-col">Receive Dexcom webhooks → validate → fan out to CGM + Insights workers.</td>
+        <td class="role"><span class="role-chip system">Vendor Webhook Dispatcher</span></td>
+      </tr><tr>
+        <td class="sub">F-912 · Clinician review</td>
+        <td class="actions-col">Flagged TIR or hypo-cluster patterns surface for clinician sign-off before user-visible action.</td>
+        <td class="role"><span class="role-chip staff">Clinician</span></td>
+      </tr><tr>
+        <td class="sub">F-911 · AI moderation</td>
+        <td class="actions-col">Hypo/hyper LLM copy reviewed pre-publish · thumbs-down routed to prompt tuning.</td>
+        <td class="role"><span class="role-chip staff">Trust &amp;amp; Safety</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth &amp; Onboarding (consent)</span><span class="dep-chip in">2.6 Profile (units · re-pair)</span><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend (CGM · Webhook · Biometrics)</span><span class="dep-chip in">2.12 Admin (Inventory · Audit · AI moderation)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.2 App Shell (recovery + metrics)</span><span class="dep-chip out">2.3 Track Tab</span><span class="dep-chip out">2.4 Insights Tab</span><span class="dep-chip out">2.5 Programs (Diabetes Reversal)</span><span class="dep-chip out">2.9 Nutrition (post-meal spike tagging)</span><span class="dep-chip out">2.14 Provider Console (V2)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-9">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.9</div>
+      <div class="title">Nutrition Engine</div>
+      <div class="summary">Profile, BMR/TDEE, macro split, meal distribution, 1,500-item foods database, and 7-day plan generation with versioning + export.</div>
+      <div class="phase">Phase 2 · Data Sources</div>
+    </div>
+    <div><span class="tag v1">V1</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Nutrition profile</div><div class="desc">Allergies · preferences (veg/keto/halal) · kitchen constraints</div></div>
+        <span class="fid">F-611</span>
+      </li><li>
+        <div><div class="label">BMR / TDEE engine</div><div class="desc">Mifflin-St Jeor + activity factor · refresh on weight change</div></div>
+        <span class="fid">F-612</span>
+      </li><li>
+        <div><div class="label">Macro split engine</div><div class="desc">Goal-driven distribution (cut · maintain · perform)</div></div>
+        <span class="fid">F-613</span>
+      </li><li>
+        <div><div class="label">Meal distribution</div><div class="desc">Spread macros across meals + snacks aligned to chronotype</div></div>
+        <span class="fid">F-614</span>
+      </li><li>
+        <div><div class="label">Foods DB · 1,500 items</div><div class="desc">Searchable catalogue · macros · GI · servings</div></div>
+        <span class="fid">F-615</span>
+      </li><li>
+        <div><div class="label">Plan generation</div><div class="desc">7-day plan honoring all constraints</div></div>
+        <span class="fid">F-616</span>
+      </li><li>
+        <div><div class="label">Plan versioning</div><div class="desc">Save revisions · rollback to previous week</div></div>
+        <span class="fid">F-617</span>
+      </li><li>
+        <div><div class="label">CSV export</div><div class="desc">Meal plan + grocery list</div></div>
+        <span class="fid">F-618</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Program CMS</div><div class="desc">Author program-linked nutrition templates</div></div>
+        <span class="fid">F-905</span>
+      </li><li>
+        <div><div class="label">Foods DB admin</div><div class="desc">Add / update items · approve user-submitted foods</div></div>
+        <span class="fid">F-905-foods</span>
+      </li><li>
+        <div><div class="label">AI moderation queue</div><div class="desc">Review LLM meal-plan narrative</div></div>
+        <span class="fid">F-911</span>
+      </li><li>
+        <div><div class="label">Analytics</div><div class="desc">Nutrition adherence · plan-regen rate</div></div>
+        <span class="fid">F-910</span>
+      </li><li>
+        <div><div class="label">Audit log</div><div class="desc">Plan mutations + foods-DB writes</div></div>
+        <span class="fid">F-914</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Nutrition Service (Plan · Foods)</span><span class="chip">Biometrics Service · weight reads</span><span class="chip">LLM Gateway · narrative</span><span class="chip">Notification Service · plan reminders</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-611 · Nutrition profile</td>
+        <td class="actions-col">Capture allergies, preferences, kitchen constraints · drive plan generator.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Nutrition Service</span></td>
+      </tr><tr>
+        <td class="sub">F-612 · BMR / TDEE</td>
+        <td class="actions-col">Compute BMR via Mifflin-St Jeor + activity factor · refresh on weight change events.</td>
+        <td class="role"><span class="role-chip system">Nutrition Service</span></td>
+      </tr><tr>
+        <td class="sub">F-613 · Macro split</td>
+        <td class="actions-col">Goal-driven distribution (cut · maintain · perform) · derived from TDEE + goal.</td>
+        <td class="role"><span class="role-chip system">Nutrition Service</span></td>
+      </tr><tr>
+        <td class="sub">F-614 · Meal distribution</td>
+        <td class="actions-col">Spread macros across meals + snacks aligned to chronotype + program windows.</td>
+        <td class="role"><span class="role-chip system">Nutrition Service</span></td>
+      </tr><tr>
+        <td class="sub">F-615 · Foods DB</td>
+        <td class="actions-col">Searchable 1,500-item catalogue · macros · GI · servings · client-side caching.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Nutrition Service</span></td>
+      </tr><tr>
+        <td class="sub">F-616 · Plan generation</td>
+        <td class="actions-col">Generate 7-day plan honoring constraints · respect CGM spike history if linked.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Nutrition Service</span><span class="role-chip system">CGM Service</span></td>
+      </tr><tr>
+        <td class="sub">F-617 · Plan versioning</td>
+        <td class="actions-col">Save revisions · allow rollback to prior week · diff view in Profile.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Nutrition Service</span></td>
+      </tr><tr>
+        <td class="sub">F-618 · CSV export</td>
+        <td class="actions-col">Export meal plan + grocery list as CSV for shopping apps / partner integrations.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Nutrition Service</span></td>
+      </tr><tr>
+        <td class="sub">F-905-foods · Foods DB admin</td>
+        <td class="actions-col">Content editor manages food entries · approves user submissions · versions catalogue.</td>
+        <td class="role"><span class="role-chip staff">Content Editor</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth &amp; Onboarding</span><span class="dep-chip in">2.6 Profile (units · preferences)</span><span class="dep-chip in">2.8 CGM (post-meal spike tagging)</span><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend (Nutrition · Biometrics)</span><span class="dep-chip in">2.12 Admin (Foods DB · CMS)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.2 App Shell (Today's Plan meal cards)</span><span class="dep-chip out">2.3 Track Tab (Glucose meal tags)</span><span class="dep-chip out">2.5 Programs (Fat Loss · Diabetes Reversal)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-10">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.10</div>
+      <div class="title">Cross-App Infrastructure</div>
+      <div class="summary">App-wide plumbing: push channels, in-app inbox, weekly email digest, universal / app links, offline mode, and background sync.</div>
+      <div class="phase">Phase 0 · Foundation</div>
+    </div>
+    <div><span class="tag v1">V1</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Daily insight push</div><div class="desc">Morning insight push in user's local 7-9am window</div></div>
+        <span class="fid">F-701</span>
+      </li><li>
+        <div><div class="label">Plan reminder push</div><div class="desc">Pre-meal / pre-workout reminders aligned to plan timing</div></div>
+        <span class="fid">F-702</span>
+      </li><li>
+        <div><div class="label">Anomaly alert</div><div class="desc">Outlier metric push (HRV crash · glucose spike · RHR jump)</div></div>
+        <span class="fid">F-703</span>
+      </li><li>
+        <div><div class="label">Program nudge</div><div class="desc">Streak-saver / re-engagement after 24h inactivity</div></div>
+        <span class="fid">F-704</span>
+      </li><li>
+        <div><div class="label">In-app inbox</div><div class="desc">Persistent feed of all pushes with read/unread state</div></div>
+        <span class="fid">F-705</span>
+      </li><li>
+        <div><div class="label">Sunday email digest</div><div class="desc">Weekly review email with key charts + next-week focus</div></div>
+        <span class="fid">F-706</span>
+      </li><li>
+        <div><div class="label">Universal links (iOS)</div><div class="desc">Deep links into specific tabs / programs</div></div>
+        <span class="fid">F-707</span>
+      </li><li>
+        <div><div class="label">App links (Android)</div><div class="desc">Same as universal links on Android</div></div>
+        <span class="fid">F-708</span>
+      </li><li>
+        <div><div class="label">Offline mode</div><div class="desc">Local cache of today's plan + last 7-day metrics for read-only</div></div>
+        <span class="fid">F-709</span>
+      </li><li>
+        <div><div class="label">Background sync</div><div class="desc">iOS BGTaskScheduler / Android WorkManager pull every 30-60 min</div></div>
+        <span class="fid">F-710</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Push template editor</div><div class="desc">Create / schedule / A/B push templates</div></div>
+        <span class="fid">F-906</span>
+      </li><li>
+        <div><div class="label">Broadcast messaging</div><div class="desc">Segment cohorts · send push + email</div></div>
+        <span class="fid">F-915</span>
+      </li><li>
+        <div><div class="label">Feature flags dashboard</div><div class="desc">Gate offline-mode + new channels per cohort</div></div>
+        <span class="fid">F-913</span>
+      </li><li>
+        <div><div class="label">Analytics</div><div class="desc">Push CTR · open rate · opt-out rate</div></div>
+        <span class="fid">F-910</span>
+      </li><li>
+        <div><div class="label">Audit log</div><div class="desc">Broadcast send events traced</div></div>
+        <span class="fid">F-914</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Notification Service (FCM/APNs)</span><span class="chip">Inbox Store</span><span class="chip">Deep-link Resolver</span><span class="chip">Background Sync Workers</span><span class="chip">Feature Flag Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-701 · Daily insight push</td>
+        <td class="actions-col">Cron compiles per-user insight → enqueue push for user-local 7-9am window · respect quiet hours.</td>
+        <td class="role"><span class="role-chip system">Notification Service</span><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-702 · Plan reminder push</td>
+        <td class="actions-col">Time-shift reminder push to pre-meal / pre-workout · skip on completion.</td>
+        <td class="role"><span class="role-chip system">Notification Service</span><span class="role-chip system">Plan Service</span></td>
+      </tr><tr>
+        <td class="sub">F-703 · Anomaly alert</td>
+        <td class="actions-col">Trigger on outlier metric event · rate-limit per channel · action card included.</td>
+        <td class="role"><span class="role-chip system">Notification Service</span><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-705 · Inbox</td>
+        <td class="actions-col">Persist every push for 30 days · read state synced across devices.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Inbox Store</span></td>
+      </tr><tr>
+        <td class="sub">F-706 · Sunday digest</td>
+        <td class="actions-col">Weekly Review generator → render HTML email + send via transactional provider.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Weekly Review Generator</span></td>
+      </tr><tr>
+        <td class="sub">F-707 / F-708 · Deep links</td>
+        <td class="actions-col">Resolve universal / app links → route to tab / program / device-pair flow.</td>
+        <td class="role"><span class="role-chip system">Deep-link Resolver</span></td>
+      </tr><tr>
+        <td class="sub">F-709 · Offline mode</td>
+        <td class="actions-col">Local cache of today's plan + last 7-day metrics · read-only when no network.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Background Sync Workers</span></td>
+      </tr><tr>
+        <td class="sub">F-710 · Background sync</td>
+        <td class="actions-col">Scheduled biometric pull every 30-60 min via BGTaskScheduler / WorkManager.</td>
+        <td class="role"><span class="role-chip system">Background Sync Workers</span><span class="role-chip system">Biometrics Service</span></td>
+      </tr><tr>
+        <td class="sub">F-915 · Broadcast</td>
+        <td class="actions-col">Marketing segments cohort → push + email blast · scheduled or immediate · audited.</td>
+        <td class="role"><span class="role-chip staff">Marketing</span><span class="role-chip system">Notification Service</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.11 Backend Services (Notification · Inbox · Workers)</span><span class="dep-chip in">2.12 Admin Console (Templates · Broadcast · Flags)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.1 Auth (welcome)</span><span class="dep-chip out">2.2 App Shell (bell + inbox)</span><span class="dep-chip out">2.3 Track (anomaly pushes)</span><span class="dep-chip out">2.4 Insights (digest entry)</span><span class="dep-chip out">2.5 Programs (plan + nudge)</span><span class="dep-chip out">2.6 Profile (notif prefs)</span><span class="dep-chip out">2.7 Ring (sync status)</span><span class="dep-chip out">2.8 CGM (hypo alerts)</span><span class="dep-chip out">2.9 Nutrition (meal reminders)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-11">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.11</div>
+      <div class="title">Backend Services</div>
+      <div class="summary">Server-side surface: auth, users, biometrics ingest, plan engines, insights rules, LLM gateway, observability, feature flags. Everything else sits on this.</div>
+      <div class="phase">Phase 0 · Foundation</div>
+    </div>
+    <div><span class="tag v1">V1</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">(No direct user UI)</div><div class="desc">These services power every other module · invoked via API calls from the app and admin/provider consoles.</div></div>
+        <span class="fid">—</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Feature flags dashboard</div><div class="desc">Toggle flags per user · cohort · version</div></div>
+        <span class="fid">F-913</span>
+      </li><li>
+        <div><div class="label">Insights rule editor</div><div class="desc">Edit 20 deterministic rules powering insights</div></div>
+        <span class="fid">F-907</span>
+      </li><li>
+        <div><div class="label">AI moderation queue</div><div class="desc">Review LLM outputs flagged or thumbs-down</div></div>
+        <span class="fid">F-911</span>
+      </li><li>
+        <div><div class="label">Audit log</div><div class="desc">Append-only log of admin + service actions</div></div>
+        <span class="fid">F-914</span>
+      </li><li>
+        <div><div class="label">Analytics</div><div class="desc">Service health · cost · latency dashboards</div></div>
+        <span class="fid">F-910</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Auth</span><span class="chip">User</span><span class="chip">Biometrics Ingest</span><span class="chip">Biometrics Storage · TimescaleDB</span><span class="chip">Device</span><span class="chip">Plan</span><span class="chip">Insights Engine</span><span class="chip">Correlation</span><span class="chip">LLM Narrative</span><span class="chip">Bio Age</span><span class="chip">Subscription + IAP</span><span class="chip">Notification</span><span class="chip">Metrics Aggregation</span><span class="chip">Nutrition Plan</span><span class="chip">CGM Ingest</span><span class="chip">LLM Gateway</span><span class="chip">Correlation Scheduler</span><span class="chip">Weekly Review Generator</span><span class="chip">Langfuse Observability</span><span class="chip">Feature Flags</span><span class="chip">Vendor Webhook Dispatcher</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-801 · Auth service</td>
+        <td class="actions-col">JWT issuance · refresh · SSO · 2FA · biometric re-auth tokens.</td>
+        <td class="role"><span class="role-chip staff">Backend Engineer</span><span class="role-chip system">Auth Service</span></td>
+      </tr><tr>
+        <td class="sub">F-803 · Biometrics ingest</td>
+        <td class="actions-col">Accept batched HealthKit / Health Connect / Ring / CGM payloads · idempotent.</td>
+        <td class="role"><span class="role-chip system">Biometrics Service</span></td>
+      </tr><tr>
+        <td class="sub">F-804 · Biometrics storage</td>
+        <td class="actions-col">Hypertables on Postgres + Timescale · retention + downsampling policy.</td>
+        <td class="role"><span class="role-chip staff">Data Platform</span><span class="role-chip system">Biometrics Service</span></td>
+      </tr><tr>
+        <td class="sub">F-807 · Insights rules engine</td>
+        <td class="actions-col">Deterministic 20-rule pack producing daily insights before LLM narration.</td>
+        <td class="role"><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-808 · Correlation service</td>
+        <td class="actions-col">Pearson + Spearman over rolling windows · surfaces causal hints.</td>
+        <td class="role"><span class="role-chip system">Insights Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-809 · LLM narrative</td>
+        <td class="actions-col">Wrap rule output into user-facing narrative via Claude 3.5 Sonnet (primary).</td>
+        <td class="role"><span class="role-chip system">LLM Gateway</span></td>
+      </tr><tr>
+        <td class="sub">F-816 · LLM gateway</td>
+        <td class="actions-col">Single entry to Claude / GPT-4o fallback · cost + token metering.</td>
+        <td class="role"><span class="role-chip system">LLM Gateway</span></td>
+      </tr><tr>
+        <td class="sub">F-819 · Langfuse</td>
+        <td class="actions-col">Trace every LLM call with prompt · output · score · cost.</td>
+        <td class="role"><span class="role-chip system">LLM Gateway</span><span class="role-chip staff">Engineering</span></td>
+      </tr><tr>
+        <td class="sub">F-820 · Feature flags</td>
+        <td class="actions-col">Server + client flag system for gated V1 / V2 rollout.</td>
+        <td class="role"><span class="role-chip system">Platform</span></td>
+      </tr><tr>
+        <td class="sub">F-821 · Webhook dispatcher</td>
+        <td class="actions-col">Inbound webhook router with retry + dead-letter queue.</td>
+        <td class="role"><span class="role-chip system">Vendor Webhook Dispatcher</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">—  Foundational layer  —</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">Every other module (2.1 through 2.14)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-12">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.12</div>
+      <div class="title">Admin Console</div>
+      <div class="summary">Internal staff surface: support, content authoring, finance, analytics, moderation, clinician review, broadcast, audit.</div>
+      <div class="phase">Phase 0 · Foundation</div>
+    </div>
+    <div><span class="tag v1">V1</span></div>
+  </div>
+
+  <div class="panes">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">(Not exposed to end users)</div><div class="desc">Admin Console is web-only for Brilworks / 100x staff and clinicians.</div></div>
+        <span class="fid">—</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Auth + RBAC (6 roles)</div><div class="desc">Super Admin · Ops · Content · Finance · Support · Clinician</div></div>
+        <span class="fid">F-901</span>
+      </li><li>
+        <div><div class="label">Dashboard KPIs</div><div class="desc">Live counters: DAU · MAU · signups · paid subs · churn</div></div>
+        <span class="fid">F-902</span>
+      </li><li>
+        <div><div class="label">User search</div><div class="desc">Lookup by email / phone / ID · view profile + devices</div></div>
+        <span class="fid">F-903</span>
+      </li><li>
+        <div><div class="label">Refunds &amp; credits</div><div class="desc">Issue refund via IAP + manual credit</div></div>
+        <span class="fid">F-904</span>
+      </li><li>
+        <div><div class="label">Program CMS</div><div class="desc">Author / version programs</div></div>
+        <span class="fid">F-905</span>
+      </li><li>
+        <div><div class="label">Push template editor</div><div class="desc">Create · schedule · A/B push templates</div></div>
+        <span class="fid">F-906</span>
+      </li><li>
+        <div><div class="label">Insights rule editor</div><div class="desc">Edit + version 20 deterministic rules</div></div>
+        <span class="fid">F-907</span>
+      </li><li>
+        <div><div class="label">Device inventory</div><div class="desc">Track shipped Rings / CGMs + pairing status</div></div>
+        <span class="fid">F-908</span>
+      </li><li>
+        <div><div class="label">Subscription &amp; finance</div><div class="desc">MRR · ARR · churn · dunning · invoice export</div></div>
+        <span class="fid">F-909</span>
+      </li><li>
+        <div><div class="label">Analytics &amp; cohort</div><div class="desc">Cohort retention · funnel · adherence</div></div>
+        <span class="fid">F-910</span>
+      </li><li>
+        <div><div class="label">AI moderation queue</div><div class="desc">Review thumbs-down insights + flagged LLM outputs</div></div>
+        <span class="fid">F-911</span>
+      </li><li>
+        <div><div class="label">Clinician review</div><div class="desc">Surface Diabetes Reversal users with notable CGM patterns</div></div>
+        <span class="fid">F-912</span>
+      </li><li>
+        <div><div class="label">Feature flags dashboard</div><div class="desc">Toggle flags per user / cohort / version</div></div>
+        <span class="fid">F-913</span>
+      </li><li>
+        <div><div class="label">Audit log</div><div class="desc">Immutable log of admin actions</div></div>
+        <span class="fid">F-914</span>
+      </li><li>
+        <div><div class="label">Broadcast messaging</div><div class="desc">Send segmented push / email to cohorts</div></div>
+        <span class="fid">F-915</span>
+      </li><li>
+        <div><div class="label">Support ticket inbox</div><div class="desc">Ticketing tied to user records + history</div></div>
+        <span class="fid">F-916</span>
+      </li></ul>
+      </div>
+    
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Auth Service</span><span class="chip">User Service</span><span class="chip">Subscription Service</span><span class="chip">Audit Log Service</span><span class="chip">Analytics Service</span><span class="chip">Notification Service</span><span class="chip">Feature Flag Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-901 · Auth + RBAC</td>
+        <td class="actions-col">SSO login + role assignment maps to scoped CRUD/read-only capabilities.</td>
+        <td class="role"><span class="role-chip staff">Admin User</span><span class="role-chip system">Auth Service</span></td>
+      </tr><tr>
+        <td class="sub">F-902 · Dashboard KPIs</td>
+        <td class="actions-col">Live counters fed from analytics service · auto-refresh every 60s.</td>
+        <td class="role"><span class="role-chip staff">Admin User</span><span class="role-chip system">Analytics</span></td>
+      </tr><tr>
+        <td class="sub">F-904 · Refunds &amp; credits</td>
+        <td class="actions-col">Issue refund via IAP provider + apply manual credit on next invoice.</td>
+        <td class="role"><span class="role-chip staff">Finance</span><span class="role-chip staff">Support Agent</span></td>
+      </tr><tr>
+        <td class="sub">F-905 · Program CMS</td>
+        <td class="actions-col">Author / version programs · curriculum · daily protocols · success metrics.</td>
+        <td class="role"><span class="role-chip staff">Content Editor</span></td>
+      </tr><tr>
+        <td class="sub">F-907 · Insights rule editor</td>
+        <td class="actions-col">Edit + version 20 deterministic rules · clinician sign-off required.</td>
+        <td class="role"><span class="role-chip staff">Clinician</span><span class="role-chip staff">Ops</span></td>
+      </tr><tr>
+        <td class="sub">F-911 · AI moderation</td>
+        <td class="actions-col">Review thumbs-down items + flagged LLM outputs · accept/reject/tune.</td>
+        <td class="role"><span class="role-chip staff">Trust &amp;amp; Safety</span><span class="role-chip staff">Clinician</span></td>
+      </tr><tr>
+        <td class="sub">F-912 · Clinician review</td>
+        <td class="actions-col">Surface flagged CGM/HRV patterns for clinical sign-off before user action.</td>
+        <td class="role"><span class="role-chip staff">Clinician</span></td>
+      </tr><tr>
+        <td class="sub">F-913 · Feature flags</td>
+        <td class="actions-col">Toggle flags per user / cohort / version · supports staged rollout.</td>
+        <td class="role"><span class="role-chip staff">Engineering</span><span class="role-chip staff">Ops</span></td>
+      </tr><tr>
+        <td class="sub">F-914 · Audit log</td>
+        <td class="actions-col">Append-only log of admin mutations with actor + reason + timestamp.</td>
+        <td class="role"><span class="role-chip staff">Compliance</span><span class="role-chip system">Audit Log Service</span></td>
+      </tr><tr>
+        <td class="sub">F-915 · Broadcast</td>
+        <td class="actions-col">Marketing segments cohort → push + email · scheduled or immediate.</td>
+        <td class="role"><span class="role-chip staff">Marketing</span><span class="role-chip system">Notification Service</span></td>
+      </tr><tr>
+        <td class="sub">F-916 · Support inbox</td>
+        <td class="actions-col">Tickets tied to user records · conversation history · status workflow.</td>
+        <td class="role"><span class="role-chip staff">Support Agent</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.11 Backend Services</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.1 Auth</span><span class="dep-chip out">2.2 App Shell</span><span class="dep-chip out">2.3 Track</span><span class="dep-chip out">2.4 Insights</span><span class="dep-chip out">2.5 Programs</span><span class="dep-chip out">2.6 Profile</span><span class="dep-chip out">2.7 Ring</span><span class="dep-chip out">2.8 CGM</span><span class="dep-chip out">2.9 Nutrition</span><span class="dep-chip out">2.10 Cross-App Infra</span><span class="dep-chip out">2.13 Marketplace (V2)</span><span class="dep-chip out">2.14 Provider Console (V2)</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-13">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.13</div>
+      <div class="title">Act Tab — Marketplace</div>
+      <div class="summary">In-app marketplace for supplements, lab tests, devices, and curated practitioner sessions. Entire group is V2 — sits on top of Profile + Programs + Subscription.</div>
+      <div class="phase">Phase 5 · V2 Expansion</div>
+    </div>
+    <div><span class="tag v2">V2</span></div>
+  </div>
+
+  <div class="panes three">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Storefront <span class="v2-chip">V2</span></div><div class="desc">Tabbed marketplace: Supplements · Labs · Devices · Sessions</div></div>
+        <span class="fid">F-601-A</span>
+      </li><li>
+        <div><div class="label">Personalised offers <span class="v2-chip">V2</span></div><div class="desc">Recommendations seeded by program + biomarker state</div></div>
+        <span class="fid">F-602-A</span>
+      </li><li>
+        <div><div class="label">Product detail <span class="v2-chip">V2</span></div><div class="desc">Spec sheet · evidence cards · dosage guidance · reviews</div></div>
+        <span class="fid">F-603-A</span>
+      </li><li>
+        <div><div class="label">Cart + checkout <span class="v2-chip">V2</span></div><div class="desc">Native cart · address book · payment · order confirmation</div></div>
+        <span class="fid">F-604-A</span>
+      </li><li>
+        <div><div class="label">Lab test ordering <span class="v2-chip">V2</span></div><div class="desc">Order at-home blood / HbA1c kits with phlebotomy booking</div></div>
+        <span class="fid">F-605-A</span>
+      </li><li>
+        <div><div class="label">Device ordering <span class="v2-chip">V2</span></div><div class="desc">Order Ring / CGM with pairing handoff post-delivery</div></div>
+        <span class="fid">F-606-A</span>
+      </li><li>
+        <div><div class="label">Practitioner sessions <span class="v2-chip">V2</span></div><div class="desc">Book 1:1 video with dietitian / coach / clinician</div></div>
+        <span class="fid">F-607-A</span>
+      </li><li>
+        <div><div class="label">Order history <span class="v2-chip">V2</span></div><div class="desc">Past orders · tracking · re-order flow</div></div>
+        <span class="fid">F-608-A</span>
+      </li><li>
+        <div><div class="label">Reviews &amp; ratings <span class="v2-chip">V2</span></div><div class="desc">Verified-purchase reviews moderated by Trust &amp; Safety</div></div>
+        <span class="fid">F-609-A</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Marketplace catalogue admin <span class="v2-chip">V2</span></div><div class="desc">Create / edit / retire marketplace items</div></div>
+        <span class="fid">F-905-mkt</span>
+      </li><li>
+        <div><div class="label">Affiliate / partner payouts <span class="v2-chip">V2</span></div><div class="desc">Track partner revshare for marketplace orders</div></div>
+        <span class="fid">F-610-A</span>
+      </li><li>
+        <div><div class="label">Returns &amp; refunds <span class="v2-chip">V2</span></div><div class="desc">Marketplace returns workflow distinct from IAP</div></div>
+        <span class="fid">F-611-A</span>
+      </li><li>
+        <div><div class="label">Reviews moderation <span class="v2-chip">V2</span></div><div class="desc">Approve / reject reviews · enforce policy</div></div>
+        <span class="fid">F-911</span>
+      </li><li>
+        <div><div class="label">Analytics <span class="v2-chip">V2</span></div><div class="desc">GMV · AOV · category performance · attach rate</div></div>
+        <span class="fid">F-910</span>
+      </li></ul>
+      </div>
+    <div class="pane provider">
+        <div class="pane-title"><span class="dot"></span> Provider Console
+          <span class="where">(Web · V2)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Recommend products <span class="v2-chip">V2</span></div><div class="desc">Provider can recommend supplements / labs to client</div></div>
+        <span class="fid">F-607-A-prov</span>
+      </li><li>
+        <div><div class="label">Book sessions for client <span class="v2-chip">V2</span></div><div class="desc">Provider proposes session times · client confirms</div></div>
+        <span class="fid">F-1006</span>
+      </li></ul>
+      </div>
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Marketplace Service</span><span class="chip">Payments / Fulfilment</span><span class="chip">Recommendation Engine</span><span class="chip">Trust &amp; Safety</span><span class="chip">Subscription Service</span><span class="chip">Notification Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-601-A · Storefront <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Tabbed marketplace · render category-tabs · server-side personalised ordering.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Marketplace Service</span></td>
+      </tr><tr>
+        <td class="sub">F-602-A · Personalised offers <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Recommendation engine seeds storefront with offers based on active program + biomarker state.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Recommendation Engine</span></td>
+      </tr><tr>
+        <td class="sub">F-604-A · Cart + checkout <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Native cart · address book · payment · server-side fraud check · email confirmation.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Payments</span></td>
+      </tr><tr>
+        <td class="sub">F-605-A · Lab test ordering <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Order at-home blood / HbA1c kits · book phlebotomy slot via lab partner.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Lab Partner</span></td>
+      </tr><tr>
+        <td class="sub">F-606-A · Device ordering <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Order Ring / CGM · post-delivery pairing handoff to 2.7/2.8 flows.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip system">Fulfilment</span></td>
+      </tr><tr>
+        <td class="sub">F-607-A · Practitioner sessions <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Book 1:1 video session · provider calendar sync · automated reminders.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip prov">Provider</span><span class="role-chip system">Booking Service</span></td>
+      </tr><tr>
+        <td class="sub">F-609-A · Reviews <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Verified-purchase reviews · moderation by Trust &amp; Safety before publish.</td>
+        <td class="role"><span class="role-chip user">End User</span><span class="role-chip staff">Trust &amp;amp; Safety</span></td>
+      </tr><tr>
+        <td class="sub">F-610-A · Partner payouts <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Track partner revshare on marketplace orders · monthly payout export.</td>
+        <td class="role"><span class="role-chip staff">Finance</span><span class="role-chip staff">Partner</span></td>
+      </tr><tr>
+        <td class="sub">F-611-A · Returns &amp; refunds <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Marketplace-specific returns workflow distinct from subscription IAP.</td>
+        <td class="role"><span class="role-chip staff">Support Agent</span><span class="role-chip staff">Finance</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth &amp; Onboarding</span><span class="dep-chip in">2.5 Programs (offer seeding)</span><span class="dep-chip in">2.6 Profile (address · subscription)</span><span class="dep-chip in">2.10 Cross-App Infra</span><span class="dep-chip in">2.11 Backend Services</span><span class="dep-chip in">2.12 Admin (Catalogue · Payouts · Returns)</span><span class="dep-chip in">2.14 Provider Console (recommend + book)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip">— terminal surface —</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="m2-14">
+  <div class="card-header">
+    <div>
+      <div class="code">Module 2.14</div>
+      <div class="title">Provider Console</div>
+      <div class="summary">Coach / clinician web surface for managing rosters, reviewing biomarkers, messaging clients, and reporting outcomes. Entire surface is V2.</div>
+      <div class="phase">Phase 5 · V2 Expansion</div>
+    </div>
+    <div><span class="tag v2">V2</span></div>
+  </div>
+
+  <div class="panes three">
+    <div class="pane user">
+        <div class="pane-title"><span class="dot"></span> User App
+          <span class="where">(Mobile · iOS + Android)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">(Not exposed to end users) <span class="v2-chip">V2</span></div><div class="desc">Provider Console is a separate web app for coaches, dietitians, and clinicians.</div></div>
+        <span class="fid">—</span>
+      </li></ul>
+      </div>
+    <div class="pane admin">
+        <div class="pane-title"><span class="dot"></span> Admin Console
+          <span class="where">(Web)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Provider provisioning <span class="v2-chip">V2</span></div><div class="desc">Create / suspend provider accounts · role assignment</div></div>
+        <span class="fid">F-901-prov</span>
+      </li><li>
+        <div><div class="label">Audit log (provider) <span class="v2-chip">V2</span></div><div class="desc">Provider actions on client accounts traced</div></div>
+        <span class="fid">F-914</span>
+      </li><li>
+        <div><div class="label">Analytics (provider) <span class="v2-chip">V2</span></div><div class="desc">Per-provider client outcomes + adherence rollups</div></div>
+        <span class="fid">F-910</span>
+      </li></ul>
+      </div>
+    <div class="pane provider">
+        <div class="pane-title"><span class="dot"></span> Provider Console
+          <span class="where">(Web · V2)</span></div>
+        <ul class="items"><li>
+        <div><div class="label">Provider auth + roles <span class="v2-chip">V2</span></div><div class="desc">Sign-in for Coach / Dietitian / Clinician with role-scoped capabilities</div></div>
+        <span class="fid">F-1001</span>
+      </li><li>
+        <div><div class="label">Roster view <span class="v2-chip">V2</span></div><div class="desc">Assigned clients with status chips (on-track · drifting · at-risk)</div></div>
+        <span class="fid">F-1002</span>
+      </li><li>
+        <div><div class="label">Client deep-dive <span class="v2-chip">V2</span></div><div class="desc">Full biomarker + program + adherence view per client</div></div>
+        <span class="fid">F-1003</span>
+      </li><li>
+        <div><div class="label">Care notes <span class="v2-chip">V2</span></div><div class="desc">Time-stamped notes per client (provider + clinician only)</div></div>
+        <span class="fid">F-1004</span>
+      </li><li>
+        <div><div class="label">Secure messaging <span class="v2-chip">V2</span></div><div class="desc">Two-way messaging tied to client chat surface</div></div>
+        <span class="fid">F-1005</span>
+      </li><li>
+        <div><div class="label">Session scheduling <span class="v2-chip">V2</span></div><div class="desc">Book / reschedule / cancel sessions · calendar sync</div></div>
+        <span class="fid">F-1006</span>
+      </li><li>
+        <div><div class="label">Program assignment <span class="v2-chip">V2</span></div><div class="desc">Assign / pause / swap programs (audited)</div></div>
+        <span class="fid">F-1007</span>
+      </li><li>
+        <div><div class="label">Outcome reporting <span class="v2-chip">V2</span></div><div class="desc">Per-client outcomes dashboard over time</div></div>
+        <span class="fid">F-1008</span>
+      </li></ul>
+      </div>
+  </div>
+
+  <div class="backend">
+    <span class="label">Backend services</span>
+    <span class="chip">Auth Service · provider scope</span><span class="chip">User Service</span><span class="chip">Program Service</span><span class="chip">Metrics Aggregator</span><span class="chip">Messaging Service</span><span class="chip">Booking Service</span><span class="chip">Audit Log Service</span>
+  </div>
+
+  <div class="actions-wrap">
+    <div class="actions-title">Actions &amp; Roles</div>
+    <table class="actions">
+      <thead><tr><th>Sub-module</th><th>What happens (action)</th><th>Role(s)</th></tr></thead>
+      <tbody><tr>
+        <td class="sub">F-1001 · Provider auth <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">SSO sign-in for Coach / Dietitian / Clinician · role-scoped to client roster.</td>
+        <td class="role"><span class="role-chip prov">Provider</span><span class="role-chip system">Auth Service</span></td>
+      </tr><tr>
+        <td class="sub">F-1002 · Roster view <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">List of assigned clients with health-state chips · sort + filter + bulk action.</td>
+        <td class="role"><span class="role-chip prov">Provider</span></td>
+      </tr><tr>
+        <td class="sub">F-1003 · Client deep-dive <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Full biomarker + program + adherence view per client · access logged in audit.</td>
+        <td class="role"><span class="role-chip prov">Provider</span><span class="role-chip system">Metrics Aggregator</span></td>
+      </tr><tr>
+        <td class="sub">F-1004 · Care notes <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Time-stamped clinical notes per client · visible only to provider + clinician.</td>
+        <td class="role"><span class="role-chip prov">Provider</span><span class="role-chip staff">Clinician</span></td>
+      </tr><tr>
+        <td class="sub">F-1005 · Secure messaging <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Two-way messaging tied to client chat surface · attachments + read receipts.</td>
+        <td class="role"><span class="role-chip prov">Provider</span><span class="role-chip user">End User</span></td>
+      </tr><tr>
+        <td class="sub">F-1006 · Session scheduling <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Book / reschedule / cancel sessions · calendar sync · reminders auto-sent.</td>
+        <td class="role"><span class="role-chip prov">Provider</span><span class="role-chip user">End User</span><span class="role-chip system">Booking Service</span></td>
+      </tr><tr>
+        <td class="sub">F-1007 · Program assignment <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Assign / pause / swap programs on behalf of client · audited and user-notified.</td>
+        <td class="role"><span class="role-chip prov">Provider</span><span class="role-chip system">Program Service</span></td>
+      </tr><tr>
+        <td class="sub">F-1008 · Outcome reporting <span class='v2-chip'>V2</span></td>
+        <td class="actions-col">Per-client KPI movement over time · exportable for client review.</td>
+        <td class="role"><span class="role-chip prov">Provider</span><span class="role-chip system">Analytics</span></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <div class="deps">
+    <div class="deps-pane left">
+      <div class="deps-title in"><span class="arrow"></span> Depends on</div>
+      <div class="deps-list"><span class="dep-chip in">2.1 Auth (provider scope)</span><span class="dep-chip in">2.3 Track Tab (biomarker reads)</span><span class="dep-chip in">2.5 Programs (assignment surface)</span><span class="dep-chip in">2.7 Ring</span><span class="dep-chip in">2.8 CGM</span><span class="dep-chip in">2.9 Nutrition</span><span class="dep-chip in">2.10 Cross-App Infra (messaging delivery)</span><span class="dep-chip in">2.11 Backend Services</span><span class="dep-chip in">2.12 Admin (Provisioning · Audit)</span></div>
+    </div>
+    <div class="deps-pane">
+      <div class="deps-title out"><span class="arrow"></span> Depended on by</div>
+      <div class="deps-list"><span class="dep-chip out">2.1 Auth (Coach-led funnel)</span><span class="dep-chip out">2.13 Marketplace (book sessions)</span></div>
+    </div>
+  </div>
+</section>
+<div class="doc-foot">
+  Brilworks Software LLP &nbsp;•&nbsp; Champions Longevity &nbsp;•&nbsp; Module Cards · Full Build
+</div>
+</div>
+</body>
+</html>
