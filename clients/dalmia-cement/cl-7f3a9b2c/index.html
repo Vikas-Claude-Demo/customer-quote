@@ -1,0 +1,785 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SourceFlow — Procurement (Prototype)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --concrete:#202b30; --concrete-2:#2a373d; --concrete-3:#34454c;
+  --paper:#eef1f2; --surface:#ffffff; --surface-2:#f7f9fa;
+  --ink:#16201f; --muted:#5c6b70; --line:#dce3e5; --line-2:#e8edee;
+  --ember:#df6128; --ember-2:#c8531d; --ember-soft:#fbe9df;
+  --ok:#2f8f5b; --ok-soft:#e3f3ea;
+  --warn:#bf8410; --warn-soft:#faf0d8;
+  --bad:#c2473b; --bad-soft:#f8e3e0;
+  --info:#3a6b8a; --info-soft:#e6eef3;
+  --r:10px; --r-s:7px;
+  --display:"Space Grotesk",sans-serif;
+  --body:"Inter",sans-serif;
+  --mono:"JetBrains Mono",monospace;
+  --shadow:0 1px 2px rgba(22,32,31,.06),0 6px 20px rgba(22,32,31,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--body); background:var(--paper); color:var(--ink);
+  font-size:14px; line-height:1.45; -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--ember);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--mono)}
+.amt{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- LOGIN ---------- */
+#login{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px 20px;background:
+   radial-gradient(120% 80% at 80% -10%, #2a373d 0%, #202b30 45%, #182125 100%);}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.mark{width:38px;height:38px;border-radius:9px;background:linear-gradient(150deg,var(--ember),#a83f12);
+  display:grid;place-items:center;box-shadow:0 6px 18px rgba(223,97,40,.4)}
+.mark svg{display:block}
+.brand h1{font-family:var(--display);color:#fff;font-size:26px;letter-spacing:-.5px;margin:0;font-weight:600}
+.brand .by{font-family:var(--mono);font-size:11px;color:#8aa0a8;letter-spacing:.5px}
+.login-sub{color:#9fb2b9;max-width:440px;text-align:center;margin:14px 0 30px;font-size:14.5px}
+.login-sub b{color:#d9e4e7;font-weight:600}
+.role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;
+  width:100%;max-width:780px}
+.role-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r);
+  padding:18px;text-align:left;color:#fff;transition:transform .15s ease,border-color .15s ease,background .15s ease}
+.role-card:hover{transform:translateY(-3px);border-color:var(--ember);background:rgba(223,97,40,.1)}
+.role-card .ic{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.08);
+  display:grid;place-items:center;margin-bottom:12px;font-size:17px}
+.role-card .rn{font-family:var(--display);font-weight:600;font-size:16px;margin:0 0 3px}
+.role-card .rd{color:#9fb2b9;font-size:12.5px;margin:0 0 10px;min-height:34px}
+.role-card .person{font-family:var(--mono);font-size:11.5px;color:#c2d0d4;display:flex;align-items:center;gap:6px}
+.role-card .dot{width:6px;height:6px;border-radius:50%;background:var(--ember)}
+.login-foot{margin-top:28px;color:#7d9097;font-size:11.5px;font-family:var(--mono);text-align:center;max-width:560px}
+
+/* ---------- APP SHELL ---------- */
+#app{display:none;min-height:100vh;grid-template-columns:230px 1fr}
+#app.on{display:grid}
+.side{background:var(--concrete);color:#cdd9dd;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side-top{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.side-top .brand h1{font-size:19px}
+.side-top .by{font-size:10px}
+.nav{padding:12px 10px;flex:1;overflow-y:auto}
+.nav-label{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#6d8088;padding:8px 12px 6px}
+.nav button{display:flex;align-items:center;gap:11px;width:100%;background:none;border:none;color:#b9c7cc;
+  padding:9px 12px;border-radius:8px;text-align:left;font-size:13.5px;font-weight:500;margin-bottom:2px}
+.nav button .ni{width:18px;text-align:center;opacity:.85}
+.nav button:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav button.active{background:var(--ember);color:#fff;box-shadow:0 4px 12px rgba(223,97,40,.35)}
+.nav button .badge{margin-left:auto;background:rgba(255,255,255,.18);color:#fff;border-radius:20px;
+  font-family:var(--mono);font-size:10.5px;padding:1px 7px;font-weight:700}
+.nav button.active .badge{background:rgba(0,0,0,.22)}
+.side-bot{padding:12px;border-top:1px solid rgba(255,255,255,.07)}
+.who{display:flex;align-items:center;gap:10px;padding:6px 8px}
+.who .av{width:32px;height:32px;border-radius:8px;background:var(--concrete-3);display:grid;place-items:center;
+  font-family:var(--display);font-weight:600;font-size:13px;color:#fff;flex:none}
+.who .nm{font-size:13px;font-weight:600;color:#fff;line-height:1.2}
+.who .ro{font-size:11px;color:#8aa0a8}
+.switch{margin-top:8px;width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:#cdd9dd;padding:8px;border-radius:8px;font-size:12.5px;font-weight:500}
+.switch:hover{background:rgba(255,255,255,.12);color:#fff}
+
+/* ---------- MAIN ---------- */
+.main{min-width:0;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--line);padding:14px 26px;
+  display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:20}
+.topbar h2{font-family:var(--display);font-size:20px;margin:0;letter-spacing:-.3px;font-weight:600}
+.topbar .crumb{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.4px}
+.topbar .sp{flex:1}
+.bell{position:relative;width:36px;height:36px;border-radius:9px;border:1px solid var(--line);background:var(--surface);
+  display:grid;place-items:center;font-size:16px}
+.bell:hover{border-color:var(--muted)}
+.bell .nb{position:absolute;top:-5px;right:-5px;background:var(--ember);color:#fff;border-radius:20px;
+  font-family:var(--mono);font-size:9.5px;font-weight:700;padding:1px 5px;border:2px solid var(--surface)}
+.content{padding:24px 26px 60px;max-width:1180px;width:100%}
+
+/* cards / generic */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.card-h{padding:15px 18px;border-bottom:1px solid var(--line-2);display:flex;align-items:center;gap:12px}
+.card-h h3{font-family:var(--display);font-size:15.5px;margin:0;font-weight:600}
+.card-h .sub{font-size:12px;color:var(--muted)}
+.card-b{padding:18px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:1fr 1fr}
+.mt{margin-top:16px}
+
+/* KPI */
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 17px;box-shadow:var(--shadow)}
+.kpi .l{font-size:12px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:7px}
+.kpi .v{font-family:var(--display);font-size:27px;font-weight:600;letter-spacing:-.5px;margin-top:8px;line-height:1}
+.kpi .d{font-family:var(--mono);font-size:11px;margin-top:7px;color:var(--muted)}
+.kpi .d.up{color:var(--ok)} .kpi .d.dn{color:var(--bad)}
+.kpi .ico{margin-left:auto;width:30px;height:30px;border-radius:8px;background:var(--ember-soft);
+  display:grid;place-items:center;font-size:15px;float:right}
+
+/* table */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--muted);font-weight:500;padding:10px 16px;border-bottom:1px solid var(--line-2);background:var(--surface-2)}
+td{padding:13px 16px;border-bottom:1px solid var(--line-2);font-size:13.5px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr{cursor:pointer;transition:background .12s}
+tbody tr:hover{background:var(--surface-2)}
+.t-id{font-family:var(--mono);font-size:12.5px;font-weight:500;color:var(--ink)}
+.t-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;font-weight:500;
+  padding:3px 9px;border-radius:20px;white-space:nowrap}
+.pill .pd{width:6px;height:6px;border-radius:50%}
+.p-pending{background:var(--warn-soft);color:#8a5e07} .p-pending .pd{background:var(--warn)}
+.p-ok{background:var(--ok-soft);color:#1d6b41} .p-ok .pd{background:var(--ok)}
+.p-bad{background:var(--bad-soft);color:#9a2f25} .p-bad .pd{background:var(--bad)}
+.p-info{background:var(--info-soft);color:#2a5067} .p-info .pd{background:var(--info)}
+.p-ember{background:var(--ember-soft);color:#a8430f} .p-ember .pd{background:var(--ember)}
+.p-neutral{background:#eef1f2;color:#566} .p-neutral .pd{background:#889}
+.cat{display:inline-block;font-size:11.5px;color:var(--muted)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;border-radius:8px;font-weight:600;font-size:13px;
+  padding:9px 15px;border:1px solid transparent;transition:.12s}
+.btn-primary{background:var(--ember);color:#fff}
+.btn-primary:hover{background:var(--ember-2)}
+.btn-ghost{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--muted)}
+.btn-ok{background:var(--ok);color:#fff} .btn-ok:hover{filter:brightness(.94)}
+.btn-bad{background:var(--surface);border-color:var(--bad);color:var(--bad)} .btn-bad:hover{background:var(--bad-soft)}
+.btn-sm{padding:6px 11px;font-size:12px}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap}
+
+/* flow rail (signature) */
+.rail{display:flex;align-items:center;gap:0;flex-wrap:wrap;padding:4px 0}
+.rail .step{display:flex;align-items:center;gap:9px}
+.rail .node{display:flex;align-items:center;gap:8px}
+.rail .ring{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;
+  font-family:var(--mono);font-size:11px;font-weight:700;color:var(--muted);background:var(--surface);flex:none}
+.rail .lbl{font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap}
+.rail .bar{width:34px;height:2px;background:var(--line);margin:0 8px;flex:none}
+.rail .step.done .ring{background:var(--ok);border-color:var(--ok);color:#fff}
+.rail .step.done .lbl{color:var(--ink)}
+.rail .step.done + .step .bar,.rail .step.done .bar{background:var(--ok)}
+.rail .step.current .ring{background:var(--ember);border-color:var(--ember);color:#fff;
+  box-shadow:0 0 0 4px var(--ember-soft)}
+.rail .step.current .lbl{color:var(--ember);font-weight:600}
+
+/* spend bars */
+.sbar{margin-bottom:13px}
+.sbar .top{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+.sbar .top .nm{font-weight:500}
+.sbar .top .v{font-family:var(--mono);color:var(--muted)}
+.sbar .track{height:9px;background:var(--surface-2);border-radius:20px;overflow:hidden}
+.sbar .fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--ember),#e98a52)}
+
+/* detail */
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line-2);border-radius:var(--r-s);overflow:hidden}
+.dfield{padding:12px 15px;border-bottom:1px solid var(--line-2)}
+.dfield:nth-child(odd){border-right:1px solid var(--line-2)}
+.dfield .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+.dfield .v{font-size:14px;font-weight:500;margin-top:3px}
+
+/* quote compare */
+.qrow{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr auto;gap:12px;align-items:center;
+  padding:13px 15px;border:1px solid var(--line-2);border-radius:var(--r-s);margin-bottom:10px;background:var(--surface)}
+.qrow.best{border-color:var(--ok);background:var(--ok-soft)}
+.qrow .qv{font-weight:600}.qrow .qk{font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.5px}
+.tag-best{font-family:var(--mono);font-size:10px;background:var(--ok);color:#fff;padding:2px 7px;border-radius:20px;font-weight:700}
+
+/* form */
+.field{margin-bottom:15px}
+.field label{display:block;font-size:12.5px;font-weight:600;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--line);
+  border-radius:8px;font-family:inherit;font-size:13.5px;background:var(--surface);color:var(--ink)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--ember);box-shadow:0 0 0 3px var(--ember-soft)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* empty */
+.empty{text-align:center;padding:46px 20px;color:var(--muted)}
+.empty .ee{font-size:30px;margin-bottom:10px;opacity:.5}
+.empty h4{font-family:var(--display);color:var(--ink);margin:0 0 5px;font-size:16px}
+
+/* toast */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(140%);
+  background:var(--concrete);color:#fff;padding:13px 18px;border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.3);
+  display:flex;align-items:center;gap:11px;font-size:13.5px;z-index:200;transition:transform .3s cubic-bezier(.2,.9,.3,1);max-width:90vw}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast .tk{width:22px;height:22px;border-radius:50%;background:var(--ok);display:grid;place-items:center;font-size:12px;flex:none}
+
+.note{background:var(--info-soft);border:1px solid #cfe0ea;border-radius:var(--r-s);padding:12px 14px;
+  font-size:12.5px;color:#2a5067;display:flex;gap:9px}
+.note b{color:#1d3d52}
+.sec-title{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+
+@media (max-width:880px){
+  #app.on{grid-template-columns:1fr}
+  .side{position:static;height:auto;flex-direction:column}
+  .nav{display:flex;flex-wrap:wrap;gap:4px}
+  .nav-label{width:100%}
+  .nav button{width:auto}
+  .g4,.g3,.g2,.frow{grid-template-columns:1fr 1fr}
+  .qrow{grid-template-columns:1fr 1fr}
+  .content{padding:18px}
+}
+@media (max-width:560px){ .g4,.g3,.g2,.frow,.qrow{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="login">
+  <div class="brand">
+    <div class="mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L4 7v10l8 5 8-5V7l-8-5z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M12 7v10M7.5 9.5l9 5M16.5 9.5l-9 5" stroke="#fff" stroke-width="1.2" opacity=".85"/>
+      </svg>
+    </div>
+    <div>
+      <h1>SourceFlow</h1>
+      <div class="by">PROCURE · SOURCE · DELIVER</div>
+    </div>
+  </div>
+  <p class="login-sub">Inbound procurement for cement operations — from plant requisition to invoice match. <b>Pick a role to enter the prototype.</b> Documents you act on in one role appear live in the others.</p>
+
+  <div class="role-grid" id="roleGrid"></div>
+
+  <p class="login-foot">Prototype with sample data only — no real credentials, no live systems. Figures are illustrative.</p>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="app">
+  <aside class="side">
+    <div class="side-top">
+      <div class="brand">
+        <div class="mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 7v10M7.5 9.5l9 5M16.5 9.5l-9 5" stroke="#fff" stroke-width="1.2" opacity=".85"/></svg></div>
+        <div><h1 style="font-family:var(--display);color:#fff;font-size:18px;margin:0;font-weight:600;letter-spacing:-.3px">SourceFlow</h1><div class="by" style="font-family:var(--mono);font-size:9.5px;color:#6d8088;letter-spacing:.5px">PROCURE · SOURCE · DELIVER</div></div>
+      </div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-bot">
+      <div class="who">
+        <div class="av" id="who-av">A</div>
+        <div><div class="nm" id="who-nm">—</div><div class="ro" id="who-ro">—</div></div>
+      </div>
+      <button class="switch" onclick="logout()">↩ Switch role</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div>
+        <div class="crumb" id="crumb">SOURCEFLOW</div>
+        <h2 id="title">Dashboard</h2>
+      </div>
+      <div class="sp"></div>
+      <button class="bell" title="Notifications">🔔<span class="nb" id="bellCount">0</span></button>
+    </header>
+    <div class="content" id="view"></div>
+  </div>
+</div>
+
+<div id="toast"><div class="tk">✓</div><span id="toastMsg"></span></div>
+
+<script>
+/* ============ DATA ============ */
+const ROLES = {
+  gm:      {name:"A. Mehta",        role:"General Manager — Procurement", icon:"📊", desc:"Approves spend, owns category strategy, tracks performance across plants.", initial:"A"},
+  manager: {name:"S. Rao",          role:"Category Manager",              icon:"🔎", desc:"Runs sourcing events, compares quotes, awards and raises POs.", initial:"S"},
+  store:   {name:"R. Naidu",        role:"Plant Stores — Kadapa",         icon:"🏭", desc:"Raises requisitions and records goods received at the plant.", initial:"R"},
+  finance: {name:"P. Iyer",         role:"Accounts Payable",              icon:"🧾", desc:"Runs 3-way match and clears invoices for payment.", initial:"P"},
+  vendor:  {name:"Eastern Coal Traders", role:"Supplier portal",          icon:"🚚", desc:"Receives POs, submits quotes, and uploads invoices.", initial:"E"}
+};
+
+const NAV = {
+  gm:[["dash","Dashboard","▣"],["approvals","Approvals","✔"],["spend","Spend analytics","📈"],["vendors","Vendors","🏢"]],
+  manager:[["dash","Dashboard","▣"],["reqs","Requisitions","📋"],["sourcing","Sourcing","🔎"],["pos","Purchase orders","📦"],["vendors","Vendors","🏢"]],
+  store:[["dash","Dashboard","▣"],["raise","Raise requisition","➕"],["myreqs","My requisitions","📋"],["grn","Goods receipt","📥"]],
+  finance:[["dash","Dashboard","▣"],["invoices","Invoices","🧾"]],
+  vendor:[["dash","Dashboard","▣"],["rfqinbox","RFQ inbox","📨"],["vpos","Purchase orders","📦"],["vinv","Invoices","🧾"]]
+};
+
+// Stages: draft, pending, approved, sourcing, awarded, po, received, matched
+const STAGE_LABEL = {
+  pending:["Pending approval","p-pending"], approved:["Approved","p-info"],
+  sourcing:["Sourcing (RFQ open)","p-ember"], awarded:["Awarded","p-info"],
+  po:["PO issued","p-info"], received:["Goods received","p-ember"], matched:["Matched · payment-ready","p-ok"],
+  rejected:["Rejected","p-bad"]
+};
+const RAIL = [["Requisition","pending"],["Approval","approved"],["Sourcing","sourcing"],["PO","po"],["Receipt","received"],["Invoice","matched"]];
+const RAIL_ORDER = {pending:0,approved:1,sourcing:2,awarded:2,po:3,received:4,matched:5,rejected:1};
+
+let DOCS = [
+  {id:"PR-1042", item:"Petcoke (high CV)", cat:"Fuel & Energy", qty:"2,000 MT", plant:"Kadapa, AP",
+   need:"2026-07-15", by:"R. Naidu (Stores)", value:28400000, stage:"pending", quotes:[], vendor:null, po:null, grn:null, inv:null},
+  {id:"PR-1041", item:"HDPE cement bags 50kg", cat:"Packaging", qty:"4,00,000 units", plant:"Belgaum, KA",
+   need:"2026-07-02", by:"M. Joshi (Stores)", value:5600000, stage:"approved", quotes:[], vendor:null, po:null, grn:null, inv:null},
+  {id:"PR-1039", item:"Gypsum (mineral)", cat:"Raw Materials", qty:"1,500 MT", plant:"Dalmiapuram, TN",
+   need:"2026-06-28", by:"R. Naidu (Stores)", value:9750000, stage:"sourcing",
+   quotes:[
+     {v:"Bharat Gypsum Suppliers", price:9450000, lead:"12 days", terms:"30 days credit"},
+     {v:"Coromandel Minerals", price:9750000, lead:"9 days", terms:"Advance 20%"},
+     {v:"Deccan Raw Materials", price:9620000, lead:"15 days", terms:"45 days credit"}
+   ], vendor:null, po:null, grn:null, inv:null},
+  {id:"PR-1036", item:"Kiln support roller bearings", cat:"MRO & Spares", qty:"6 sets", plant:"Kadapa, AP",
+   need:"2026-06-20", by:"V. Kumar (Maint.)", value:1840000, stage:"po",
+   quotes:[], vendor:"Spectra Spares & MRO", po:{id:"PO-7781", value:1810000}, grn:null, inv:null},
+  {id:"PR-1031", item:"Fly ash (Class F)", cat:"Raw Materials", qty:"3,000 MT", plant:"Cuttack, OD",
+   need:"2026-06-12", by:"S. Das (Stores)", value:4200000, stage:"received",
+   quotes:[], vendor:"Eastern Coal Traders", po:{id:"PO-7769", value:4155000},
+   grn:{recv:"3,000 MT", acc:"2,950 MT", rej:"50 MT (moisture)"}, inv:{id:"INV-EC-3391", amount:4155000}},
+  {id:"PR-1028", item:"Road freight — Kadapa→Chennai lane", cat:"Freight & Logistics", qty:"800 trips/qtr", plant:"Kadapa, AP",
+   need:"2026-06-30", by:"Logistics desk", value:12200000, stage:"matched",
+   quotes:[], vendor:"TransHaul Logistics", po:{id:"PO-7752", value:12050000},
+   grn:{recv:"Q1 service", acc:"Verified", rej:"—"}, inv:{id:"INV-TH-0098", amount:12050000, status:"paid"}}
+];
+
+const VENDORS = [
+  {n:"Eastern Coal Traders", c:"Fuel & Energy · Raw Materials", loc:"Odisha", otif:96, q:"A", spend:"₹18.4 Cr"},
+  {n:"Bharat Gypsum Suppliers", c:"Raw Materials", loc:"Rajasthan", otif:91, q:"A", spend:"₹6.2 Cr"},
+  {n:"PolyPack Industries", c:"Packaging", loc:"Karnataka", otif:88, q:"B", spend:"₹4.1 Cr"},
+  {n:"TransHaul Logistics", c:"Freight & Logistics", loc:"Tamil Nadu", otif:94, q:"A", spend:"₹12.1 Cr"},
+  {n:"Spectra Spares & MRO", c:"MRO & Spares", loc:"Maharashtra", otif:82, q:"B", spend:"₹2.9 Cr"},
+  {n:"Coromandel Minerals", c:"Raw Materials", loc:"Andhra Pradesh", otif:90, q:"A", spend:"₹5.5 Cr"}
+];
+
+const SPEND = [
+  {n:"Fuel & Energy", v:"₹312 Cr", pct:100},
+  {n:"Freight & Logistics", v:"₹188 Cr", pct:60},
+  {n:"Raw Materials & Additives", v:"₹141 Cr", pct:45},
+  {n:"Packaging", v:"₹64 Cr", pct:21},
+  {n:"MRO & Spares", v:"₹38 Cr", pct:12},
+  {n:"Services", v:"₹22 Cr", pct:7}
+];
+
+/* ============ STATE ============ */
+let S = {role:null, view:"dash", openDoc:null};
+
+/* ============ HELPERS ============ */
+const $ = s => document.querySelector(s);
+const fmtCr = n => "₹"+(n/10000000).toFixed(2)+" Cr";
+const fmtL  = n => n>=10000000 ? "₹"+(n/10000000).toFixed(2)+" Cr" : "₹"+(n/100000).toFixed(2)+" L";
+function pill(stage){const [t,c]=STAGE_LABEL[stage]||["—","p-neutral"];return `<span class="pill ${c}"><span class="pd"></span>${t}</span>`}
+function toast(msg){const t=$("#toast");$("#toastMsg").textContent=msg;t.classList.add("show");clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove("show"),3200)}
+function countFor(role){
+  if(role==="gm") return DOCS.filter(d=>d.stage==="pending").length;
+  if(role==="manager") return DOCS.filter(d=>d.stage==="approved"||d.stage==="sourcing").length;
+  if(role==="store") return DOCS.filter(d=>d.stage==="po").length;
+  if(role==="finance") return DOCS.filter(d=>d.stage==="received").length;
+  if(role==="vendor") return DOCS.filter(d=>d.stage==="sourcing").length;
+  return 0;
+}
+
+/* ============ LOGIN ============ */
+function buildLogin(){
+  $("#roleGrid").innerHTML = Object.entries(ROLES).map(([k,r])=>`
+    <button class="role-card" onclick="login('${k}')">
+      <div class="ic">${r.icon}</div>
+      <div class="rn">${r.role}</div>
+      <div class="rd">${r.desc}</div>
+      <div class="person"><span class="dot"></span>${r.name}</div>
+    </button>`).join("");
+}
+function login(role){
+  S.role=role; S.view="dash"; S.openDoc=null;
+  $("#login").style.display="none";
+  $("#app").classList.add("on");
+  const r=ROLES[role];
+  $("#who-av").textContent=r.initial;
+  $("#who-nm").textContent=r.name;
+  $("#who-ro").textContent=r.role;
+  buildNav();
+  render();
+}
+function logout(){
+  $("#app").classList.remove("on");
+  $("#login").style.display="flex";
+  S.role=null;
+}
+function buildNav(){
+  $("#nav").innerHTML = `<div class="nav-label">${ROLES[S.role].role}</div>` + NAV[S.role].map(([v,label,ic])=>{
+    let badge="";
+    if((S.role==="gm"&&v==="approvals")||(S.role==="manager"&&v==="reqs")||(S.role==="store"&&v==="grn")||(S.role==="finance"&&v==="invoices")||(S.role==="vendor"&&v==="rfqinbox")){
+      const c=countFor(S.role); if(c>0) badge=`<span class="badge">${c}</span>`;
+    }
+    return `<button class="${v===S.view?'active':''}" onclick="go('${v}')"><span class="ni">${ic}</span>${label}${badge}</button>`;
+  }).join("");
+}
+function go(v){S.view=v;S.openDoc=null;render()}
+
+/* ============ ACTIONS ============ */
+function findDoc(id){return DOCS.find(d=>d.id===id)}
+function openDoc(id){S.openDoc=id;render()}
+function backList(){S.openDoc=null;render()}
+
+function approve(id){const d=findDoc(id);d.stage="approved";toast(`${id} approved — routed to Category Manager for sourcing`);refresh()}
+function reject(id){const d=findDoc(id);d.stage="rejected";toast(`${id} rejected — sender notified`);refresh()}
+function createRFQ(id){const d=findDoc(id);d.stage="sourcing";if(!d.quotes.length){d.quotes=[
+  {v:"Bharat Gypsum Suppliers",price:Math.round(d.value*0.97),lead:"10 days",terms:"30 days credit"},
+  {v:"Coromandel Minerals",price:d.value,lead:"8 days",terms:"Advance 20%"}
+];}toast(`RFQ floated for ${id} — invited vendors notified`);refresh()}
+function award(id,vi){const d=findDoc(id);const q=d.quotes[vi];d.vendor=q.v;d.stage="po";
+  d.po={id:"PO-"+(7790+Math.floor(Math.random()*9)),value:q.price};
+  toast(`Awarded to ${q.v} — ${d.po.id} issued`);refresh()}
+function recordGRN(id){const d=findDoc(id);d.stage="received";
+  d.grn={recv:d.qty,acc:d.qty,rej:"—"};toast(`Goods received against ${d.po.id} — sent to AP for matching`);refresh()}
+function matchInvoice(id){const d=findDoc(id);d.stage="matched";
+  if(!d.inv)d.inv={id:"INV-"+id.slice(3),amount:d.po.value};
+  toast(`3-way match passed for ${d.inv.id} — marked payment-ready`);refresh()}
+function submitQuote(id){const d=findDoc(id);const p=Math.round(d.value*0.96);
+  d.quotes.push({v:"Eastern Coal Traders",price:p,lead:"7 days",terms:"30 days credit"});
+  toast(`Quote submitted for ${id} — Category Manager notified`);refresh()}
+function raisePR(){
+  const item=$("#f-item").value||"New material requirement";
+  const cat=$("#f-cat").value, qty=$("#f-qty").value||"—", plant=$("#f-plant").value, need=$("#f-need").value||"—";
+  const val=parseInt($("#f-val").value||"0")*100000;
+  const id="PR-"+(1043+DOCS.filter(d=>d.id.startsWith("PR-104")).length);
+  DOCS.unshift({id,item,cat,qty,plant,need,by:"R. Naidu (Stores)",value:val,stage:"pending",quotes:[],vendor:null,po:null,grn:null,inv:null});
+  toast(`${id} raised — routed to GM for approval`);
+  S.view="myreqs";refresh();
+}
+function refresh(){buildNav();render()}
+
+/* ============ RENDER ============ */
+const TITLES={dash:"Dashboard",approvals:"Approvals",spend:"Spend analytics",vendors:"Vendors",
+  reqs:"Requisitions to source",sourcing:"Sourcing",pos:"Purchase orders",
+  raise:"Raise requisition",myreqs:"My requisitions",grn:"Goods receipt",
+  invoices:"Invoices",rfqinbox:"RFQ inbox",vpos:"Purchase orders",vinv:"Invoices"};
+
+function render(){
+  $("#title").textContent = S.openDoc ? S.openDoc : (TITLES[S.view]||"Dashboard");
+  $("#crumb").textContent = `SOURCEFLOW / ${ROLES[S.role].role.toUpperCase()}`;
+  $("#bellCount").textContent = countFor(S.role);
+  if(S.openDoc){ $("#view").innerHTML = docDetail(findDoc(S.openDoc)); return; }
+  const fn = ({
+    gm:{dash:gmDash,approvals:approvalsView,spend:spendView,vendors:vendorsView},
+    manager:{dash:mgrDash,reqs:reqsView,sourcing:sourcingView,pos:posView,vendors:vendorsView},
+    store:{dash:storeDash,raise:raiseView,myreqs:myreqsView,grn:grnView},
+    finance:{dash:finDash,invoices:invoicesView},
+    vendor:{dash:venDash,rfqinbox:rfqInboxView,vpos:vposView,vinv:vinvView}
+  })[S.role][S.view];
+  $("#view").innerHTML = fn ? fn() : "";
+}
+
+/* ---- shared bits ---- */
+function railHTML(stage){
+  if(stage==="rejected") return `<div class="rail"><div class="step current"><span class="ring">✕</span><span class="lbl" style="color:var(--bad)">Rejected at approval</span></div></div>`;
+  const cur=RAIL_ORDER[stage];
+  return `<div class="rail">`+RAIL.map((s,i)=>{
+    const cls=i<cur?"done":(i===cur?"current":"");
+    return `<div class="step ${cls}"><div class="node"><span class="ring">${i<cur?"✓":i+1}</span><span class="lbl">${s[0]}</span></div>${i<RAIL.length-1?'<span class="bar"></span>':''}</div>`;
+  }).join("")+`</div>`;
+}
+function docRow(d,extra=""){
+  return `<tr onclick="openDoc('${d.id}')">
+    <td><div class="t-id">${d.id}</div><div class="t-sub">${d.by}</div></td>
+    <td>${d.item}<div class="t-sub">${d.qty}</div></td>
+    <td><span class="cat">${d.cat}</span></td>
+    <td>${d.plant}</td>
+    <td class="amt">${fmtL(d.value)}</td>
+    <td>${pill(d.stage)}</td>
+    ${extra}
+  </tr>`;
+}
+function table(head,rows){
+  if(!rows.trim()) return emptyState();
+  return `<div class="card"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function emptyState(msg="Nothing here right now",sub="When there's activity for your role, it'll show up here."){
+  return `<div class="card"><div class="empty"><div class="ee">◷</div><h4>${msg}</h4><div>${sub}</div></div></div>`;
+}
+
+/* ---- document detail ---- */
+function docDetail(d){
+  let actions="", extra="";
+  if(d.stage==="pending"&&S.role==="gm"){
+    actions=`<div class="btn-row"><button class="btn btn-ok" onclick="approve('${d.id}')">✔ Approve spend</button>
+      <button class="btn btn-bad" onclick="reject('${d.id}')">Reject</button></div>`;
+  } else if(d.stage==="approved"&&S.role==="manager"){
+    actions=`<button class="btn btn-primary" onclick="createRFQ('${d.id}')">🔎 Float RFQ to vendors</button>`;
+  } else if(d.stage==="sourcing"&&(S.role==="manager"||S.role==="gm")){
+    extra=quoteCompare(d);
+    if(S.role==="manager") actions=`<div class="note">Select a vendor below to award and auto-generate the purchase order.</div>`;
+  } else if(d.stage==="sourcing"&&S.role==="vendor"){
+    const already=d.quotes.some(q=>q.v==="Eastern Coal Traders");
+    actions= already?`<div class="note">✓ Your quote is submitted. Awaiting the buyer's award decision.</div>`
+      :`<button class="btn btn-primary" onclick="submitQuote('${d.id}')">📨 Submit quote</button>`;
+  } else if(d.stage==="po"&&S.role==="store"){
+    actions=`<button class="btn btn-primary" onclick="recordGRN('${d.id}')">📥 Record goods receipt</button>`;
+  } else if(d.stage==="received"&&S.role==="finance"){
+    extra=threeWay(d);
+    actions=`<button class="btn btn-primary" onclick="matchInvoice('${d.id}')">✔ Run 3-way match & clear</button>`;
+  }
+  const poBlock = d.po?`<div class="dfield"><div class="k">Purchase order</div><div class="v mono">${d.po.id} · ${fmtL(d.po.value)}</div></div>`:"";
+  const venBlock = d.vendor?`<div class="dfield"><div class="k">Awarded vendor</div><div class="v">${d.vendor}</div></div>`:"";
+
+  return `
+  <button class="btn btn-ghost btn-sm" onclick="backList()" style="margin-bottom:16px">← Back</button>
+  <div class="card mt" style="margin-top:0">
+    <div class="card-h"><h3>${d.item}</h3><span class="cat">${d.cat}</span><div style="margin-left:auto">${pill(d.stage)}</div></div>
+    <div class="card-b">
+      <div style="margin-bottom:18px">${railHTML(d.stage)}</div>
+      <div class="detail-grid">
+        <div class="dfield"><div class="k">Requisition</div><div class="v mono">${d.id}</div></div>
+        <div class="dfield"><div class="k">Estimated value</div><div class="v amt">${fmtL(d.value)}</div></div>
+        <div class="dfield"><div class="k">Quantity</div><div class="v">${d.qty}</div></div>
+        <div class="dfield"><div class="k">Plant</div><div class="v">${d.plant}</div></div>
+        <div class="dfield"><div class="k">Required by</div><div class="v">${d.need}</div></div>
+        <div class="dfield"><div class="k">Raised by</div><div class="v">${d.by}</div></div>
+        ${venBlock}${poBlock}
+      </div>
+      ${extra}
+      ${actions?`<div class="mt" style="margin-top:18px">${actions}</div>`:""}
+    </div>
+  </div>`;
+}
+function quoteCompare(d){
+  const best=Math.min(...d.quotes.map(q=>q.price));
+  return `<div class="mt" style="margin-top:18px"><p class="sec-title">Vendor quotes (${d.quotes.length})</p>`+
+    d.quotes.map((q,i)=>`
+    <div class="qrow ${q.price===best?'best':''}">
+      <div><div class="qk">Vendor</div><div class="qv">${q.v} ${q.price===best?'<span class="tag-best">LOWEST</span>':''}</div></div>
+      <div><div class="qk">Quoted price</div><div class="qv amt">${fmtL(q.price)}</div></div>
+      <div><div class="qk">Lead time</div><div class="qv">${q.lead}</div></div>
+      <div><div class="qk">Terms</div><div class="qv" style="font-size:12.5px">${q.terms}</div></div>
+      ${S.role==="manager"?`<button class="btn btn-primary btn-sm" onclick="award('${d.id}',${i})">Award</button>`:`<span></span>`}
+    </div>`).join("")+`</div>`;
+}
+function threeWay(d){
+  const ok=(a,b)=>a===b;
+  const poV=d.po.value, invV=d.inv?d.inv.amount:d.po.value;
+  return `<div class="mt" style="margin-top:18px"><p class="sec-title">3-way match</p>
+  <div class="detail-grid">
+    <div class="dfield"><div class="k">PO value</div><div class="v amt">${fmtL(poV)}</div></div>
+    <div class="dfield"><div class="k">Invoice (${d.inv?d.inv.id:'pending'})</div><div class="v amt">${fmtL(invV)}</div></div>
+    <div class="dfield"><div class="k">Goods received</div><div class="v">${d.grn.acc} accepted</div></div>
+    <div class="dfield"><div class="k">Match status</div><div class="v">${ok(poV,invV)?'<span class="pill p-ok"><span class="pd"></span>PO = Invoice</span>':'<span class="pill p-warn"><span class="pd"></span>Variance — review</span>'}</div></div>
+  </div>
+  ${d.grn.rej!=="—"?`<div class="note mt" style="margin-top:12px">⚠ GRN shows rejected qty: <b>${d.grn.rej}</b>. Confirm credit note before clearing.</div>`:""}
+  </div>`;
+}
+
+/* ---- GM ---- */
+function gmDash(){
+  const pend=DOCS.filter(d=>d.stage==="pending");
+  return `
+  <div class="grid g4">
+    ${kpi("Total managed spend","₹765 Cr","FY26 · across 15 plants","",'📊')}
+    ${kpi("Pending my approval",pend.length,pend.length?"Action needed":"All clear","up",'✔')}
+    ${kpi("Avg PR→PO cycle","4.2 days","↓ 38% vs last year","up",'⏱')}
+    ${kpi("Sourcing savings","₹14.6 Cr","3.1% of addressable","up",'💰')}
+  </div>
+  <div class="grid g2 mt">
+    <div class="card">
+      <div class="card-h"><h3>Awaiting your approval</h3><span class="sub">${pend.length} item(s)</span></div>
+      ${pend.length?`<table><tbody>${pend.map(d=>`<tr onclick="openDoc('${d.id}')">
+        <td><div class="t-id">${d.id}</div><div class="t-sub">${d.cat}</div></td>
+        <td>${d.item}<div class="t-sub">${d.plant}</div></td>
+        <td class="amt">${fmtL(d.value)}</td>
+        <td><button class="btn btn-ok btn-sm" onclick="event.stopPropagation();approve('${d.id}')">Approve</button></td>
+      </tr>`).join("")}</tbody></table>`:`<div class="card-b"><div class="empty"><div class="ee">✓</div><h4>Queue is clear</h4><div>No requisitions waiting on your sign-off.</div></div></div>`}
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>Spend by category</h3><span class="sub">FY26 YTD</span></div>
+      <div class="card-b">${SPEND.map(s=>sbar(s)).join("")}</div>
+    </div>
+  </div>
+  <div class="note mt">ℹ <b>Demo:</b> approve a requisition here and it moves to the Category Manager's queue for sourcing. KPI totals are illustrative.</div>`;
+}
+function approvalsView(){
+  const rows=DOCS.filter(d=>d.stage==="pending").map(d=>docRow(d,`<td><button class="btn btn-ok btn-sm" onclick="event.stopPropagation();approve('${d.id}')">Approve</button></td>`)).join("");
+  return `<p class="sec-title">Requisitions above your approval threshold</p>`+table(`<th>Requisition</th><th>Item</th><th>Category</th><th>Plant</th><th>Value</th><th>Status</th><th></th>`,rows)
+    + (rows?"":"");
+}
+function spendView(){
+  return `<div class="grid g2">
+    <div class="card"><div class="card-h"><h3>Spend by category</h3><span class="sub">FY26 · ₹765 Cr total</span></div>
+      <div class="card-b">${SPEND.map(s=>sbar(s)).join("")}</div></div>
+    <div class="card"><div class="card-h"><h3>Top vendors by spend</h3></div>
+      <table><tbody>${VENDORS.slice().sort((a,b)=>parseFloat(b.spend.replace(/[^\d.]/g,''))-parseFloat(a.spend.replace(/[^\d.]/g,''))).map(v=>`
+        <tr><td><div class="t-id" style="font-family:var(--body);font-weight:600">${v.n}</div><div class="t-sub">${v.c}</div></td>
+        <td class="amt">${v.spend}</td><td><span class="pill ${v.otif>=90?'p-ok':'p-pending'}"><span class="pd"></span>OTIF ${v.otif}%</span></td></tr>`).join("")}</tbody></table></div>
+  </div>
+  <div class="grid g3 mt">
+    ${kpi("Spend under management","82%","Target 80%","up",'🎯')}
+    ${kpi("Maverick spend","4.1%","↓ from 11%","up",'🛡')}
+    ${kpi("Contract coverage","68%","of addressable spend","",'📑')}
+  </div>`;
+}
+
+function vendorsView(){
+  const rows=VENDORS.map(v=>`<tr>
+    <td><div class="t-id" style="font-family:var(--body);font-weight:600">${v.n}</div><div class="t-sub">${v.loc}</div></td>
+    <td>${v.c}</td>
+    <td><span class="pill ${v.otif>=90?'p-ok':'p-pending'}"><span class="pd"></span>OTIF ${v.otif}%</span></td>
+    <td><span class="pill ${v.q==='A'?'p-ok':'p-info'}"><span class="pd"></span>Grade ${v.q}</span></td>
+    <td class="amt">${v.spend}</td></tr>`).join("");
+  return `<p class="sec-title">Vendor master · ${VENDORS.length} active suppliers</p>`+
+    table(`<th>Vendor</th><th>Categories</th><th>Delivery</th><th>Quality</th><th>Spend (FY26)</th>`,rows);
+}
+
+/* ---- Manager ---- */
+function mgrDash(){
+  const toSource=DOCS.filter(d=>d.stage==="approved");
+  const open=DOCS.filter(d=>d.stage==="sourcing");
+  return `<div class="grid g4">
+    ${kpi("Approved, to source",toSource.length,"Ready for RFQ","",'📋')}
+    ${kpi("Open RFQs",open.length,"Awaiting quotes","",'🔎')}
+    ${kpi("POs this month","23","₹64 Cr value","",'📦')}
+    ${kpi("Avg quotes / RFQ","3.4","Healthy competition","up",'⚖')}
+  </div>
+  <div class="card mt"><div class="card-h"><h3>Needs sourcing action</h3></div>
+  ${(toSource.length+open.length)?`<table><tbody>${[...toSource,...open].map(d=>`<tr onclick="openDoc('${d.id}')">
+    <td><div class="t-id">${d.id}</div><div class="t-sub">${d.plant}</div></td>
+    <td>${d.item}<div class="t-sub">${d.cat}</div></td>
+    <td class="amt">${fmtL(d.value)}</td><td>${pill(d.stage)}</td>
+    <td>${d.stage==="approved"?`<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();createRFQ('${d.id}')">Float RFQ</button>`:`<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openDoc('${d.id}')">Compare quotes</button>`}</td>
+  </tr>`).join("")}</tbody></table>`:`<div class="card-b">${emptyState("No sourcing actions","Approved requisitions appear here ready to turn into RFQs.").replace(/<\/?div class="card">/g,'')}</div>`}
+  </div>`;
+}
+function reqsView(){
+  const rows=DOCS.filter(d=>d.stage==="approved").map(d=>docRow(d,`<td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();createRFQ('${d.id}')">Float RFQ</button></td>`)).join();
+  return `<p class="sec-title">Approved requisitions ready to source</p>`+table(`<th>Requisition</th><th>Item</th><th>Category</th><th>Plant</th><th>Value</th><th>Status</th><th></th>`,rows);
+}
+function sourcingView(){
+  const rows=DOCS.filter(d=>d.stage==="sourcing").map(d=>docRow(d,`<td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openDoc('${d.id}')">Compare</button></td>`)).join("");
+  return `<p class="sec-title">Open sourcing events (RFQs)</p>`+table(`<th>RFQ / PR</th><th>Item</th><th>Category</th><th>Plant</th><th>Value</th><th>Status</th><th></th>`,rows);
+}
+function posView(){
+  const rows=DOCS.filter(d=>d.po).map(d=>`<tr onclick="openDoc('${d.id}')">
+    <td class="t-id">${d.po.id}</td><td>${d.item}<div class="t-sub">${d.vendor||''}</div></td>
+    <td>${d.plant}</td><td class="amt">${fmtL(d.po.value)}</td><td>${pill(d.stage)}</td></tr>`).join("");
+  return `<p class="sec-title">Issued purchase orders</p>`+table(`<th>PO</th><th>Item / vendor</th><th>Plant</th><th>Value</th><th>Status</th>`,rows);
+}
+
+/* ---- Store ---- */
+function storeDash(){
+  const mine=DOCS.filter(d=>d.by.includes("Naidu"));
+  const grnDue=DOCS.filter(d=>d.stage==="po");
+  return `<div class="grid g4">
+    ${kpi("My requisitions",mine.length,"This quarter","",'📋')}
+    ${kpi("Deliveries to receive",grnDue.length,grnDue.length?"Action needed":"None due","",'📥')}
+    ${kpi("Low-stock alerts","3","Petcoke, gypsum, bags","dn",'⚠')}
+    ${kpi("Avg approval time","1.8 days","For my PRs","up",'⏱')}
+  </div>
+  <div class="grid g2 mt">
+    <div class="card"><div class="card-h"><h3>Quick action</h3></div>
+      <div class="card-b">
+        <p style="color:var(--muted);margin-top:0">Need material at the plant? Raise a requisition — it routes to the GM for approval automatically.</p>
+        <button class="btn btn-primary" onclick="go('raise')">➕ Raise requisition</button>
+      </div></div>
+    <div class="card"><div class="card-h"><h3>Deliveries to receive</h3></div>
+      ${grnDue.length?`<table><tbody>${grnDue.map(d=>`<tr onclick="openDoc('${d.id}')">
+        <td class="t-id">${d.po.id}</td><td>${d.item}<div class="t-sub">${d.vendor||''}</div></td>
+        <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();recordGRN('${d.id}')">Receive</button></td></tr>`).join("")}</tbody></table>`
+      :`<div class="card-b"><div class="empty"><div class="ee">📭</div><h4>No deliveries due</h4><div>Goods receipts will appear once POs are issued.</div></div></div>`}
+    </div>
+  </div>`;
+}
+function raiseView(){
+  return `<div class="card" style="max-width:680px">
+    <div class="card-h"><h3>Raise a requisition</h3><span class="sub">Routes to GM for approval</span></div>
+    <div class="card-b">
+      <div class="field"><label>What do you need?</label><input id="f-item" placeholder="e.g. Petcoke (high CV)"></div>
+      <div class="frow">
+        <div class="field"><label>Category</label><select id="f-cat">
+          <option>Fuel & Energy</option><option>Raw Materials</option><option>Packaging</option>
+          <option>Freight & Logistics</option><option>MRO & Spares</option><option>Services</option></select></div>
+        <div class="field"><label>Plant</label><select id="f-plant">
+          <option>Kadapa, AP</option><option>Dalmiapuram, TN</option><option>Belgaum, KA</option><option>Cuttack, OD</option></select></div>
+      </div>
+      <div class="frow">
+        <div class="field"><label>Quantity</label><input id="f-qty" placeholder="e.g. 2,000 MT"></div>
+        <div class="field"><label>Required by</label><input id="f-need" type="date"></div>
+      </div>
+      <div class="field"><label>Estimated value (₹ lakh)</label><input id="f-val" type="number" placeholder="e.g. 284"></div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="raisePR()">Submit requisition</button>
+        <button class="btn btn-ghost" onclick="go('myreqs')">Cancel</button></div>
+    </div>
+  </div>`;
+}
+function myreqsView(){
+  const rows=DOCS.filter(d=>d.by.includes("Naidu")).map(d=>docRow(d)).join("");
+  return `<p class="sec-title">Requisitions I've raised</p>`+table(`<th>Requisition</th><th>Item</th><th>Category</th><th>Plant</th><th>Value</th><th>Status</th>`,rows);
+}
+function grnView(){
+  const rows=DOCS.filter(d=>d.stage==="po").map(d=>`<tr onclick="openDoc('${d.id}')">
+    <td class="t-id">${d.po.id}</td><td>${d.item}<div class="t-sub">${d.qty}</div></td>
+    <td>${d.vendor||''}</td><td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();recordGRN('${d.id}')">Record receipt</button></td></tr>`).join("");
+  return `<p class="sec-title">Open POs awaiting goods receipt</p>`+ (rows?table(`<th>PO</th><th>Item</th><th>Vendor</th><th></th>`,rows):emptyState("Nothing to receive","Goods receipts appear here once the Category Manager issues a PO."));
+}
+
+/* ---- Finance ---- */
+function finDash(){
+  const toMatch=DOCS.filter(d=>d.stage==="received");
+  const cleared=DOCS.filter(d=>d.stage==="matched");
+  return `<div class="grid g4">
+    ${kpi("Invoices to match",toMatch.length,toMatch.length?"Action needed":"All clear","",'🧾')}
+    ${kpi("Auto-match rate","86%","Target 85%","up",'⚙')}
+    ${kpi("Payment-ready",cleared.length,"Cleared this run","",'✔')}
+    ${kpi("Exceptions","2","Awaiting credit notes","dn",'⚠')}
+  </div>
+  <div class="card mt"><div class="card-h"><h3>Invoices awaiting 3-way match</h3></div>
+  ${toMatch.length?`<table><tbody>${toMatch.map(d=>`<tr onclick="openDoc('${d.id}')">
+    <td class="t-id">${d.inv?d.inv.id:'INV pending'}</td><td>${d.item}<div class="t-sub">${d.vendor||''}</div></td>
+    <td class="amt">${fmtL(d.po.value)}</td>
+    <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();matchInvoice('${d.id}')">Match & clear</button></td></tr>`).join("")}</tbody></table>`
+  :`<div class="card-b"><div class="empty"><div class="ee">✓</div><h4>Nothing to match</h4><div>Invoices appear here once goods are received against a PO.</div></div></div>`}
+  </div>`;
+}
+function invoicesView(){
+  const rows=DOCS.filter(d=>d.inv||d.stage==="received").map(d=>`<tr onclick="openDoc('${d.id}')">
+    <td class="t-id">${d.inv?d.inv.id:'pending'}</td><td>${d.item}<div class="t-sub">${d.vendor||''}</div></td>
+    <td>${d.po?d.po.id:'—'}</td><td class="amt">${d.po?fmtL(d.po.value):'—'}</td>
+    <td>${d.stage==="matched"?'<span class="pill p-ok"><span class="pd"></span>Payment-ready</span>':pill(d.stage)}</td>
+    <td>${d.stage==="received"?`<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();matchInvoice('${d.id}')">Match</button>`:''}</td></tr>`).join("");
+  return `<p class="sec-title">Invoices & matching</p>`+table(`<th>Invoice</th><th>Item / vendor</th><th>PO</th><th>Amount</th><th>Status</th><th></th>`,rows);
+}
+
+/* ---- Vendor ---- */
+function venDash(){
+  const rfqs=DOCS.filter(d=>d.stage==="sourcing");
+  const pos=DOCS.filter(d=>d.vendor==="Eastern Coal Traders");
+  return `<div class="grid g4">
+    ${kpi("Open RFQs",rfqs.length,"Awaiting your quote","",'📨')}
+    ${kpi("Active POs",pos.length,"From SourceFlow buyers","",'📦')}
+    ${kpi("On-time delivery","96%","Your OTIF score","up",'🚚')}
+    ${kpi("Rating","A","Top-tier supplier","up",'⭐')}
+  </div>
+  <div class="card mt"><div class="card-h"><h3>RFQs inviting your quote</h3></div>
+  ${rfqs.length?`<table><tbody>${rfqs.map(d=>{const has=d.quotes.some(q=>q.v==="Eastern Coal Traders");return `<tr onclick="openDoc('${d.id}')">
+    <td class="t-id">${d.id}</td><td>${d.item}<div class="t-sub">${d.qty} · ${d.plant}</div></td>
+    <td>${has?'<span class="pill p-ok"><span class="pd"></span>Quote submitted</span>':`<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();submitQuote('${d.id}')">Submit quote</button>`}</td></tr>`}).join("")}</tbody></table>`
+  :`<div class="card-b"><div class="empty"><div class="ee">📭</div><h4>No open RFQs</h4><div>Invitations to quote will appear here.</div></div></div>`}
+  </div>`;
+}
+function rfqInboxView(){
+  const rows=DOCS.filter(d=>d.stage==="sourcing").map(d=>{const has=d.quotes.some(q=>q.v==="Eastern Coal Traders");
+    return `<tr onclick="openDoc('${d.id}')"><td class="t-id">${d.id}</td><td>${d.item}<div class="t-sub">${d.qty}</div></td>
+    <td>${d.plant}</td><td>${has?'<span class="pill p-ok"><span class="pd"></span>Submitted</span>':'<span class="pill p-pending"><span class="pd"></span>Quote needed</span>'}</td>
+    <td>${has?'':`<button class="btn btn-primary btn-sm" onclick="event.stopPropagation();submitQuote('${d.id}')">Quote</button>`}</td></tr>`}).join("");
+  return `<p class="sec-title">Requests for quotation</p>`+ (rows?table(`<th>RFQ</th><th>Item</th><th>Plant</th><th>Status</th><th></th>`,rows):emptyState("No open RFQs","Buyers' sourcing invitations appear here."));
+}
+function vposView(){
+  const rows=DOCS.filter(d=>d.vendor==="Eastern Coal Traders"&&d.po).map(d=>`<tr onclick="openDoc('${d.id}')">
+    <td class="t-id">${d.po.id}</td><td>${d.item}</td><td>${d.plant}</td><td class="amt">${fmtL(d.po.value)}</td><td>${pill(d.stage)}</td></tr>`).join("");
+  return `<p class="sec-title">Purchase orders issued to you</p>`+ (rows?table(`<th>PO</th><th>Item</th><th>Plant</th><th>Value</th><th>Status</th>`,rows):emptyState("No POs yet","Win an RFQ and the PO shows up here."));
+}
+function vinvView(){
+  const rows=DOCS.filter(d=>d.vendor==="Eastern Coal Traders"&&d.inv).map(d=>`<tr onclick="openDoc('${d.id}')">
+    <td class="t-id">${d.inv.id}</td><td>${d.item}</td><td class="amt">${fmtL(d.inv.amount)}</td>
+    <td>${d.inv.status==="paid"?'<span class="pill p-ok"><span class="pd"></span>Paid</span>':d.stage==="matched"?'<span class="pill p-info"><span class="pd"></span>Payment-ready</span>':'<span class="pill p-pending"><span class="pd"></span>Under review</span>'}</td></tr>`).join("");
+  return `<p class="sec-title">Your invoices</p>`+ (rows?table(`<th>Invoice</th><th>Item</th><th>Amount</th><th>Status</th>`,rows):emptyState("No invoices","Submit against a PO to raise an invoice."));
+}
+
+/* ---- widgets ---- */
+function kpi(l,v,d,dir,ico){return `<div class="kpi"><div class="ico">${ico}</div><div class="l">${l}</div><div class="v">${v}</div><div class="d ${dir||''}">${d}</div></div>`}
+function sbar(s){return `<div class="sbar"><div class="top"><span class="nm">${s.n}</span><span class="v">${s.v}</span></div><div class="track"><div class="fill" style="width:${s.pct}%"></div></div></div>`}
+
+/* ============ INIT ============ */
+buildLogin();
+</script>
