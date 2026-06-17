@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Brilworks — Client Quotes</title>
+<style>
+  :root{
+    --brand:#F26522;
+    --brand-dark:#d4521a;
+    --ink:#1a2230;
+    --muted:#697586;
+    --line:#e6e9ef;
+    --bg:#f4f6fa;
+    --card:#ffffff;
+    --green:#1f9d55;
+    --amber:#b7791f;
+    --gray:#8a94a6;
+    --shadow:0 1px 3px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- Login ---------- */
+  #login{
+    position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#1a2230 0%,#2a3346 100%);padding:20px;
+  }
+  .login-card{
+    width:100%;max-width:380px;background:var(--card);border-radius:16px;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);padding:36px 32px;text-align:center;
+  }
+  .logo{font-weight:800;font-size:22px;letter-spacing:-.5px}
+  .logo span{color:var(--brand)}
+  .login-sub{color:var(--muted);font-size:13.5px;margin:6px 0 26px}
+  .field{text-align:left;margin-bottom:14px}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+  .field input{
+    width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:9px;font-size:15px;
+    transition:border-color .15s;outline:none;
+  }
+  .field input:focus{border-color:var(--brand)}
+  .btn{
+    width:100%;padding:12px;border:none;border-radius:9px;background:var(--brand);color:#fff;
+    font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;margin-top:6px;
+  }
+  .btn:hover{background:var(--brand-dark)}
+  .err{color:#d92d20;font-size:13px;margin-top:12px;min-height:18px}
+  .lock-note{color:var(--gray);font-size:11.5px;margin-top:18px;line-height:1.5}
+
+  /* ---------- App ---------- */
+  #app{display:none}
+  header{
+    background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;
+  }
+  .header-inner{
+    max-width:1080px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:16px;
+  }
+  .header-inner .logo{font-size:18px}
+  .header-inner .tag{color:var(--muted);font-size:13px;border-left:1px solid var(--line);padding-left:16px}
+  .spacer{flex:1}
+  .logout{
+    background:none;border:1px solid var(--line);color:var(--muted);font-size:13px;font-weight:600;
+    padding:7px 14px;border-radius:8px;cursor:pointer;transition:.15s;
+  }
+  .logout:hover{border-color:var(--brand);color:var(--brand)}
+
+  main{max-width:1080px;margin:0 auto;padding:28px 24px 64px}
+  .toolbar{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+  .toolbar h1{font-size:20px;font-weight:700}
+  .count{color:var(--muted);font-size:13px;font-weight:500}
+  #search{
+    margin-left:auto;padding:9px 14px;border:1.5px solid var(--line);border-radius:9px;font-size:14px;
+    min-width:220px;outline:none;transition:border-color .15s;
+  }
+  #search:focus{border-color:var(--brand)}
+
+  .section-label{
+    font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);
+    margin:26px 0 12px;display:flex;align-items:center;gap:8px;
+  }
+  .section-label::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;
+    box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .12s,box-shadow .12s;
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(16,24,40,.08),0 12px 32px rgba(16,24,40,.10)}
+  .card.archived{opacity:.82}
+  .card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+  .avatar{
+    width:40px;height:40px;border-radius:10px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:15px;color:#fff;
+  }
+  .card h3{font-size:16px;font-weight:700;line-height:1.25}
+  .card .sub{color:var(--muted);font-size:12.5px;line-height:1.4;margin-top:3px}
+  .badge{
+    font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:3px 8px;
+    border-radius:20px;white-space:nowrap;
+  }
+  .badge.active{background:#e7f6ee;color:var(--green)}
+  .badge.arch{background:#eef0f4;color:var(--gray)}
+  .meta{color:var(--gray);font-size:11.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:auto;padding-top:10px}
+  .actions{display:flex;gap:8px;margin-top:12px}
+  .actions a,.actions button{
+    flex:1;text-align:center;padding:9px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;
+    text-decoration:none;border:1px solid var(--line);transition:.15s;
+  }
+  .open-btn{background:var(--brand);color:#fff;border-color:var(--brand)!important}
+  .open-btn:hover{background:var(--brand-dark)}
+  .copy-btn{background:#fff;color:var(--ink)}
+  .copy-btn:hover{border-color:var(--brand);color:var(--brand)}
+  .copy-btn.copied{background:#e7f6ee;color:var(--green);border-color:#bce6cf}
+  .docs{margin-top:10px;font-size:12.5px}
+  .docs a{color:var(--brand);text-decoration:none;font-weight:600}
+  .docs a:hover{text-decoration:underline}
+  .empty{color:var(--muted);font-size:14px;padding:30px 0;text-align:center}
+  footer{text-align:center;color:var(--gray);font-size:12px;padding:30px 0}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <form class="login-card" onsubmit="return doLogin(event)">
+    <div class="logo">Bril<span>works</span></div>
+    <div class="login-sub">Client Quotes — sign in to continue</div>
+    <div class="field">
+      <label for="u">Username</label>
+      <input id="u" type="text" autocomplete="username" autofocus required />
+    </div>
+    <div class="field">
+      <label for="p">Password</label>
+      <input id="p" type="password" autocomplete="current-password" required />
+    </div>
+    <button class="btn" type="submit">Sign in</button>
+    <div class="err" id="err"></div>
+    <div class="lock-note">🔒 Internal access only. Authorized personnel.</div>
+  </form>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="header-inner">
+      <div class="logo">Bril<span>works</span></div>
+      <div class="tag">Client Quotes Dashboard</div>
+      <div class="spacer"></div>
+      <button class="logout" onclick="logout()">Sign out</button>
+    </div>
+  </header>
+  <main>
+    <div class="toolbar">
+      <h1>Proposals</h1>
+      <span class="count" id="count"></span>
+      <input id="search" type="search" placeholder="Search clients…" oninput="render()" />
+    </div>
+    <div id="active-wrap">
+      <div class="section-label">Active</div>
+      <div class="grid" id="active-grid"></div>
+    </div>
+    <div id="archived-wrap">
+      <div class="section-label">Archived</div>
+      <div class="grid" id="archived-grid"></div>
+    </div>
+  </main>
+  <footer>Brilworks Software · quotes.brilworks.com</footer>
+</div>
+
+<script>
+/* ===== Auth (client-side gate — see note in repo) ===== */
+const CREDS = { user: "admin", pass: "Brilworks@2026" };
+const KEY = "bw_quotes_auth";
+
+function doLogin(e){
+  e.preventDefault();
+  const u = document.getElementById("u").value.trim();
+  const p = document.getElementById("p").value;
+  if(u === CREDS.user && p === CREDS.pass){
+    sessionStorage.setItem(KEY, "1");
+    showApp();
+  } else {
+    document.getElementById("err").textContent = "Invalid username or password.";
+    document.getElementById("p").value = "";
+  }
+  return false;
+}
+function logout(){ sessionStorage.removeItem(KEY); location.reload(); }
+function showApp(){
+  document.getElementById("login").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  render();
+}
+
+/* ===== Client registry ===== */
+const CLIENTS = [
+  {
+    name: "iBASEt", color:"#2563eb",
+    title: "AI Dev Workflow Implementation — SOW",
+    id: "cl-26202105", status: "active",
+    path: "clients/ibaset/cl-26202105/",
+    docs: [{ label:"AI Dev Workflow SOW (PDF)", href:"clients/ibaset/cl-26202105/AI-Dev-Workflow-Implementation-SOW.pdf" }]
+  },
+  {
+    name: "Dalmia Cement", color:"#0f766e",
+    title: "SourceFlow — Procurement (Prototype)",
+    id: "cl-7f3a9b2c", status: "active",
+    path: "clients/dalmia-cement/cl-7f3a9b2c/"
+  },
+  {
+    name: "Astron Valuation", color:"#7c3aed",
+    title: "Project Proposal & Interactive POC",
+    id: "astron-valuation", status: "active",
+    path: "clients/astron-valuation/"
+  },
+  {
+    name: "Champions Longevity", color:"#8a94a6",
+    title: "MVP Scope of Work & Phase 1 Options",
+    id: "cl-7f3a9b2c", status: "archived",
+    path: "_archive/champions-longevity/cl-7f3a9b2c/quote.html"
+  }
+];
+
+function fullUrl(path){ return location.origin + "/" + path.replace(/^\//,""); }
+function initials(name){ return name.split(/\s+/).slice(0,2).map(w=>w[0]).join("").toUpperCase(); }
+
+function cardHTML(c){
+  const url = fullUrl(c.path);
+  const badge = c.status === "active"
+    ? '<span class="badge active">Active</span>'
+    : '<span class="badge arch">Archived</span>';
+  const docs = (c.docs||[]).map(d =>
+    `<div class="docs">📄 <a href="${d.href}" target="_blank" rel="noopener">${d.label}</a></div>`
+  ).join("");
+  return `
+  <div class="card ${c.status==='archived'?'archived':''}">
+    <div class="card-top">
+      <div class="avatar" style="background:${c.color}">${initials(c.name)}</div>
+      <div style="flex:1">
+        <h3>${c.name}</h3>
+        <div class="sub">${c.title}</div>
+      </div>
+      ${badge}
+    </div>
+    ${docs}
+    <div class="meta">${c.id}</div>
+    <div class="actions">
+      <a class="open-btn" href="${c.path}" target="_blank" rel="noopener">Open</a>
+      <button class="copy-btn" onclick="copyLink(this,'${url}')">Copy link</button>
+    </div>
+  </div>`;
+}
+
+function copyLink(btn, url){
+  navigator.clipboard.writeText(url).then(()=>{
+    const old = btn.textContent;
+    btn.textContent = "✓ Copied";
+    btn.classList.add("copied");
+    setTimeout(()=>{ btn.textContent = old; btn.classList.remove("copied"); }, 1500);
+  }).catch(()=>{ prompt("Copy this link:", url); });
+}
+
+function render(){
+  const q = (document.getElementById("search").value||"").toLowerCase();
+  const match = c => (c.name+" "+c.title+" "+c.id).toLowerCase().includes(q);
+  const active = CLIENTS.filter(c=>c.status==="active" && match(c));
+  const archived = CLIENTS.filter(c=>c.status==="archived" && match(c));
+
+  document.getElementById("active-grid").innerHTML =
+    active.length ? active.map(cardHTML).join("") : '<div class="empty">No matching active proposals.</div>';
+  document.getElementById("archived-grid").innerHTML = archived.map(cardHTML).join("");
+
+  document.getElementById("archived-wrap").style.display = archived.length ? "block" : "none";
+  document.getElementById("count").textContent =
+    active.length + " active" + (archived.length ? " · " + archived.length + " archived" : "");
+}
+
+/* ===== Boot ===== */
+if(sessionStorage.getItem(KEY) === "1"){ showApp(); }
+</script>
+</body>
+</html>
