@@ -104,7 +104,10 @@
     border-radius:20px;white-space:nowrap;
   }
   .badge.active{background:#e7f6ee;color:var(--green)}
+  .badge.off{background:#fdeceb;color:#d92d20}
   .badge.arch{background:#eef0f4;color:var(--gray)}
+  .exp{color:var(--gray)}
+  .exp.past{color:#d92d20;font-weight:600}
   .meta{color:var(--gray);font-size:11.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:auto;padding-top:10px}
   .actions{display:flex;gap:8px;margin-top:12px}
   .actions a,.actions button{
@@ -198,57 +201,76 @@ function showApp(){
 }
 
 /* ===== Client registry ===== */
+/* status: "active" | "archived".  active+expires control whether the client's
+   own link is live — keep these in sync with the PROPOSAL block in each client page. */
 const CLIENTS = [
   {
     name: "iBASEt", color:"#2563eb",
     title: "AI Dev Workflow Implementation — SOW",
-    id: "cl-26202105", status: "active",
+    id: "cl-26202105", status: "active", active: true, expires: "2026-12-31",
     path: "clients/ibaset/cl-26202105/",
     docs: [{ label:"AI Dev Workflow SOW (PDF)", href:"clients/ibaset/cl-26202105/AI-Dev-Workflow-Implementation-SOW.pdf" }]
   },
   {
     name: "Dalmia Cement", color:"#0f766e",
     title: "SourceFlow — Procurement (Prototype)",
-    id: "cl-7f3a9b2c", status: "active",
+    id: "cl-7f3a9b2c", status: "active", active: true, expires: "2026-12-31",
     path: "clients/dalmia-cement/cl-7f3a9b2c/"
   },
   {
     name: "Astron Valuation", color:"#7c3aed",
     title: "Project Proposal & Interactive POC",
-    id: "astron-valuation", status: "active",
+    id: "astron-valuation", status: "active", active: true, expires: "2026-12-31",
     path: "clients/astron-valuation/"
   },
   {
     name: "Champions Longevity", color:"#8a94a6",
     title: "MVP Scope of Work & Phase 1 Options",
-    id: "cl-7f3a9b2c", status: "archived",
+    id: "cl-7f3a9b2c", status: "archived", active: false, expires: null,
     path: "_archive/champions-longevity/cl-7f3a9b2c/quote.html"
   }
 ];
 
+function isExpired(c){ return c.expires && new Date() > new Date(c.expires + "T23:59:59"); }
+function liveState(c){
+  if(c.status === "archived") return "archived";
+  if(isExpired(c)) return "expired";
+  if(!c.active) return "inactive";
+  return "live";
+}
+
 function fullUrl(path){ return location.origin + "/" + path.replace(/^\//,""); }
 function initials(name){ return name.split(/\s+/).slice(0,2).map(w=>w[0]).join("").toUpperCase(); }
 
+const BADGES = {
+  live:     '<span class="badge active">Live</span>',
+  inactive: '<span class="badge off">Inactive</span>',
+  expired:  '<span class="badge off">Expired</span>',
+  archived: '<span class="badge arch">Archived</span>'
+};
+
 function cardHTML(c){
   const url = fullUrl(c.path);
-  const badge = c.status === "active"
-    ? '<span class="badge active">Active</span>'
-    : '<span class="badge arch">Archived</span>';
+  const state = liveState(c);
+  const dim = state !== "live";
   const docs = (c.docs||[]).map(d =>
     `<div class="docs">📄 <a href="${d.href}" target="_blank" rel="noopener">${d.label}</a></div>`
   ).join("");
+  const expiry = c.expires
+    ? `<span class="exp ${isExpired(c)?'past':''}">${isExpired(c)?'Expired':'Expires'} ${c.expires}</span>`
+    : "";
   return `
-  <div class="card ${c.status==='archived'?'archived':''}">
+  <div class="card ${dim?'archived':''}">
     <div class="card-top">
       <div class="avatar" style="background:${c.color}">${initials(c.name)}</div>
       <div style="flex:1">
         <h3>${c.name}</h3>
         <div class="sub">${c.title}</div>
       </div>
-      ${badge}
+      ${BADGES[state]}
     </div>
     ${docs}
-    <div class="meta">${c.id}</div>
+    <div class="meta">${c.id}${expiry?' · '+expiry:''}</div>
     <div class="actions">
       <a class="open-btn" href="${c.path}" target="_blank" rel="noopener">Open</a>
       <button class="copy-btn" onclick="copyLink(this,'${url}')">Copy link</button>
