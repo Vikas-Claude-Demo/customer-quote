@@ -89,8 +89,26 @@
   footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
   footer strong{color:#E7EEE9;}
 
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  @media (max-width:600px){
+    .wrap{padding:0 18px;}
+    .cover{padding:44px 0 40px;}
+    .cover h1{font-size:33px;}
+    .cover .lede{font-size:15px;}
+    .meta{gap:20px 30px;margin-top:32px;}
+    section{padding:32px 0;}
+    h2{font-size:22px;}
+    .sec-head{gap:10px;}
+    .lead{font-size:15px;}
+    table{font-size:12px;}
+    th,td{padding:8px 9px;}
+    .flow{padding:12px 13px;}
+    .callout{padding:13px 15px;}
+    footer .wrap{flex-direction:column;gap:6px;}
+  }
   @media print{
     body{background:#fff;}
+    .table-scroll{overflow:visible;}
     .cover{padding:38px 0;}
     section{padding:26px 0;page-break-inside:avoid;}
     table,.flow,.callout{page-break-inside:avoid;}
@@ -416,6 +434,18 @@
     <span>Confidential &middot; Valid 30 days from issue</span>
   </div>
 </footer>
+
+<script>
+(function(){
+  document.querySelectorAll('main table').forEach(function(t){
+    if(t.parentElement && t.parentElement.classList.contains('table-scroll')) return;
+    var w = document.createElement('div');
+    w.className = 'table-scroll';
+    t.parentNode.insertBefore(w, t);
+    w.appendChild(t);
+  });
+})();
+</script>
 
 </body>
 </html>
