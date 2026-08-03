@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fit4steps Wellness Platform — Detailed Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F7F4; --ink:#1B2A24; --pine:#143026; --green:#2F6D5B;
+    --step:#57B894; --gold:#A9821F; --gold-soft:#F3ECD6; --gold-line:#E4D6A6;
+    --muted:#6B7A72; --line:#DCE2DC; --card:#FFFFFF;
+    --display:"Fraunces",Georgia,serif; --body:"Inter",-apple-system,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:860px;margin:0 auto;padding:0 44px;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--green);font-weight:500;}
+
+  .cover{background:var(--pine);color:#EDF1EC;padding:70px 0 56px;}
+  .steps{display:flex;gap:6px;margin-bottom:32px;}
+  .steps span{height:8px;border-radius:2px;background:#2c5245;}
+  .steps span:nth-child(1){width:26px;background:var(--step);}
+  .steps span:nth-child(2){width:38px;background:#3f8a72;}
+  .steps span:nth-child(3){width:54px;background:#356f5b;}
+  .steps span:nth-child(4){width:72px;}
+  .cover .eyebrow{color:var(--step);}
+  .cover h1{font-family:var(--display);font-weight:500;font-size:48px;line-height:1.05;
+    letter-spacing:-.01em;margin:15px 0 10px;color:#F7FAF7;}
+  .cover .lede{font-size:17px;color:#BFD0C7;max-width:44ch;margin:0;}
+  .meta{display:flex;flex-wrap:wrap;gap:30px 52px;margin-top:42px;padding-top:24px;
+    border-top:1px solid #2c5245;}
+  .meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:#7fa294;margin-bottom:5px;}
+  .meta dd{margin:0;font-size:14px;color:#E7EEE9;font-weight:500;}
+
+  section{padding:44px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .sec-head{display:flex;align-items:baseline;gap:15px;margin-bottom:18px;}
+  .sec-num{font-family:var(--mono);font-size:12px;color:var(--gold);font-weight:600;}
+  h2{font-family:var(--display);font-weight:500;font-size:27px;line-height:1.12;
+    letter-spacing:-.01em;margin:0;color:var(--pine);}
+  h3{font-family:var(--body);font-weight:600;font-size:14px;margin:22px 0 8px;color:var(--pine);
+    text-transform:uppercase;letter-spacing:.04em;}
+  p{margin:0 0 13px;}
+  .lead{font-size:16px;color:#38443e;max-width:66ch;}
+  .muted{color:var(--muted);}
+  .small{font-size:12.5px;}
+
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px;}
+  th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;}
+  thead th{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);font-weight:500;border-bottom:1.5px solid var(--pine);}
+  tbody th{font-weight:600;color:var(--pine);}
+  td.num,th.num{font-family:var(--mono);white-space:nowrap;}
+  tr.total th,tr.total td{border-top:1.5px solid var(--pine);border-bottom:none;
+    font-weight:600;color:var(--pine);padding-top:12px;}
+  tr.total td{font-family:var(--mono);}
+
+  .flow{margin:0 0 16px;padding:14px 16px;background:var(--card);border:1px solid var(--line);
+    border-left:3px solid var(--step);border-radius:0 9px 9px 0;}
+  .flow .ftitle{font-weight:600;color:var(--pine);font-size:13.5px;margin-bottom:5px;}
+  .flow .fsteps{font-size:13px;color:#41504a;}
+  .flow .fsteps b{color:var(--green);font-weight:600;}
+
+  .cols{columns:2;column-gap:36px;}
+  @media(max-width:640px){.cols{columns:1;}}
+  ul.clean{list-style:none;padding:0;margin:6px 0 0;}
+  ul.clean li{position:relative;padding:5px 0 5px 20px;font-size:13.5px;
+    break-inside:avoid;}
+  ul.clean li::before{content:"";position:absolute;left:0;top:12px;width:6px;height:6px;
+    border-radius:2px;background:var(--step);}
+
+  .cnt{font-family:var(--mono);font-size:11px;color:var(--gold);font-weight:600;
+    background:var(--gold-soft);padding:2px 8px;border-radius:20px;margin-left:8px;}
+
+  .callout{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
+    border-radius:0 9px 9px 0;padding:14px 18px;margin-top:14px;font-size:13px;color:#41504a;}
+
+  .terms li{margin-bottom:9px;font-size:14px;}
+  .terms strong{color:var(--pine);}
+
+  footer{background:var(--pine);color:#9fb6ab;padding:26px 0;font-size:12px;}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  footer strong{color:#E7EEE9;}
+
+  @media print{
+    body{background:#fff;}
+    .cover{padding:38px 0;}
+    section{padding:26px 0;page-break-inside:avoid;}
+    table,.flow,.callout{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="wrap">
+    <div class="steps"><span></span><span></span><span></span><span></span></div>
+    <p class="eyebrow">Detailed Proposal</p>
+    <h1>Fit4steps Wellness<br>Platform</h1>
+    <p class="lede">A Flutter and Firebase platform: a client mobile app, admin and trainer web dashboards, with Zoho for lead management.</p>
+    <dl class="meta">
+      <div><dt>Prepared for</dt><dd>Fit4steps Wellness LLP</dd></div>
+      <div><dt>Prepared by</dt><dd>Brilworks</dd></div>
+      <div><dt>Date</dt><dd>31 July 2026</dd></div>
+      <div><dt>Valid for</dt><dd>30 days</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <div class="sec-head"><span class="sec-num">01</span><h2>Overview</h2></div>
+    <p class="lead">Fit4steps will run on a single connected platform built with Flutter and Firebase. Administrators and staff or trainers manage day-to-day operations through secure web dashboards, while clients and their family members use a mobile app for Android and iOS. Zoho is used for lead management only; all operational data, sessions, health records, memberships, and payments, lives in Firebase.</p>
+    <p class="lead">Firebase provides authentication, database, storage, serverless business logic through Cloud Functions, and push notifications. This proposal sets out the roles, user flows, screen scope, technology, all charges, and the terms of engagement.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">02</span><h2>User roles</h2></div>
+    <table>
+      <thead><tr><th>Role</th><th>Platform</th><th>Access</th></tr></thead>
+      <tbody>
+        <tr><th>Administrator</th><td>Web</td><td>Full platform control: clients, family oversight, trainers and staff, sessions, memberships, payments and invoices, report configuration, notifications and health-tip content, and leads synced from Zoho.</td></tr>
+        <tr><th>Staff / Trainer</th><td>Web</td><td>Own schedule and client roster, attendance marking, session notes, and entry of assessments and progress data.</td></tr>
+        <tr><th>Client</th><td>Mobile app</td><td>Full access to own data: book, cancel, and reschedule sessions, health reports, payments and renewals, and management of up to three family members and their permissions.</td></tr>
+        <tr><th>Family member</th><td>Mobile app</td><td>Delegated access to sessions, attendance, progress, and membership validity; notifications; payments and renewal; report downloads; support contact. Cannot edit health records unless the client grants it.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">03</span><h2>User flows</h2></div>
+
+    <div class="flow"><div class="ftitle">Client onboarding &amp; login</div>
+      <div class="fsteps">Open app <b>&rarr;</b> enter mobile number <b>&rarr;</b> receive OTP <b>&rarr;</b> verify <b>&rarr;</b> land on dashboard (next session, membership, progress).</div></div>
+
+    <div class="flow"><div class="ftitle">Book, cancel or reschedule a session</div>
+      <div class="fsteps">Dashboard <b>&rarr;</b> Sessions <b>&rarr;</b> choose slot and trainer <b>&rarr;</b> confirm <b>&rarr;</b> reminder scheduled. Cancel or reschedule within the notice window; affected parties notified.</div></div>
+
+    <div class="flow"><div class="ftitle">Trainer session &amp; health entry (web)</div>
+      <div class="fsteps">Trainer logs in <b>&rarr;</b> today's schedule <b>&rarr;</b> mark attendance <b>&rarr;</b> enter assessment and progress <b>&rarr;</b> saved to platform <b>&rarr;</b> client app updates and client is notified.</div></div>
+
+    <div class="flow"><div class="ftitle">Family member invitation &amp; access</div>
+      <div class="fsteps">Client <b>&rarr;</b> Family <b>&rarr;</b> invite (name, relation, mobile) and set permissions <b>&rarr;</b> family member logs in by OTP <b>&rarr;</b> sees permitted data <b>&rarr;</b> receives notifications.</div></div>
+
+    <div class="flow"><div class="ftitle">Payment &amp; renewal</div>
+      <div class="fsteps">Client or family <b>&rarr;</b> Membership <b>&rarr;</b> pay or renew via gateway <b>&rarr;</b> invoice generated and downloadable <b>&rarr;</b> renewal reminder scheduled.</div></div>
+
+    <div class="flow"><div class="ftitle">Notifications (automated)</div>
+      <div class="fsteps">Cloud Functions trigger session reminders, trainer-arrival alerts (from trainer or admin action), payment reminders, and health tips, delivered by push.</div></div>
+
+    <div class="flow"><div class="ftitle">Admin operations (web)</div>
+      <div class="fsteps">Admin logs in <b>&rarr;</b> dashboard <b>&rarr;</b> manage clients, trainers, sessions, memberships, payments <b>&rarr;</b> configure notifications and content <b>&rarr;</b> review leads synced from Zoho.</div></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Screens<span class="cnt">36 total</span></h2></div>
+    <p class="muted small">The fixed fee covers the screen set below. Screens or features beyond this list are handled as change requests.</p>
+
+    <h3>Client mobile app <span class="cnt">16</span></h3>
+    <ul class="clean cols">
+      <li>Splash and OTP login</li><li>OTP verification</li>
+      <li>Dashboard / home</li><li>Upcoming sessions</li>
+      <li>Session detail (cancel / reschedule)</li><li>Session history</li>
+      <li>Trainer profile</li><li>Health reports overview</li>
+      <li>Report detail and progress charts</li><li>Attendance history</li>
+      <li>Membership and payments</li><li>Payment / renewal</li>
+      <li>Invoices and downloads</li><li>Notifications</li>
+      <li>Family members management</li><li>Profile and settings</li>
+    </ul>
+
+    <h3>Trainer / staff web <span class="cnt">8</span></h3>
+    <ul class="clean cols">
+      <li>Login</li><li>Dashboard (today's sessions)</li>
+      <li>Schedule / calendar</li><li>Client roster</li>
+      <li>Client detail and health record</li><li>Attendance marking</li>
+      <li>Session notes and assessment forms</li><li>Alerts and notifications</li>
+    </ul>
+
+    <h3>Admin web <span class="cnt">12</span></h3>
+    <ul class="clean cols">
+      <li>Login</li><li>Admin dashboard (KPIs)</li>
+      <li>Clients management</li><li>Family and permissions oversight</li>
+      <li>Trainers and staff management</li><li>Sessions management</li>
+      <li>Memberships management</li><li>Payments and invoices</li>
+      <li>Reports and assessment config</li><li>Notifications and content</li>
+      <li>Leads (Zoho sync view)</li><li>Settings and roles</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">05</span><h2>Technology</h2></div>
+    <table>
+      <tbody>
+        <tr><th>Mobile app</th><td>Flutter (Android and iOS from one codebase)</td></tr>
+        <tr><th>Web dashboards</th><td>Flutter Web or React for admin and trainer (confirmed at kickoff)</td></tr>
+        <tr><th>Database</th><td>Cloud Firestore</td></tr>
+        <tr><th>Authentication</th><td>Firebase Auth, mobile OTP (phone sign-in)</td></tr>
+        <tr><th>Business logic</th><td>Cloud Functions (serverless), event-driven for notifications and payment orchestration</td></tr>
+        <tr><th>Storage</th><td>Cloud Storage for reports and media</td></tr>
+        <tr><th>Notifications</th><td>Firebase Cloud Messaging (push)</td></tr>
+        <tr><th>Web hosting</th><td>Firebase Hosting, Cloudflare Pages, or Vercel (free tier), on a subdomain of the client's existing domain</td></tr>
+        <tr><th>Integrations</th><td>Zoho (lead management), payment gateway (Razorpay or Stripe)</td></tr>
+        <tr><th>Security</th><td>Firestore security rules, role-based access, encryption in transit and at rest</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Payments via Razorpay</h2></div>
+    <p class="lead">Membership payments and renewals in the client app are processed through Razorpay, integrated into the in-app checkout. Razorpay supports UPI, debit and credit cards, net banking, and wallets.</p>
+
+    <h3>How it works</h3>
+    <div class="flow"><div class="fsteps">Client or family taps pay or renew <b>&rarr;</b> Razorpay checkout (UPI, card, net banking, wallet) <b>&rarr;</b> payment authorised <b>&rarr;</b> Razorpay confirms to Cloud Functions by webhook <b>&rarr;</b> invoice generated and membership updated <b>&rarr;</b> funds settle to the Fit4steps bank account in about T+2 business days.</div></div>
+
+    <h3>Commission (per successful transaction)</h3>
+    <table>
+      <thead><tr><th>Payment method</th><th class="num">Razorpay fee</th></tr></thead>
+      <tbody>
+        <tr><th>UPI, debit, credit, net banking, wallets (domestic)</th><td class="num">2% + 18% GST (&asymp; 2.36%)</td></tr>
+        <tr><th>EMI, Amex / Diners, Pay Later (premium)</th><td class="num">&asymp; 3% + GST</td></tr>
+        <tr><th>International cards</th><td class="num">3% + GST</td></tr>
+        <tr><th>Setup fee / AMC</th><td class="num">None</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted" style="margin-top:8px;">GST applies to the Razorpay fee only, not the full transaction value. UPI carries zero MDR, so a higher UPI share lowers the blended rate. Domestic payments settle in about T+2.</p>
+
+    <h3>Worked example &mdash; &#8377;1,000 payment (standard 2%)</h3>
+    <table>
+      <tbody>
+        <tr><th>Razorpay fee (2%)</th><td class="num">&#8377;20.00</td></tr>
+        <tr><th>GST on fee (18%)</th><td class="num">&#8377;3.60</td></tr>
+        <tr class="total"><th>Total deducted</th><td class="num">&#8377;23.60</td></tr>
+        <tr><th>Net settled to Fit4steps</th><td class="num">&#8377;976.40</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Costing.</strong> Razorpay charges only on successful transactions, deducted automatically, with no fixed monthly or setup cost. This is a running cost on Fit4steps revenue and is borne by the client. Razorpay integration into the app is included in the development scope; the transaction fees themselves are not a Brilworks charge.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Charges</h2></div>
+
+    <h3>Development (one-time)</h3>
+    <table>
+      <tbody>
+        <tr><th>Build and delivery of the listed scope</th><td class="num">&#8377;1,50,000</td></tr>
+        <tr><th>GST @ 18%</th><td class="num">&#8377;27,000</td></tr>
+        <tr class="total"><th>Total payable</th><td class="num">&#8377;1,77,000</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Firebase running cost (monthly, indicative)</h3>
+    <p class="muted small">Blaze pay-as-you-go. Google bills in USD; figures below are indicative INR at &asymp; &#8377;95/USD. Usage-based and driven by reads and writes, not user count alone. FCM push is free.</p>
+    <table>
+      <thead><tr><th>Component</th><th class="num">150 users</th><th class="num">500 users</th><th class="num">1,000 users</th></tr></thead>
+      <tbody>
+        <tr><th>Firestore (reads, writes, storage)</th><td class="num">&#8377;0&ndash;300</td><td class="num">&#8377;300&ndash;800</td><td class="num">&#8377;700&ndash;1,600</td></tr>
+        <tr><th>Cloud Functions</th><td class="num">&#8377;0*</td><td class="num">&#8377;0&ndash;200</td><td class="num">&#8377;200&ndash;500</td></tr>
+        <tr><th>Cloud Storage</th><td class="num">&#8377;0&ndash;100</td><td class="num">&#8377;100&ndash;250</td><td class="num">&#8377;250&ndash;500</td></tr>
+        <tr><th>Hosting</th><td class="num">&#8377;0&ndash;100</td><td class="num">&#8377;100&ndash;200</td><td class="num">&#8377;200&ndash;400</td></tr>
+        <tr><th>Cloud Messaging (push)</th><td class="num">Free</td><td class="num">Free</td><td class="num">Free</td></tr>
+        <tr class="total"><th>Estimated infra total / month</th><td class="num">&#8377;0&ndash;600</td><td class="num">&#8377;600&ndash;1,450</td><td class="num">&#8377;1,350&ndash;3,000</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted" style="margin-top:8px;">*Within the free 2 million invocations per month when functions are event-driven. OTP / phone verification is a separate cost, shown below.</p>
+    <div class="callout"><strong>Cost note.</strong> At 150 to 1,000 users the platform sits largely inside Firebase's free quotas. Firebase has no hard spending cap, so notification and reporting logic is built event-driven to avoid read amplification. Any high-traffic scaling beyond standard usage is a separate exercise (see Terms).</div>
+
+    <h3>Deployment fees (third-party, at cost, paid by client)</h3>
+    <table>
+      <thead><tr><th>Item</th><th class="num">Fee</th></tr></thead>
+      <tbody>
+        <tr><th>Apple Developer Program</th><td class="num">&asymp; &#8377;9,400 / year</td></tr>
+        <tr><th>Google Play Console</th><td class="num">&asymp; &#8377;2,375 one-time</td></tr>
+        <tr><th>Firebase Blaze billing account</th><td class="num">Pay-as-you-go (above)</td></tr>
+        <tr><th>Web hosting (Firebase / Cloudflare / Vercel)</th><td class="num">Free tier</td></tr>
+        <tr><th>Domain / subdomain</th><td class="num">Client's existing domain &mdash; no cost</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted" style="margin-top:8px;">Private or internal iOS distribution still requires the paid Apple account. The web dashboards deploy to a subdomain of the client's existing domain at no hosting cost on a free tier; SSL is included free. All fees shown in INR; Apple and Google bill in USD, converted at &asymp; &#8377;95/USD (rate as of 3 Aug 2026). Under the growth partnership (Section 09), Brilworks publishes from its own store accounts, so these two store fees do not apply to the client.</p>
+
+    <h3>OTP / phone verification (client bears cost, choose one)</h3>
+    <table>
+      <thead><tr><th>Route</th><th class="num">Setup (one-time)</th><th class="num">Per OTP</th><th class="num">Per user / month*</th></tr></thead>
+      <tbody>
+        <tr><th>Self-managed DLT SMS (India)</th><td class="num">&#8377;5,000&ndash;6,000</td><td class="num">&#8377;0.12&ndash;0.25</td><td class="num">&asymp; &#8377;0.40&ndash;0.75</td></tr>
+        <tr><th>Firebase Phone Auth</th><td class="num">None</td><td class="num">&#8377;5&ndash;6</td><td class="num">&asymp; &#8377;15&ndash;18</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted" style="margin-top:8px;">*Assumes about 3 OTPs per user per month (onboarding plus occasional re-login); fewer with long-lived sessions. DLT SMS adds carrier and aggregator plan charges on top of the per-SMS rate. Firebase Phone Auth is billed by Google (~$0.05&ndash;0.06 per verification in India, shown in INR at &asymp; &#8377;95/USD).</p>
+
+    <h3>Approximate monthly OTP cost by user base</h3>
+    <table>
+      <thead><tr><th>App users (incl. family)</th><th class="num">DLT SMS</th><th class="num">Firebase Phone Auth</th></tr></thead>
+      <tbody>
+        <tr><th>150</th><td class="num">&#8377;55&ndash;115</td><td class="num">&#8377;2,250&ndash;2,700</td></tr>
+        <tr><th>500</th><td class="num">&#8377;180&ndash;375</td><td class="num">&#8377;7,500&ndash;9,000</td></tr>
+        <tr><th>1,000</th><td class="num">&#8377;360&ndash;750</td><td class="num">&#8377;15,000&ndash;18,000</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted" style="margin-top:8px;">Counts are total app users, not client count. Each client may add up to 3 family members, each with a separate login and OTPs, so size on total users. Example: 150 clients with family &asymp; up to 600 users, roughly &#8377;220&ndash;450 / month on DLT or &#8377;9,000&ndash;10,800 / month on Firebase Phone Auth. DLT is mandatory for self-managed SMS and is cheaper per OTP at volume but needs setup and template approval; Firebase Phone Auth avoids DLT at a higher per-OTP rate.</p>
+
+    <div class="callout"><strong>Suggestion.</strong> If you would rather not go through the DLT registration process upfront, two routes avoid it: Firebase Phone Auth (&#8377;5&ndash;6 per OTP, no DLT setup), or Google email-based sign-in (Google Sign-In), which has no per-login cost. DLT SMS stays the cheapest per-OTP option at volume but needs registration and template approval. The choice is yours; a common path is to launch on Firebase or Google sign-in and move to a DLT route later if SMS volume grows.</div>
+
+    <h3>Annual Maintenance Contract (optional)</h3>
+    <table>
+      <tbody>
+        <tr><th>AMC fee</th><td class="num">&#8377;20,000 / quarter, up to 20 hours support</td></tr>
+      </tbody>
+    </table>
+    <ul class="terms" style="margin-top:12px;">
+      <li>Hours are strictly allocated for bug fixes and maintenance of existing features only.</li>
+      <li>New feature development, enhancements, or scope changes are separately estimated for cost and timeline, and work proceeds only after mutual agreement.</li>
+      <li>Hours are valid within the respective quarter only. Unused hours expire and cannot be carried forward.</li>
+    </ul>
+    <div class="callout" style="margin-top:14px;"><strong>Running costs borne by the client.</strong> Firebase usage (above), OTP SMS, and Razorpay transaction fees (see Payments) are paid by the client and are not Brilworks charges.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">08</span><h2>Alternative: client app only (Zoho web for admin &amp; staff)</h2></div>
+    <p class="lead">A lighter, lower-cost engagement. Fit4steps takes only the client mobile app; administrators, staff, and trainers continue to work in Zoho's own web interface, so no custom admin or trainer dashboards are built. The app is backed by a light Firebase layer (Cloud Functions) that securely brokers calls to the Zoho CRM and app APIs. Zoho remains the operational record store, not lead-only.</p>
+    <p class="lead">The light backend keeps Zoho credentials server-side, never on the device, handles OTP, powers push notifications, and confirms payments by webhook. It caches and batches Zoho calls to stay within Zoho's included API limits.</p>
+
+    <h3>What stays in Zoho</h3>
+    <ul class="clean cols">
+      <li>Client, session and membership records</li>
+      <li>Trainer and staff management</li>
+      <li>Health assessments and progress entry</li>
+      <li>Payment and invoice records</li>
+    </ul>
+
+    <h3>Client app scope <span class="cnt">13 screens</span></h3>
+    <ul class="clean cols">
+      <li>Splash and OTP login</li><li>OTP verification</li>
+      <li>Dashboard</li><li>Upcoming sessions</li>
+      <li>Session detail (book / cancel / reschedule)</li><li>Session history</li>
+      <li>Trainer profile</li><li>Health reports overview</li>
+      <li>Report detail and progress</li><li>Membership and payments</li>
+      <li>Payment / renewal</li><li>Invoices</li>
+      <li>Profile and settings</li>
+    </ul>
+
+    <h3>Scope limits</h3>
+    <p class="lead">This option builds the client app plus the light Firebase broker only. It does not include custom admin or trainer web apps (staff use Zoho's own web) or family-member access and permissions, which remain full-platform features. What the app can show depends on the data Zoho holds and exposes through its API. OTP uses Firebase Phone Auth or an SMS route (see OTP costs in Section 07).</p>
+
+    <h3>Charges</h3>
+    <table>
+      <tbody>
+        <tr><th>Build and delivery (client app only)</th><td class="num">&#8377;1,25,000</td></tr>
+        <tr><th>GST @ 18%</th><td class="num">&#8377;22,500</td></tr>
+        <tr class="total"><th>Total payable</th><td class="num">&#8377;1,47,500</td></tr>
+      </tbody>
+    </table>
+    <p class="small muted" style="margin-top:8px;">Running costs for this option: OTP / phone verification, Razorpay transaction fees, app-store fees, light Firebase usage (Cloud Functions for the API broker and notifications, typically within free quotas), and Zoho API usage.</p>
+
+    <h3>Zoho API cost</h3>
+    <p class="lead">Zoho CRM meters API access with a daily credit system that is included with the client's existing edition: about 50,000 base credits per day plus a per-user allowance (roughly 250, 500, or 1,000 credits per user on Standard, Professional, and Enterprise). Most calls cost one credit. For this user base, and with the broker caching and batching calls, usage normally stays within the included credits at no extra cost. If sync volume exceeds them, additional Zoho API credits are inexpensive (about &#8377;13 per 1,000 credits for the first slab) and are borne by the client.</p>
+    <div class="callout"><strong>How this differs from the full platform.</strong> The full platform (Section 07) uses Firebase as the system of record and adds custom admin and trainer web apps and family access. This option keeps Zoho as the record store, uses Zoho's own web for staff, and builds the client app plus a light Firebase broker.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">09</span><h2>Optional: growth partnership</h2></div>
+    <p class="lead">As an alternative to the one-time build fee, Fit4steps may engage Brilworks on a partnership basis. This model is separate from the fixed-price option above; the two are alternatives, and Fit4steps chooses one.</p>
+    <table>
+      <tbody>
+        <tr><th>Upfront fee</th><td class="num">&#8377;25,000 + GST</td></tr>
+        <tr><th>Revenue share</th><td class="num">5% of gross revenue, monthly</td></tr>
+      </tbody>
+    </table>
+    <ul class="terms" style="margin-top:12px;">
+      <li><strong>Cost responsibility.</strong> The client bears the running costs listed below. The 5% share is calculated on gross revenue and is separate from, and additional to, these costs. It is not netted against them.</li>
+      <li><strong>App-store accounts.</strong> Brilworks publishes the apps using its own Play Store and App Store developer accounts, so the client does not pay the Apple or Google Play fees.</li>
+      <li><strong>Reporting &amp; audit.</strong> Monthly revenue statements, with an annual audit right.</li>
+      <li><strong>Support.</strong> Support and maintenance are included while the partnership runs.</li>
+      <li><strong>Ownership.</strong> Convert to full ownership at any time by separate agreement.</li>
+    </ul>
+
+    <h3>Running costs the client pays under the partnership</h3>
+    <table>
+      <thead><tr><th>Cost</th><th class="num">Approx amount (client-borne)</th></tr></thead>
+      <tbody>
+        <tr><th>Firebase (backend)</th><td class="num">&#8377;0&ndash;3,000 / month by user tier (Section 07)</td></tr>
+        <tr><th>OTP / phone verification</th><td class="num">DLT SMS &asymp; &#8377;0.40&ndash;0.75 / user / mo<br>Firebase Phone Auth &asymp; &#8377;15&ndash;18 / user / mo<br>Google sign-in &mdash; no cost</td></tr>
+        <tr><th>Razorpay transactions</th><td class="num">&asymp; 2.36% per payment</td></tr>
+        <tr><th>Zoho API</th><td class="num">Usually within edition credits; add-ons &asymp; &#8377;13 / 1,000</td></tr>
+        <tr><th>Play Store &amp; App Store accounts</th><td class="num">&#8377;0 &mdash; covered by Brilworks</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><strong>Note.</strong> Under the partnership the upfront development fee is &#8377;25,000 + GST; Brilworks is otherwise compensated through the revenue share. The client funds the running costs above directly, while the app-store account fees are covered by Brilworks.</div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="sec-num">10</span><h2>Terms &amp; conditions</h2></div>
+    <ul class="terms">
+      <li><strong>Warranty.</strong> 15 calendar-day post-delivery warranty. Any in-scope issues faced by the client are fixed free of charge. Out-of-scope issues (new features, hosting errors, third-party changes) are chargeable as change requests (CR).</li>
+      <li><strong>Performance.</strong> Optimised for standard usage. Scaling for high traffic is charged separately.</li>
+      <li><strong>Deployment.</strong> We assist with deployment. Hosting issues are the client's responsibility.</li>
+      <li><strong>Scope changes.</strong> Post-approval changes need fresh estimation.</li>
+      <li><strong>Security.</strong> Basic security is included. Compliance (GDPR and similar) is charged separately.</li>
+      <li><strong>Approvals.</strong> Delays from the client side may shift timelines.</li>
+      <li><strong>Testing.</strong> Carried out on 1 Android device (latest OS), 1 iOS device (latest OS), and 1 web browser (Chrome), or the client's choice agreed before the project starts.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><strong>Brilworks</strong> &middot; Detailed proposal for Fit4steps Wellness LLP</span>
+    <span>Confidential &middot; Valid 30 days from issue</span>
+  </div>
+</footer>
+
+</body>
+</html>
