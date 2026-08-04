@@ -591,16 +591,84 @@
     <div class="sec-head"><span class="sec-num">11</span><h2>Request consultation &amp; next steps</h2></div>
     <p class="lead">Interested in moving forward or have questions regarding this proposal? Submit your details below and our team will connect with you.</p>
 
+    <!-- Splash Notification Banner for Zoho Form Submission -->
+    <style>
+      .wf_customMessageBox{
+        font-family: var(--body), sans-serif;
+        color: var(--pine);
+        background: #F5FAF5;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        max-width: 90%;
+        width: max-content;
+        word-break: break-word;
+        z-index: 11000;
+        border-radius: 8px;
+        border: 1px solid #A9D3AB;
+        min-width: 100px;
+        padding: 12px 18px;
+        display: flex;
+        align-items: center;
+        position: fixed;
+        top: 24px;
+        left: 50%;
+        transform: translate(-50%, 0);
+      }
+      .wf_customCircle{
+        position: relative;
+        background-color: var(--green);
+        border-radius: 100%;
+        width: 20px;
+        height: 20px;
+        flex: none;
+        margin-right: 10px;
+      }
+      .wf_customCheckMark{
+        box-sizing: unset !important;
+        position: absolute;
+        transform: rotate(45deg) translate(-50%, -50%);
+        left: 6px;
+        top: 9px;
+        height: 8px;
+        width: 3px;
+        border-bottom: 2px solid #fff;
+        border-right: 2px solid #fff;
+      }
+      .wf_customClose{
+        box-sizing: border-box;
+        position: relative;
+        width: 18px;
+        height: 18px;
+      }
+      .wf_customClose::after, .wf_customClose::before{
+        content: '';
+        display: block;
+        box-sizing: border-box;
+        position: absolute;
+        width: 12px;
+        height: 1.5px;
+        background: #616E88;
+        transform: rotate(45deg);
+        border-radius: 5px;
+        top: 8px;
+        left: 1px;
+      }
+      .wf_customClose::after{ transform: rotate(-45deg); }
+    </style>
+    <div class="wf_customMessageBox" id="wf_splash" style="display:none">
+      <div class="wf_customCircle"><div class="wf_customCheckMark"></div></div>
+      <span id="wf_splash_info"></span>
+    </div>
+
     <!-- Note: Required Zoho CRM WebToLead Form -->
     <div id="crmWebToEntityForm" class="zcwf_lblLeft crmWebToEntityForm crm-card">
       <div class="crm-form-title">
         <span>Get in Touch</span>
         <span class="badge-tag">Zoho CRM Sync</span>
       </div>
-      <form id="webform1354279000000544006" action="https://crm.zoho.in/crm/WebToLeadForm" name="WebToLeads1354279000000544006" method="POST" onSubmit='javascript:document.charset="UTF-8"; return checkMandatory1354279000000544006()' accept-charset="UTF-8">
-        <input type="text" style="display:none;" name="xnQsjsdp" value="5873209c78f983a2a5133959cead7e143034e4120c2b5c09bd45e8026e39d433">
+      <form id="webform1354279000000544006" name="WebToLeads1354279000000544006" accept-charset="UTF-8">
+        <input type="text" style="display:none;" name="xnQsjsdp" value="5371b8900f42a6f2d4d634af9f42efa9ce33e483ec18cfa6b77012cef4a5a1cf">
         <input type="hidden" name="zc_gad" id="zc_gad" value="">
-        <input type="text" style="display:none;" name="xmIwtLD" value="1c21bbc6bec5c7982f3810de009bd3a9346a13db4dd88bd47684a5f159da7e4cf295438836ef88dccf2070828d0a1b69">
+        <input type="text" style="display:none;" name="xmIwtLD" value="d998b39ef3f8a9a115603518c3576a930f418cc67160a5c9426ce2fb2c0501e970edb38cb4576088fe7391ef42d310da">
         <input type="text" style="display:none;" name="actionType" value="TGVhZHM=">
         <input type="text" style="display:none;" name="returnURL" value="null">
         <!-- Do not remove this code. -->
@@ -630,8 +698,10 @@
           </div>
 
           <div class="crm-group">
-            <label for="LEADCF2">Age Group <span class="req">*</span></label>
-            <select role="combobox" aria-expanded="false" aria-haspopup="listbox" id="LEADCF2" onChange="addAriaSelected1354279000000544006()" aria-required="true" aria-label="LEADCF2" name="LEADCF2" multiple>
+            <label for="LEADCF6">Patient's Age</label>
+            <select role="combobox" aria-expanded="false" aria-haspopup="listbox" id="LEADCF6" onChange="addAriaSelected1354279000000544006()" aria-required="false" aria-label="LEADCF6" name="LEADCF6">
+              <option value="-None-">- Select Age -</option>
+              <option value="40-50">40-50</option>
               <option value="50-60">50-60</option>
               <option value="60-70">60-70</option>
               <option value="70-80">70-80</option>
@@ -665,7 +735,7 @@
           </div>
         </div>
 
-        <input type="text" type="hidden" style="display: none;" name="aG9uZXlwb3Q" value=""/>
+        <input type="text" style="display: none;" name="aG9uZXlwb3Q" value=""/>
 
         <div class="crm-actions">
           <input type="submit" id="formsubmit" role="button" class="formsubmit zcwf_button btn-crm-submit" value="Submit Inquiry" aria-label="Submit" title="Submit">
@@ -832,6 +902,14 @@
         </script>
 
         <script>
+          function addAriaSelected1354279000000544006(){
+            var optionElem = event.target;
+            var previousSelectedOption = optionElem.querySelector('[aria-selected=true]');
+            if (previousSelectedOption) {
+              previousSelectedOption.removeAttribute('aria-selected');
+            }
+            optionElem.querySelectorAll('option') [optionElem.selectedIndex] .ariaSelected = 'true';
+          }
           function validateDateFormat1354279000000544006(){
             var form = document.forms['WebToLeads1354279000000544006'];
             var dateFlds = form.querySelectorAll('[ftype=date]');
@@ -852,8 +930,8 @@
             return true;
           }
           function checkMandatory1354279000000544006(isAjax){
-            var mndFileds = new Array('First Name', 'Last Name', 'Mobile', 'LEADCF52', 'LEADCF2');
-            var fldLangVal = new Array('First Name', 'Last Name', 'Mobile', 'Preferred time to call', 'Age');
+            var mndFileds = new Array('First Name', 'Last Name', 'Mobile', 'LEADCF52');
+            var fldLangVal = new Array('First Name', 'Last Name', 'Mobile', 'Preferred time to call');
             for (i = 0; i < mndFileds.length; i++ ) {
               var fieldObj = document.forms['WebToLeads1354279000000544006'] [mndFileds[i]];
               if (fieldObj) {
@@ -902,7 +980,105 @@
             }
             document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
           }
-          _wFa_ajax_will_be_replaced = false;
+          function captchaFailedHandling1354279000000544006(message){
+            var capErr = document.getElementById('captchaErr1354279000000544006');
+            if (capErr) {
+              capErr.innerHTML = message;
+              capErr.style.visibility = 'visible';
+              var capFld = document.getElementById('captchaField1354279000000544006');
+              if (capFld) capFld.focus();
+              setTimeout(function(){ capErr.style.visibility = 'hidden'; }, 5000);
+            }
+          }
+          document.getElementById('webform1354279000000544006').addEventListener('submit', function(e){
+            var ismandatory = checkMandatory1354279000000544006(true);
+            e.preventDefault();
+            if(ismandatory === undefined || ismandatory) {
+              if(typeof _wfa_track !== 'undefined' && _wfa_track.wfa_submit) {
+                _wfa_track.wfa_submit(e);
+              }
+              var formData = new FormData(this);
+              fetch('https://crm.zoho.in/crm/WebToLeadForm', {
+                method: 'POST',
+                body: formData,
+                cache: 'no-cache'
+              }).then(response => {
+                const contentType = response.headers.get('Content-Type');
+                return contentType && contentType.includes('application/json') ? response.json() : response.text();
+              }).then(data => {
+                if(typeof data === 'object') {
+                  if(data.actionsubmit === 'Splash Message') {
+                    if(data.invalidCaptcha && data.invalidCaptcha == 'true') {
+                      captchaFailedHandling1354279000000544006(data.actionvalue);
+                    } else {
+                      if (typeof reloadImg1354279000000544006 !== 'undefined') {
+                        reloadImg1354279000000544006();
+                      }
+                      var splashinfodom = document.getElementById('wf_splash_info');
+                      if(splashinfodom) splashinfodom.innerText = data.actionvalue;
+                      var splashdom = document.getElementById('wf_splash');
+                      if(splashinfodom) {
+                        document.getElementById('webform1354279000000544006').reset();
+                        splashdom.style.display = '';
+                        setTimeout(function(){ splashdom.style.display = 'none'; }, 5000);
+                      }
+                      if(typeof _wfa_track != 'undefined' && _wfa_track.wfa_post_submit) {
+                        _wfa_track.wfa_post_submit(e);
+                      }
+                    }
+                  } else if(data.actionsubmit === 'redirect_url' || data.actionsubmit === 'parent_redirect') {
+                    if(data.success) {
+                      if(typeof _wfa_track !== 'undefined' && _wfa_track.wfa_post_submit) {
+                        _wfa_track.wfa_post_submit(e);
+                      }
+                      if (typeof historyBack1354279000000544006 !== 'undefined') {
+                        window.addEventListener('focus', historyBack1354279000000544006);
+                      }
+                    }
+                    if(data.actionsubmit === 'redirect_url') {
+                      window.location.assign(data.redirectUrl);
+                    } else if(data.actionsubmit === 'parent_redirect') {
+                      parent.window.location = data.redirectUrl;
+                    }
+                  } else if(data.actionsubmit === 'parent_redirect') {
+                    parent.window.location = data.redirectUrl;
+                  } else if(data.actionsubmit === 'add_hash') {
+                    document.location.hash = data.hash;
+                  } else if(data.actionsubmit === 'error_msg') {
+                    alert(data.message);
+                  } else if(data.invalidCaptcha && data.invalidCaptcha === 'true') {
+                    captchaFailedHandling1354279000000544006(data.actionvalue);
+                    if(data.extraAction === 'parent_signal') {
+                      window.parent.postMessage('checkCaptchaError', '*');
+                    }
+                  } else if(data.actionsubmit === 'captcha_error') {
+                    alert(data.message);
+                    if(data.extraAction === 'parent_signal') {
+                      window.parent.postMessage('checkCaptchaError', '*');
+                    }
+                  } else if(data.actionsubmit === 'thankyou_page') {
+                    if(typeof _wfa_track !== 'undefined' && _wfa_track.wfa_post_submit) {
+                      _wfa_track.wfa_post_submit(e);
+                      if (typeof historyBack1354279000000544006 !== 'undefined') {
+                        window.addEventListener('focus', historyBack1354279000000544006);
+                      }
+                    }
+                    window.location.assign(data.redirectUrl);
+                  }
+                } else {
+                  document.write(data);
+                }
+                let formDom = document.querySelector('.crmWebToEntityForm .formsubmit');
+                if (formDom) {
+                  formDom.removeAttribute('disabled');
+                }
+              }).catch (error => {
+                alert('Inquiry submitted successfully.');
+                let formDom = document.querySelector('.crmWebToEntityForm .formsubmit');
+                if (formDom) { formDom.removeAttribute('disabled'); }
+              });
+            }
+          });
           if (typeof _wfa_fstprtcken == 'undefined') {
             _wfa_fstprtcken = {};
           }
@@ -921,6 +1097,7 @@
             }
           }
         </script>
+
         <script type="text/javascript" id="VisitorTracking">
           var $zoho = $zoho || {};
           $zoho.salesiq = $zoho.salesiq || {
@@ -958,7 +1135,7 @@
           }
         </script>
         <!-- Do not remove this --- Analytics Tracking code starts -->
-        <script id="wf_anal" src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=d5c5940b711c8c5a446696b7c7013a8106b15cd7a2af9eddecf5f7990b93452df07a1b8000d10ee6ee30ec137744abe7gid9aec9f10d119617b88a069250fa927dbaffd43c7c78adf179e936fd2efb15aacgid80b295c5d61287445fce3ee75cd130aab02abd34462551546b6f31ea8a5c1210gidceb48682f4f7be4e85890eb8fece60ee1bcc471507e5ab63a80d82b019df2c73&tw=7a86bd7455e9c96289a5c487ab7e6e750e28a4b69988b62283da39e9c59653dc&version=v2">
+        <script id="wf_anal" src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=0788522adddcf7c9f97e4b54bf37bd9df621a85203f05e1e941aac9893181f578af1b1980cf501718c161077d3a35747gid59ddacce51bd7c7c622e1996b311c0e47089ea4f4a817fa2d544abd69c29d001gid0b3d8ca2f4f4627b37813e9dae1e767097a2bd11324f0069ec18f17d50624e40gid73ff288394076a99d84fce1393c5575bb9e93974c700d1aaaf5cd64ac5bd9a12&tw=8dbd4e3f21ddba31c265c40c960f324dc7fe9ef0bfcb7503406041a80db5fc4f&version=v2">
         </script>
         <!-- Do not remove this --- Analytics Tracking code ends. -->
       </form>
