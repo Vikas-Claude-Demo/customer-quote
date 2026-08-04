@@ -85,9 +85,124 @@
   .terms li{margin-bottom:9px;font-size:14px;}
   .terms strong{color:var(--pine);}
 
-  footer{background:var(--pine);color:#9fb6ab;padding:26px 0;font-size:12px;}
-  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-  footer strong{color:#E7EEE9;}
+  /* ---------- Zoho CRM Form Styling ---------- */
+  .crm-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 32px;
+    margin-top: 24px;
+    box-shadow: 0 4px 20px rgba(20, 48, 38, 0.04);
+  }
+  .crm-card .crm-form-title {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--pine);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .crm-card .crm-form-title span.badge-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: #EAF4F0;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .crm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .crm-grid .full-span {
+    grid-column: span 2;
+  }
+  .crm-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .crm-group label {
+    font-family: var(--body);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--pine);
+  }
+  .crm-group label span.req {
+    color: #d92d20;
+    margin-left: 2px;
+  }
+  .crm-group input[type="text"] {
+    width: 100% !important;
+    padding: 11px 14px !important;
+    border: 1.5px solid var(--line) !important;
+    border-radius: 8px !important;
+    font-family: var(--body) !important;
+    font-size: 14px !important;
+    color: var(--ink) !important;
+    background: #FAFAFA !important;
+    outline: none !important;
+    transition: all 0.15s ease !important;
+    box-sizing: border-box !important;
+    float: none !important;
+  }
+  .crm-group input[type="text"]:focus {
+    border-color: var(--green) !important;
+    background: #FFFFFF !important;
+    box-shadow: 0 0 0 3.5px rgba(47, 109, 91, 0.14) !important;
+  }
+  .crm-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .crm-actions input[type="submit"].btn-crm-submit {
+    background: var(--pine) !important;
+    color: #FFFFFF !important;
+    font-family: var(--body) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    padding: 12px 28px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    cursor: pointer !important;
+    max-width: none !important;
+    transition: all 0.15s ease !important;
+    box-shadow: 0 2px 6px rgba(20, 48, 38, 0.12) !important;
+  }
+  .crm-actions input[type="submit"].btn-crm-submit:hover {
+    background: var(--green) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(47, 109, 91, 0.25) !important;
+  }
+  .crm-actions input[type="reset"].btn-crm-reset {
+    background: transparent !important;
+    color: var(--muted) !important;
+    font-family: var(--body) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--line) !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+  }
+  .crm-actions input[type="reset"].btn-crm-reset:hover {
+    border-color: var(--pine) !important;
+    color: var(--pine) !important;
+    background: #F4F6F4 !important;
+  }
 
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
   @media (max-width:600px){
@@ -424,6 +539,161 @@
       <li><strong>Approvals.</strong> Delays from the client side may shift timelines.</li>
       <li><strong>Testing.</strong> Carried out on 1 Android device (latest OS), 1 iOS device (latest OS), and 1 web browser (Chrome), or the client's choice agreed before the project starts.</li>
     </ul>
+  </section>
+
+  <section id="contact">
+    <div class="sec-head"><span class="sec-num">11</span><h2>Request consultation &amp; next steps</h2></div>
+    <p class="lead">Interested in moving forward or have questions regarding this proposal? Submit your details below and our team will connect with you.</p>
+
+    <!-- Note: Required Zoho CRM WebToLead Form -->
+    <div id="crmWebToEntityForm" class="zcwf_lblLeft crmWebToEntityForm crm-card">
+      <div class="crm-form-title">
+        <span>Get in Touch</span>
+        <span class="badge-tag">Zoho CRM Sync</span>
+      </div>
+      <form id="webform1354279000000544006" action="https://crm.zoho.in/crm/WebToLeadForm" name="WebToLeads1354279000000544006" method="POST" onSubmit='javascript:document.charset="UTF-8"; return checkMandatory1354279000000544006()' accept-charset="UTF-8">
+        <input type="text" style="display:none;" name="xnQsjsdp" value="f217dc3cbc08ba0c83b8127a8f1172310a8d5a4f33972ad7c8420990fa7718ec">
+        <input type="hidden" name="zc_gad" id="zc_gad" value="">
+        <input type="text" style="display:none;" name="xmIwtLD" value="3d132122a5420e4464a49591bc58313d3896c4a84b774962aeb757f6555f5ccfa91bb3d9e4049da80ee881e8d544c3dd">
+        <input type="text" style="display:none;" name="actionType" value="TGVhZHM=">
+        <input type="text" style="display:none;" name="returnURL" value="null">
+        <!-- Do not remove this code. -->
+        <input type="text" style="display:none;" id="ldeskuid" name="ldeskuid">
+        <input type="text" style="display:none;" id="LDTuvid" name="LDTuvid">
+        <!-- Do not remove this code. -->
+
+        <div class="crm-grid">
+          <div class="crm-group">
+            <label for="First_Name">First Name <span class="req">*</span></label>
+            <input type="text" id="First_Name" aria-required="true" aria-label="First Name" name="First Name" aria-valuemax="40" maxlength="40" placeholder="e.g. John">
+          </div>
+          <div class="crm-group">
+            <label for="Last_Name">Last Name <span class="req">*</span></label>
+            <input type="text" id="Last_Name" aria-required="true" aria-label="Last Name" name="Last Name" aria-valuemax="80" maxlength="80" placeholder="e.g. Smith">
+          </div>
+          <div class="crm-group full-span">
+            <label for="Mobile">Mobile Number <span class="req">*</span></label>
+            <input type="text" id="Mobile" aria-required="true" aria-label="Mobile" name="Mobile" aria-valuemax="30" maxlength="30" placeholder="+91 98765 43210">
+          </div>
+        </div>
+
+        <input type="text" type="hidden" style="display: none;" name="aG9uZXlwb3Q" value=""/>
+
+        <div class="crm-actions">
+          <input type="submit" id="formsubmit" role="button" class="formsubmit zcwf_button btn-crm-submit" value="Submit Inquiry" aria-label="Submit" title="Submit">
+          <input type="reset" class="zcwf_button btn-crm-reset" role="button" name="reset" value="Reset" aria-label="Reset" title="Reset">
+        </div>
+
+        <script>
+          function checkMandatory1354279000000544006(isAjax){
+            var mndFileds = new Array('First Name', 'Last Name', 'Mobile');
+            var fldLangVal = new Array('First Name', 'Last Name', 'Mobile');
+            for (i = 0; i < mndFileds.length; i++ ) {
+              var fieldObj = document.forms['WebToLeads1354279000000544006'] [mndFileds[i]];
+              if (fieldObj) {
+                if(((fieldObj.value) .replace (/^\s+|\s+$/g,'') ) .length == 0) {
+                  if (fieldObj.type == 'file') {
+                    alert('Please select a file to upload.');
+                    fieldObj.focus();
+                    return false;
+                  }
+                  alert(fldLangVal[i] + ' cannot be empty.');
+                  fieldObj.focus();
+                  return false;
+                } else if (fieldObj.nodeName == 'SELECT') {
+                  if (fieldObj.options[fieldObj.selectedIndex].value == '-None-') {
+                    alert(fldLangVal[i] + ' cannot be none.');
+                    fieldObj.focus();
+                    return false;
+                  }
+                } else if (fieldObj.type == 'checkbox') {
+                  if (fieldObj.checked == false) {
+                    alert('Please accept  ' + fldLangVal[i]);
+                    fieldObj.focus();
+                    return false;
+                  }
+                }
+                try{
+                  if (fieldObj.name == 'Last Name') {
+                    name = fieldObj.value;
+                  }
+                } catch (e){}
+              }
+            }
+            trackVisitor1354279000000544006();
+            var urlparams = new URLSearchParams(window.location.search);
+            if (urlparams.has ('service') && (urlparams.get ('service') === 'smarturl') ) {
+              var webform = document.getElementById('webform1354279000000544006');
+              var service = urlparams.get('service');
+              var smarturlfield = document.createElement('input');
+              smarturlfield.setAttribute('type', 'hidden');
+              smarturlfield.setAttribute('value', service);
+              smarturlfield.setAttribute('name', 'service');
+              webform.appendChild(smarturlfield);
+            }
+            document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
+          }
+          _wFa_ajax_will_be_replaced = false;
+          if (typeof _wfa_fstprtcken == 'undefined') {
+            _wfa_fstprtcken = {};
+          }
+          _wfa_fstprtcken[1354279000000544006] = true;
+          function tooltipShow1354279000000544006(el){
+            var tooltip = el.nextElementSibling;
+            var tooltipDisplay = tooltip.style.display;
+            if (tooltipDisplay == 'none') {
+              var allTooltip = document.getElementsByClassName('zcwf_tooltip_over');
+              for (i = 0; i < allTooltip.length; i++ ) {
+                allTooltip[i].style.display = 'none';
+              }
+              tooltip.style.display = 'block';
+            } else {
+              tooltip.style.display = 'none';
+            }
+          }
+        </script>
+        <script type="text/javascript" id="VisitorTracking">
+          var $zoho = $zoho || {};
+          $zoho.salesiq = $zoho.salesiq || {
+            widgetcode: 'siqd0acb81ba37bf5750950bed7eacc5bfe882aa2e80d53afa8f45e6ddd5f9c2670',
+            values: {},
+            ready: function(){}
+          };
+          var d = document;
+          s = d.createElement('script');
+          s.type = 'text/javascript';
+          s.id = 'zsiqscript';
+          s.defer = true;
+          s.src = 'https://salesiq.zoho.in/widget';
+          t = d.getElementsByTagName('script')[0];
+          t.parentNode.insertBefore(s, t);
+          function trackVisitor1354279000000544006(){
+            try{
+              if ($zoho) {
+                var LDTuvidObj = document.forms['WebToLeads1354279000000544006'] ['LDTuvid'];
+                if (LDTuvidObj) {
+                  LDTuvidObj.value = $zoho.salesiq.visitor.uniqueid();
+                }
+                var firstnameObj = document.forms['WebToLeads1354279000000544006'] ['First Name'];
+                if (firstnameObj) {
+                  name = firstnameObj.value + ' ' + name;
+                }
+                $zoho.salesiq.visitor.name(name);
+                var emailObj = document.forms['WebToLeads1354279000000544006'] ['Email'];
+                if (emailObj) {
+                  email = emailObj.value;
+                  $zoho.salesiq.visitor.email(email);
+                }
+              }
+            } catch (e){}
+          }
+        </script>
+        <!-- Do not remove this --- Analytics Tracking code starts -->
+        <script id="wf_anal" src="https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=016bd28c5e626c365f7ff04e058b109ec07daffdf76a56a1ef588ff709bf0fd09b9c6f88980e0b1d5e3199f39373b31bgid107f8180882b31d1889e504817fdb44332d043112a428081ba1cdec247b88893gid2366127ee716bcabfda8b7ceaf61e354eb683f763dd904fc312077b73fa840eagid8fa4032303dd3b7cebad5b5b8b3cf0f8a8ff0c5dc6b76661d86c4ff176a8e55d&tw=7c05dd90c5d156f0e2bb0ba1f3ca9b3795875bf029c49a3d48df6e7335b86b01&version=v2">
+        </script>
+        <!-- Do not remove this --- Analytics Tracking code ends. -->
+      </form>
+    </div>
   </section>
 
 </main>
