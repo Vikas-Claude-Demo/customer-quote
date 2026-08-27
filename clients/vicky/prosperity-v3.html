@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prosperity — Policy &amp; Voice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#F4F5F6; --panel:#FFF; --line:#E3E5E7; --line-2:#D2D5D8;
+  --ink:#16191C; --body:#4E555B; --faint:#868D93;
+  --accent:#12574A; --accent-soft:#E9F1EF;
+  --blue:#20628C; --blue-soft:#EAF2F7;
+  --ok:#2F7047; --ok-soft:#E9F2EC;
+  --warn:#95650F; --warn-soft:#FBF2E1;
+  --bad:#98303F; --bad-soft:#FBECEE;
+  --r:7px; --sh:0 1px 2px rgba(22,25,28,.05);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--canvas);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:13.5px;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.012em}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+button{font-family:inherit;font-size:inherit;cursor:pointer;color:inherit}
+input,select{font-family:inherit;font-size:inherit}
+:focus-visible{outline:2px solid var(--blue);outline-offset:1px;border-radius:3px}
+
+/* shell */
+.app{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.side-h{padding:13px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px}
+.logo{width:26px;height:26px;border-radius:6px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:600;font-size:12px;flex:none}
+.side-h .n{font-weight:600;font-size:13.5px;line-height:1.2}
+.side-h .s{font-size:11px;color:var(--faint);line-height:1.2;margin-top:1px}
+.regwrap{padding:11px 12px;border-bottom:1px solid var(--line)}
+.reglab{font-size:10.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+.regsel{width:100%;border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--panel);color:var(--ink);font-size:12.5px;cursor:pointer}
+.regsel:hover{border-color:var(--line-2)}
+.navwrap{padding:10px 8px;flex:1}
+.navgroup{margin-bottom:14px}
+.navlabel{font-size:10.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);padding:0 8px;margin-bottom:4px}
+.navitem{display:flex;align-items:center;gap:9px;width:100%;padding:6px 8px;border:0;background:none;border-radius:6px;text-align:left;font-size:13px;color:var(--body);transition:background .1s}
+.navitem:hover{background:#F1F2F3;color:var(--ink)}
+.navitem[aria-current="true"]{background:var(--accent-soft);color:var(--accent);font-weight:500}
+.navitem svg{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+.navitem .ct{margin-left:auto;font-size:11px;font-weight:600;background:var(--bad-soft);color:var(--bad);padding:0 5px;border-radius:9px;line-height:16px}
+.side-f{padding:11px 14px;border-top:1px solid var(--line);font-size:11px;color:var(--faint)}
+
+.main{min-width:0;display:flex;flex-direction:column}
+.top{background:var(--panel);border-bottom:1px solid var(--line);padding:0 20px;display:flex;align-items:center;gap:14px;height:48px;position:sticky;top:0;z-index:30}
+.top h1{font-size:14.5px}
+.top .crumb{font-size:12.5px;color:var(--faint)}
+.top .sp{flex:1}
+.search{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:6px;padding:5px 9px;background:#FAFBFB;min-width:200px}
+.search:focus-within{border-color:var(--blue);background:#fff}
+.search svg{width:14px;height:14px;stroke:var(--faint);fill:none;stroke-width:1.7}
+.search input{border:0;background:none;outline:0;width:100%;font-size:12.5px}
+.search kbd{font-family:"IBM Plex Mono";font-size:10.5px;color:var(--faint);border:1px solid var(--line);border-radius:3px;padding:0 4px;background:#fff}
+.seg{display:flex;background:#EEEFF0;border-radius:7px;padding:2px}
+.seg button{border:0;background:none;padding:4px 10px;border-radius:5px;font-size:12px;font-weight:500;color:var(--faint);transition:.1s;white-space:nowrap}
+.seg button:hover{color:var(--body)}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:var(--sh)}
+.seglab{font-size:11px;color:var(--faint)}
+.rolebar{padding:7px 20px;font-size:12.5px;color:var(--body);border-bottom:1px solid var(--line);background:#FAFBFB}
+.rolebar b{font-weight:600;color:var(--ink)}
+.rolebar.blue{background:var(--blue-soft);border-bottom-color:#D5E5EF;color:#1A4B6B}
+.rolebar.blue b{color:#12374F}
+.wrap{padding:18px 20px 60px;max-width:1240px;width:100%}
+.view{display:none}.view.on{display:block}
+
+/* panels */
+.p{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh)}
+.p-h{padding:11px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.p-h h2,.p-h h3{font-size:13.5px}
+.p-h .sp{flex:1}
+.p-h .hint{font-size:12px;color:var(--faint)}
+.p-b{padding:14px}
+.p-f{padding:9px 14px;border-top:1px solid var(--line);background:#FAFBFB;border-radius:0 0 var(--r) var(--r);display:flex;gap:10px;align-items:center;font-size:12px;color:var(--faint);flex-wrap:wrap}
+.row{display:grid;gap:14px;margin-bottom:14px}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}
+.c21{grid-template-columns:1.65fr 1fr}
+.stack{display:flex;flex-direction:column;gap:14px}
+
+.btn{border:1px solid var(--line-2);background:var(--panel);padding:5px 10px;border-radius:6px;font-size:12.5px;font-weight:500;color:var(--body);box-shadow:var(--sh);transition:.1s;white-space:nowrap}
+.btn:hover{background:#F7F8F8;color:var(--ink);border-color:#BFC3C7}
+.btn-p{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-p:hover{background:#0E4A3F;border-color:#0E4A3F;color:#fff}
+.btn-b{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn-b:hover{background:#1A5477;border-color:#1A5477;color:#fff}
+.btn-xs{padding:3px 8px;font-size:12px}
+
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;padding:1px 7px;border-radius:5px;white-space:nowrap;border:1px solid transparent}
+.t-ok{background:var(--ok-soft);color:var(--ok);border-color:#CFE2D6}
+.t-warn{background:var(--warn-soft);color:var(--warn);border-color:#EDDDBB}
+.t-bad{background:var(--bad-soft);color:var(--bad);border-color:#F0D2D7}
+.t-blue{background:var(--blue-soft);color:var(--blue);border-color:#CFE0EB}
+.t-off{background:#F1F2F3;color:var(--faint);border-color:var(--line)}
+.t-a{background:var(--accent-soft);color:var(--accent);border-color:#CFE2DD}
+
+.m{padding:12px 14px}
+.m .k{font-size:11.5px;color:var(--faint);font-weight:500}
+.m .v{font-size:25px;font-weight:600;letter-spacing:-.03em;margin-top:5px;line-height:1;font-variant-numeric:tabular-nums}
+.m .v small{font-size:14px;font-weight:500;color:var(--faint)}
+.m .d{font-size:11.5px;color:var(--faint);margin-top:5px}
+.bar{height:4px;background:#EDEEEF;border-radius:3px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;border-radius:3px;background:var(--ok)}
+.bar i.w{background:var(--warn)}.bar i.b{background:var(--bad)}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{text-align:left;font-size:11px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--faint);padding:8px 14px;background:#FAFBFB;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover td{background:#F7F9FA}
+.tn{font-weight:500}
+.ts{font-size:11.5px;color:var(--faint);margin-top:1px}
+td.num{font-family:"IBM Plex Mono";font-size:12px;color:var(--body);white-space:nowrap}
+.tbl-p{overflow:hidden}
+
+/* QCS-convention columns, modernised */
+.ref{font-family:"IBM Plex Mono";font-size:11.5px;color:var(--body);background:#F1F2F3;border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+.sdot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.sdot.ok{background:var(--ok)}.sdot.warn{background:var(--warn)}.sdot.bad{background:var(--bad)}
+.imp{display:inline-flex;align-items:flex-end;gap:2px;height:11px}
+.imp i{width:3px;background:var(--line-2);border-radius:1px}
+.imp i:nth-child(1){height:4px}.imp i:nth-child(2){height:7.5px}.imp i:nth-child(3){height:11px}
+.imp[data-l="1"] i:nth-child(1){background:var(--faint)}
+.imp[data-l="2"] i:nth-child(1),.imp[data-l="2"] i:nth-child(2){background:var(--warn)}
+.imp[data-l="3"] i{background:var(--bad)}
+.legend{display:flex;gap:16px;align-items:center;font-size:11.5px;color:var(--faint);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.cathead td{background:#FAFBFB;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--body);padding:7px 14px}
+.cathead .n{color:var(--faint);font-weight:400;margin-left:6px}
+
+/* policy anatomy tabs */
+.atabs{display:flex;gap:2px;padding:0 14px;border-bottom:1px solid var(--line);overflow-x:auto;background:#FAFBFB}
+.atab{border:0;background:none;padding:9px 11px;font-size:12.5px;color:var(--faint);border-bottom:2px solid transparent;white-space:nowrap;transition:.1s;display:flex;align-items:center;gap:6px}
+.atab:hover{color:var(--body)}
+.atab[aria-selected="true"]{color:var(--ink);font-weight:500;border-bottom-color:var(--accent);background:var(--panel)}
+.atab.people[aria-selected="true"]{border-bottom-color:var(--blue);color:var(--blue)}
+.atab .mk{width:6px;height:6px;border-radius:50%;background:var(--bad)}
+.apane{display:none;padding:16px 18px}
+.apane.on{display:block}
+.apane h4{margin:0 0 9px;font-size:13px;font-weight:600}
+.apane p{margin:0 0 12px;font-size:13px;line-height:1.65;color:var(--body);max-width:80ch}
+.apane ul{margin:0 0 12px;padding-left:18px;font-size:13px;line-height:1.75;color:var(--body);max-width:80ch}
+.cl{font-family:"IBM Plex Mono";font-size:11px;color:var(--faint);margin-right:6px}
+.hl{background:var(--warn-soft);box-shadow:inset 0 -1px 0 #E0C68A;cursor:pointer}
+
+/* easy read */
+.desk{display:grid;grid-template-columns:1fr 1fr}
+.dk-h{padding:9px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px;font-size:12.5px;background:#FAFBFB}
+.dk-h .t{font-weight:500}
+.dk-h .r{margin-left:auto;color:var(--faint);font-size:11.5px}
+.dr{border-left:1px solid var(--line);background:#F8FBFC}
+.dr .dk-h{background:var(--blue-soft);border-bottom-color:#D5E5EF}
+.dk-b{padding:14px;height:376px;overflow-y:auto}
+.dl .dk-b p{font-size:12.5px;line-height:1.65;color:var(--body);margin:0 0 12px}
+.dl .dk-b li{font-size:12.5px;line-height:1.65;color:var(--body);margin-bottom:7px}
+.er{background:#fff;border:1px solid #D8E6EE;border-radius:6px;padding:11px;display:flex;gap:11px;align-items:flex-start;margin-bottom:9px;box-shadow:var(--sh)}
+.er:hover{border-color:#B6D0DE}
+.er-s{width:46px;height:46px;border-radius:5px;background:var(--blue-soft);display:grid;place-items:center;flex:none;border:1px solid #D8E6EE}
+.er-s svg{width:26px;height:26px;stroke:var(--blue);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.er-t{font-size:14.5px;line-height:1.45;color:#173747}
+.er-m{font-family:"IBM Plex Mono";font-size:10.5px;color:var(--faint);margin-top:5px}
+
+.ver{display:flex;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line)}
+.ver:last-child{border-bottom:0}
+.vn{font-family:"IBM Plex Mono";font-size:11px;background:#F1F2F3;color:var(--body);border:1px solid var(--line);border-radius:4px;padding:1px 5px;height:fit-content;flex:none}
+.diff{font-family:"IBM Plex Mono";font-size:11px;line-height:1.6;margin-top:8px;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.diff div{padding:4px 9px}
+.diff .add{background:var(--ok-soft);color:#255C36}
+.diff .del{background:var(--bad-soft);color:#7E2937;text-decoration:line-through;text-decoration-color:rgba(126,41,55,.35)}
+
+.quote{padding:12px 14px;border-bottom:1px solid var(--line)}
+.quote:last-child{border-bottom:0}
+.quote p{margin:0 0 6px;font-size:13.5px;line-height:1.55}
+.quote .by{font-size:11.5px;color:var(--faint)}
+.quote .out{font-size:12px;color:var(--body);margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+.q{padding:12px 14px;border-bottom:1px solid var(--line)}
+.q:last-child{border-bottom:0}
+.qt{font-size:13px;font-weight:500;margin-bottom:8px}
+.opt{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--body);padding:5px 9px;border:1px solid var(--line);border-radius:5px;margin-bottom:4px}
+.opt .m2{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--line-2);flex:none}
+.opt.r{border-color:#CFE2D6;background:var(--ok-soft);color:var(--ok)}
+.opt.r .m2{border-color:var(--ok);background:var(--ok);box-shadow:inset 0 0 0 2.5px #fff}
+
+.log td{font-family:"IBM Plex Mono";font-size:11.5px;padding:7px 14px}
+.log .h{color:var(--faint)}
+
+.phone{width:344px;border:1px solid var(--line-2);border-radius:16px;padding:8px;background:#EDEEEF;box-shadow:0 6px 20px -10px rgba(22,25,28,.25)}
+.pin{background:var(--panel);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.ptop{padding:12px 14px;border-bottom:1px solid var(--line);background:#FAFBFB}
+.ptop .n{font-size:14px;font-weight:600}
+.ptop .s{font-size:11.5px;color:var(--faint);margin-top:1px}
+.pit{padding:12px 14px;border-bottom:1px solid var(--line)}
+.pit:last-child{border-bottom:0}
+.pit .t{font-size:13.5px;font-weight:500;margin-top:7px}
+.pit .d{font-size:12px;color:var(--faint);margin-top:2px}
+.delta{border:1px solid var(--line);border-left:3px solid var(--warn);border-radius:0 5px 5px 0;padding:8px 10px;font-size:12.5px;line-height:1.55;margin-top:9px;color:var(--body);background:#FEFCF7}
+.delta .lab{font-family:"IBM Plex Mono";font-size:10px;color:var(--warn);display:block;margin-bottom:2px}
+.pacts{display:flex;gap:7px;margin-top:10px}
+.pacts .btn{flex:1;text-align:center}
+
+.tablet{width:560px;max-width:100%;border:1px solid var(--line-2);border-radius:14px;padding:8px;background:#EDEEEF;box-shadow:0 6px 20px -10px rgba(22,25,28,.25)}
+.tin{background:#fff;border:1px solid #D8E6EE;border-radius:9px;overflow:hidden}
+.ttop{padding:11px 18px;border-bottom:1px solid #D8E6EE;background:var(--blue-soft);display:flex;align-items:center;gap:10px}
+.ttop .t{font-size:15px;font-weight:600;color:#12374F}
+.ttop .pg{margin-left:auto;font-family:"IBM Plex Mono";font-size:12px;color:var(--blue);background:#fff;border:1px solid #CFE0EB;border-radius:20px;padding:1px 9px}
+.page{padding:34px 30px;min-height:262px;display:none;flex-direction:column;align-items:center;text-align:center;gap:22px}
+.page.on{display:flex}
+.page .sym{width:104px;height:104px;border-radius:9px;background:#F8FBFC;border:1px solid #D8E6EE;display:grid;place-items:center}
+.page .sym svg{width:58px;height:58px;stroke:var(--blue);fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.page .w{font-size:23px;line-height:1.4;font-weight:500;color:#173747;max-width:19ch;letter-spacing:-.015em}
+.tfoot{border-top:1px solid #D8E6EE;padding:11px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#FAFDFE}
+.big{border:1px solid #CFE0EB;background:#fff;border-radius:7px;padding:9px 14px;font-size:14px;font-weight:500;color:var(--blue);display:flex;align-items:center;gap:8px;box-shadow:var(--sh);transition:.1s}
+.big:hover{border-color:var(--blue);background:var(--blue-soft)}
+.big svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.big-y{border-color:#CFE2D6;color:var(--ok)}.big-y:hover{background:var(--ok-soft);border-color:var(--ok)}
+.big-n{border-color:#F0D2D7;color:var(--bad)}.big-n:hover{background:var(--bad-soft);border-color:var(--bad)}
+.said{display:none;margin-top:12px;width:560px;max-width:100%;font-size:13px;padding:10px 12px;border-radius:6px;border:1px solid}
+.said.on{display:block}
+
+.rc{padding:12px 14px;border-bottom:1px solid var(--line)}
+.rc:last-child{border-bottom:0}
+.rc .h{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.rc .h .n{font-size:13.5px;font-weight:600}
+.rc .h .c{margin-left:auto;font-family:"IBM Plex Mono";font-size:11.5px;color:var(--faint)}
+.rc ul{margin:0 0 8px;padding-left:16px;font-size:12.5px;color:var(--body);line-height:1.7}
+.rc .r{font-size:12px;color:var(--faint);background:#FAFBFB;border:1px solid var(--line);border-radius:5px;padding:7px 9px}
+.rung{display:flex;gap:14px;padding:10px 14px;border-bottom:1px solid var(--line);align-items:flex-start}
+.rung:last-child{border-bottom:0}
+.rung .w{font-family:"IBM Plex Mono";font-size:10.5px;color:var(--faint);width:88px;flex:none;padding-top:2px}
+.rung .t{font-size:12.5px;font-weight:500}
+.rung .d{font-size:11.5px;color:var(--faint);margin-top:2px}
+.hintbox{font-size:12px;color:var(--faint);padding:9px 14px;background:#FAFBFB;border-top:1px solid var(--line);line-height:1.55}
+.tools{display:flex;gap:7px;align-items:center;padding:9px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.chipf{border:1px solid var(--line);background:var(--panel);padding:3px 9px;border-radius:20px;font-size:12px;font-weight:500;color:var(--body);box-shadow:var(--sh)}
+.chipf:hover{border-color:var(--line-2)}
+.chipf[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chipf .n{opacity:.6;margin-left:4px}
+/* ---- authoring: start choices ---- */
+.wiz{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:14px}
+.wcard{border:1px solid var(--line);border-radius:8px;padding:14px;text-align:left;background:var(--panel);box-shadow:var(--sh);transition:.12s;display:flex;flex-direction:column;gap:8px;cursor:pointer}
+.wcard:hover{border-color:var(--accent);background:#FAFCFB}
+.wcard[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft),var(--sh)}
+.wcard .ic{width:32px;height:32px;border-radius:7px;background:var(--accent-soft);display:grid;place-items:center}
+.wcard .ic svg{width:17px;height:17px;stroke:var(--accent);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.wcard .t{font-size:13.5px;font-weight:600}
+.wcard .d{font-size:12px;color:var(--faint);line-height:1.55}
+
+/* ---- authoring: step rail ---- */
+.ed{display:grid;grid-template-columns:214px 1fr}
+.edrail{border-right:1px solid var(--line);background:#FAFBFB;padding:12px 10px}
+.step{display:flex;gap:10px;align-items:flex-start;width:100%;padding:8px 9px;border:0;background:none;border-radius:6px;text-align:left;transition:.1s}
+.step:hover{background:#F1F2F3}
+.step[aria-current="true"]{background:var(--panel);box-shadow:var(--sh);border:1px solid var(--line)}
+.step .n{width:19px;height:19px;border-radius:50%;border:1.5px solid var(--line-2);color:var(--faint);font-size:11px;font-weight:600;display:grid;place-items:center;flex:none;margin-top:1px}
+.step[aria-current="true"] .n{border-color:var(--accent);background:var(--accent);color:#fff}
+.step.done .n{border-color:var(--ok);background:var(--ok);color:#fff}
+.step .t{font-size:12.5px;font-weight:500;color:var(--body)}
+.step[aria-current="true"] .t{color:var(--ink)}
+.step .d{font-size:11px;color:var(--faint);margin-top:1px;line-height:1.4}
+.railfoot{margin-top:12px;padding:10px 9px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);line-height:1.5}
+
+.edmain{min-width:0}
+.edpane{display:none;padding:16px 18px}
+.edpane.on{display:block}
+.edpane h4{margin:0 0 3px;font-size:14px;font-weight:600}
+.edpane .sub2{font-size:12.5px;color:var(--faint);margin-bottom:16px;max-width:76ch;line-height:1.55}
+.field{margin-bottom:15px;max-width:760px}
+.field label{display:block;font-size:11.5px;font-weight:500;color:var(--body);margin-bottom:5px}
+.field .help{font-size:11.5px;color:var(--faint);margin-top:4px;line-height:1.5}
+.inp{width:100%;border:1px solid var(--line);border-radius:6px;padding:7px 10px;font-size:13px;color:var(--ink);background:var(--panel);transition:.1s}
+.inp:hover{border-color:var(--line-2)}
+.inp:focus{outline:0;border-color:var(--blue);box-shadow:0 0 0 3px rgba(32,98,140,.1)}
+textarea.inp{min-height:96px;resize:vertical;line-height:1.6;font-family:inherit}
+.inrow{display:flex;gap:10px;flex-wrap:wrap}
+.inrow .field{flex:1;min-width:170px;margin-bottom:0}
+.chk{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:6px;padding:9px 11px;margin-bottom:7px;cursor:pointer;transition:.1s;max-width:760px}
+.chk:hover{border-color:var(--line-2);background:#FAFBFB}
+.chk[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.chk .bx{width:15px;height:15px;border:1.5px solid var(--line-2);border-radius:4px;flex:none;margin-top:1px;display:grid;place-items:center}
+.chk[aria-pressed="true"] .bx{border-color:var(--accent);background:var(--accent)}
+.chk[aria-pressed="true"] .bx::after{content:"";width:7px;height:4px;border-left:1.6px solid #fff;border-bottom:1.6px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.chk .t{font-size:12.5px;font-weight:500}
+.chk .d{font-size:11.5px;color:var(--faint);margin-top:1px}
+.edbar{display:flex;gap:9px;align-items:center;padding:11px 18px;border-top:1px solid var(--line);background:#FAFBFB;flex-wrap:wrap}
+
+/* approval flow */
+.flow{display:flex;align-items:center;gap:0;flex-wrap:wrap}
+.fstep{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--faint);padding:4px 11px;border:1px solid var(--line);background:var(--panel);border-right:0}
+.fstep:first-child{border-radius:6px 0 0 6px}
+.fstep:last-child{border-radius:0 6px 6px 0;border-right:1px solid var(--line)}
+.fstep .b{width:6px;height:6px;border-radius:50%;background:var(--line-2)}
+.fstep.done{color:var(--ok);background:var(--ok-soft);border-color:#CFE2D6}
+.fstep.done .b{background:var(--ok)}
+.fstep.now{color:var(--ink);font-weight:600;background:var(--warn-soft);border-color:#EDDDBB}
+.fstep.now .b{background:var(--warn)}
+
+.demo{position:fixed;right:12px;bottom:12px;font-family:"IBM Plex Mono";font-size:10.5px;color:var(--faint);background:var(--panel);padding:3px 8px;border:1px solid var(--line);border-radius:4px;box-shadow:var(--sh)}
+
+@media (max-width:1000px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  .navwrap{display:flex;flex-wrap:wrap;gap:10px}.navgroup{margin-bottom:0}
+  .side-f{display:none}
+  .c2,.c3,.c4,.c21,.desk{grid-template-columns:1fr}
+  .dr{border-left:0;border-top:1px solid var(--line)}
+  .dk-b{height:auto;max-height:300px}
+  .search,.seglab{display:none}
+  .phone,.tablet,.said{width:100%}
+  .page .w{font-size:20px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<svg style="display:none" aria-hidden="true"><defs>
+<g id="s-pill"><rect x="3" y="9" width="18" height="7" rx="3.5"/><path d="M12 9v7"/></g>
+<g id="s-person"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/></g>
+<g id="s-talk"><path d="M3.5 5.5h17v10h-9l-5 4v-4h-3z"/><path d="M8 10.5h8M8 13h5"/></g>
+<g id="s-tick"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.7 2.7L16.2 9.5"/></g>
+<g id="s-warn"><path d="M12 3.5l9 16H3z"/><path d="M12 9.5v4.5M12 17h.01"/></g>
+<g id="s-home"><path d="M3.5 10.5L12 4l8.5 6.5V20h-17z"/><path d="M9.5 20v-6h5v6"/></g>
+<g id="s-phone"><path d="M6 3.5h4l1.5 4-2.4 1.7a12 12 0 0 0 5.7 5.7l1.7-2.4 4 1.5v4a1.5 1.5 0 0 1-1.6 1.5C11.6 19 5 12.4 4.5 5.1A1.5 1.5 0 0 1 6 3.5z"/></g>
+<g id="s-heart"><path d="M12 20s-7.5-4.6-7.5-9.5A4.2 4.2 0 0 1 12 7.8a4.2 4.2 0 0 1 7.5 2.7C19.5 15.4 12 20 12 20z"/></g>
+<g id="s-cal"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></g>
+<g id="s-no"><circle cx="12" cy="12" r="9"/><path d="M6 6l12 12"/></g>
+<g id="s-q"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 1 1 3 2.5v1.6M12 17h.01"/></g>
+</defs></svg>
+
+<div class="app">
+<aside class="side">
+  <div class="side-h"><div class="logo">P</div><div><div class="n">Prosperity</div><div class="s" id="bsub">Policy &amp; Voice</div></div></div>
+  <div class="regwrap" id="regbox">
+    <div class="reglab">Registration</div>
+    <select class="regsel"><option>All registrations</option><option selected>Supported Living — Cheltenham</option><option>Domiciliary Care — Gloucestershire</option><option>Wellbeing Outreach — Stroud</option></select>
+  </div>
+  <div class="navwrap" id="nav"></div>
+  <div class="side-f">Prototype · fictional data</div>
+</aside>
+
+<div class="main">
+<header class="top">
+  <h1 id="ptitle">Readiness</h1>
+  <span class="crumb" id="crumb">Supported Living — Cheltenham</span>
+  <div class="sp"></div>
+  <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><input placeholder="Search by ref or title"><kbd>/</kbd></div>
+  <span class="seglab">Viewing as</span>
+  <div class="seg" id="roles">
+    <button data-role="admin" aria-pressed="true">Manager</button>
+    <button data-role="staff" aria-pressed="false">Staff</button>
+    <button data-role="reader" aria-pressed="false">Person supported</button>
+    <button data-role="viewer" aria-pressed="false">Viewer</button>
+  </div>
+</header>
+<div id="rolebar"></div>
+
+<!-- ============ READINESS ============ -->
+<section class="view on" id="v-readiness"><div class="wrap">
+  <div class="row c4">
+    <div class="p m"><div class="k">Inspection readiness</div><div class="v">86<small>%</small></div><div class="bar"><i class="w" style="width:86%"></i></div></div>
+    <div class="p m"><div class="k">Staff up to date</div><div class="v">61<small>/69</small></div><div class="d">8 outstanding on MM03 v4.0</div></div>
+    <div class="p m"><div class="k">Easy Read coverage</div><div class="v">14<small>/16</small></div><div class="d">CR77 and CR63 have none</div></div>
+    <div class="p m"><div class="k">Past review date</div><div class="v">0</div><div class="d">Next due 16 Sep</div></div>
+  </div>
+
+  <div class="row c21">
+    <div class="p">
+      <div class="p-h"><h2>Needs you today</h2><span class="hint">Ordered by inspection impact</span></div>
+      <div class="tools" style="border-bottom:1px solid var(--line);gap:12px">
+        <span class="legend"><span><span class="sdot bad"></span>Action needed</span><span><span class="sdot warn"></span>Review due</span><span><span class="sdot ok"></span>Current</span></span>
+      </div>
+      <table><tbody>
+        <tr class="click"><td style="width:1%"><span class="sdot bad"></span></td><td style="width:1%"><span class="ref">MM03</span></td>
+          <td><div class="tn">Eight staff haven't acknowledged Medication Administration v4.0</div><div class="ts">Published six days ago · three are on the medication round this week</div></td>
+          <td style="width:1%;text-align:right"><button class="btn btn-xs" data-go="ack">Chase</button></td></tr>
+        <tr class="click"><td><span class="sdot bad"></span></td><td><span class="ref">CR63</span></td>
+          <td><div class="tn">Accessible Information Standard policy has no accessible version</div><div class="ts">A policy about accessibility that nobody we support can read</div></td>
+          <td style="text-align:right"><button class="btn btn-xs btn-b" data-go="easyread">Open desk</button></td></tr>
+        <tr class="click"><td><span class="sdot warn"></span></td><td><span class="ref">CR77</span></td>
+          <td><div class="tn">Restrictive Practices has no Easy Read version</div><div class="ts">Directly affects Daniel M. and Aisha K.</div></td>
+          <td style="text-align:right"><button class="btn btn-xs" data-go="easyread">Open desk</button></td></tr>
+        <tr class="click"><td><span class="sdot warn"></span></td><td><span class="ref">CR40</span></td>
+          <td><div class="tn">Sarah T.'s feedback on Complaints is unanswered</div><div class="ts">Raised 11 days ago at the Tuesday house meeting</div></td>
+          <td style="text-align:right"><button class="btn btn-xs" data-go="voice">Review</button></td></tr>
+        <tr class="click"><td><span class="sdot warn"></span></td><td><span class="ref">—</span></td>
+          <td><div class="tn">D. Ferreira starts Monday — induction not begun</div><div class="ts">Four safety-critical policies due before her first shift</div></td>
+          <td style="text-align:right"><button class="btn btn-xs" data-go="access">Set up</button></td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="stack">
+      <div class="p"><div class="p-h"><h3>Acknowledgement</h3></div>
+        <div class="p-b"><div style="display:flex;align-items:baseline;gap:8px"><div style="font-size:25px;font-weight:600;letter-spacing:-.03em">88%</div><span class="tag t-warn">−4 this week</span></div>
+        <div class="bar" style="margin-top:9px"><i class="w" style="width:88%"></i></div>
+        <div style="font-size:12px;color:var(--faint);margin-top:9px">Across all live policies in this registration.</div></div></div>
+      <div class="p"><div class="p-h"><h3>Voice this quarter</h3><span class="tag t-blue" style="margin-left:auto">Co-production</span></div>
+        <div class="p-b"><div style="font-size:25px;font-weight:600;letter-spacing:-.03em">4</div>
+        <div style="font-size:12px;color:var(--faint);margin-top:5px">Policies changed because someone we support asked.</div>
+        <button class="btn btn-xs" style="margin-top:11px" data-go="voice">See what changed</button></div></div>
+    </div>
+  </div>
+
+  <div class="p tbl-p">
+    <div class="p-h"><h2>Registrations</h2><div class="sp"></div><button class="btn btn-xs">Export</button></div>
+    <table>
+      <thead><tr><th>Registration</th><th>Policies</th><th>Acknowledged</th><th>Easy Read</th><th>Last co-production</th></tr></thead>
+      <tbody>
+        <tr class="click"><td><div class="tn">Supported Living — Cheltenham</div><div class="ts">CQC 1-000123456 · 4 people supported</div></td><td class="num">16</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="bar" style="width:60px;margin:0"><i class="w" style="width:88%"></i></div><span class="num">88%</span></div></td>
+          <td><span class="tag t-warn">14 / 16</span></td><td class="num">11 Aug 2026</td></tr>
+        <tr class="click"><td><div class="tn">Domiciliary Care — Gloucestershire</div><div class="ts">CQC 1-000789012 · 31 people supported</div></td><td class="num">19</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="bar" style="width:60px;margin:0"><i style="width:96%"></i></div><span class="num">96%</span></div></td>
+          <td><span class="tag t-ok">19 / 19</span></td><td class="num">29 Jul 2026</td></tr>
+        <tr class="click"><td><div class="tn">Wellbeing Outreach — Stroud</div><div class="ts">CQC 1-000345678 · 12 people supported</div></td><td class="num">12</td>
+          <td><div style="display:flex;align-items:center;gap:8px"><div class="bar" style="width:60px;margin:0"><i class="b" style="width:71%"></i></div><span class="num">71%</span></div></td>
+          <td><span class="tag t-warn">9 / 12</span></td><td class="num" style="color:var(--bad)">2 Jun 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div></section>
+
+<!-- ============ LIBRARY ============ -->
+<section class="view" id="v-library"><div class="wrap">
+  <div class="p tbl-p">
+    <div class="p-h"><h2>Policy library</h2><span class="hint">16 in scope · imported from QCS, tailored here</span><div class="sp"></div>
+      <button class="btn btn-xs">Sync from QCS</button><button class="btn btn-xs btn-p" data-go="new">New policy</button></div>
+    <div class="tools">
+      <button class="chipf" aria-pressed="true">All<span class="n">16</span></button>
+      <button class="chipf">Needs acknowledgement<span class="n">1</span></button>
+      <button class="chipf">No Easy Read<span class="n">2</span></button>
+      <button class="chipf">Person-specific annexe<span class="n">5</span></button>
+      <button class="chipf">High impact<span class="n">6</span></button>
+    </div>
+    <div class="tools" style="background:#FAFBFB">
+      <span class="legend">
+        <span><b style="font-weight:500;color:var(--body)">Status</b> <span class="sdot bad"></span>Action <span class="sdot warn"></span>Review due <span class="sdot ok"></span>Current</span>
+        <span><b style="font-weight:500;color:var(--body)">Impact</b> <span class="imp" data-l="3"><i></i><i></i><i></i></span> how many people this policy touches</span>
+      </span>
+    </div>
+    <table>
+      <thead><tr><th style="width:1%">Status</th><th style="width:1%">Impact</th><th style="width:1%">Ref</th><th>Title</th><th>Version</th><th>Tailoring</th><th>Read</th><th>Easy Read</th><th>Reviewed</th></tr></thead>
+      <tbody>
+        <tr class="cathead"><td colspan="9">Medications Management <span class="n">3 policies</span></td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot bad"></span></td><td><span class="imp" data-l="3"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">MM03</span></td><td><div class="tn">Medication Administration Policy and Procedure</div><div class="ts">Deputy Manager · changed 6 days ago</div></td>
+          <td class="num">v4.0</td><td><span class="tag t-a">2 annexes</span></td><td><span class="tag t-bad">61 / 69</span></td><td><span class="tag t-blue">v2 live</span></td><td class="num">20 Aug 26</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="2"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">MM07</span></td><td><div class="tn">Self-Administration of Medication Policy</div><div class="ts">Deputy Manager</div></td>
+          <td class="num">v2.1</td><td><span class="tag t-a">1 annexe</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-blue">v1 live</span></td><td class="num">14 Jun 26</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="1"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">MM12</span></td><td><div class="tn">Controlled Drugs Policy and Procedure</div><div class="ts">Registered Manager</div></td>
+          <td class="num">v3.0</td><td><span class="tag t-off">Standard</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-off">Not needed</span></td><td class="num">2 May 26</td></tr>
+
+        <tr class="cathead"><td colspan="9">Rights &amp; Abuse <span class="n">5 policies</span></td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="3"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">CR100</span></td><td><div class="tn">Safeguarding Adults Policy and Procedure</div><div class="ts">Registered Manager</div></td>
+          <td class="num">v7.1</td><td><span class="tag t-off">Standard</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-blue">v3 live</span></td><td class="num">3 Mar 26</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot warn"></span></td><td><span class="imp" data-l="2"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">CR77</span></td><td><div class="tn">Restrictive Practices Including Restraint Policy</div><div class="ts">Behaviour Lead · 2 people affected</div></td>
+          <td class="num">v2.3</td><td><span class="tag t-a">3 annexes</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-bad">Missing</span></td><td class="num">19 Jan 26</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="2"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">CR46</span></td><td><div class="tn">Mental Capacity Act (MCA) 2005 Policy and Procedure</div><div class="ts">Registered Manager</div></td>
+          <td class="num">v3.2</td><td><span class="tag t-a">1 annexe</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-blue">v2 live</span></td><td class="num">8 Dec 25</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="2"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">CR21</span></td><td><div class="tn">Dignity, Respect and Choice Policy and Procedure</div><div class="ts">Registered Manager</div></td>
+          <td class="num">v4.0</td><td><span class="tag t-off">Standard</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-blue">v2 live</span></td><td class="num">4 Oct 25</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="1"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">CR19</span></td><td><div class="tn">Risk Taking Policy and Procedure</div><div class="ts">Registered Manager</div></td>
+          <td class="num">v2.2</td><td><span class="tag t-off">Standard</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-blue">v1 live</span></td><td class="num">27 Nov 25</td></tr>
+
+        <tr class="cathead"><td colspan="9">Care Management <span class="n">4 policies</span></td></tr>
+        <tr class="click" data-go="policy" style="background:#FFFCF6"><td><span class="sdot bad"></span></td><td><span class="imp" data-l="3"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">CR63</span></td><td><div class="tn">Accessible Information Standard (AIS) Policy and Procedure</div><div class="ts">Registered Manager · no accessible version exists</div></td>
+          <td class="num">v1.4</td><td><span class="tag t-off">Standard</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-bad">Missing</span></td><td class="num">7 Mar 26</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="2"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">CR40</span></td><td><div class="tn">Complaints and Compliments Policy and Procedure</div><div class="ts">Registered Manager · changed after feedback</div></td>
+          <td class="num">v5.0</td><td><span class="tag t-off">Standard</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-blue">v4 live</span></td><td class="num">22 Apr 26</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="2"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">CC196</span></td><td><div class="tn">Pain Management Policy and Procedure</div><div class="ts">Registered Manager</div></td>
+          <td class="num">v2.0</td><td><span class="tag t-off">Standard</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-blue">v1 live</span></td><td class="num">13 Mar 26</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="1"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">CR23</span></td><td><div class="tn">End of Life Care Planning Policy and Procedure</div><div class="ts">Registered Manager</div></td>
+          <td class="num">v3.1</td><td><span class="tag t-a">1 annexe</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-blue">v1 live</span></td><td class="num">24 Nov 25</td></tr>
+
+        <tr class="cathead"><td colspan="9">Health &amp; Safety <span class="n">4 policies</span></td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot ok"></span></td><td><span class="imp" data-l="3"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">HS08</span></td><td><div class="tn">Fire Safety and Evacuation Policy and Procedure</div><div class="ts">H&amp;S Lead · PEEPs attached</div></td>
+          <td class="num">v3.0</td><td><span class="tag t-a">4 annexes</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-blue">v2 live</span></td><td class="num">5 Jan 26</td></tr>
+        <tr class="click" data-go="policy"><td><span class="sdot warn"></span></td><td><span class="imp" data-l="2"><i></i><i></i><i></i></span></td>
+          <td><span class="ref">HS22</span></td><td><div class="tn">Lone Working Policy and Procedure</div><div class="ts">Deputy Manager · review due 16 Sep</div></td>
+          <td class="num">v4.4</td><td><span class="tag t-off">Standard</span></td><td><span class="tag t-ok">69 / 69</span></td><td><span class="tag t-off">Not needed</span></td><td class="num" style="color:var(--warn)">16 Sep 25</td></tr>
+      </tbody>
+    </table>
+    <div class="p-f">Showing 14 of 16 · <button class="btn btn-xs">Load more</button></div>
+  </div>
+</div></section>
+
+<!-- ============ POLICY DETAIL ============ -->
+<section class="view" id="v-policy"><div class="wrap">
+  <div class="p" style="margin-bottom:14px">
+    <div class="p-h">
+      <span class="ref">MM03</span><h2>Medication Administration Policy and Procedure</h2><span class="tag t-off mono">v4.0</span>
+      <div class="sp"></div>
+      <button class="btn btn-xs">New version</button><button class="btn btn-xs btn-b" data-go="easyread">Easy Read desk</button>
+    </div>
+    <div class="tools" style="gap:14px">
+      <span class="legend"><span><span class="sdot bad"></span>Action needed</span><span><span class="imp" data-l="3"><i></i><i></i><i></i></span>High impact</span></span>
+      <span class="tag t-ok">Approved 20 Aug 2026</span><span class="tag t-bad">8 acknowledgements outstanding</span><span class="tag t-blue">Easy Read v2 out of date</span>
+      <div class="sp" style="flex:1"></div>
+      <span style="font-size:12px;color:var(--faint)">Medications Management · Supported Living, Domiciliary</span>
+    </div>
+
+    <div class="atabs" id="atabs">
+      <button class="atab" data-t="review" aria-selected="false">Review sheet</button>
+      <button class="atab" data-t="purpose" aria-selected="false">Purpose</button>
+      <button class="atab" data-t="scope" aria-selected="false">Scope</button>
+      <button class="atab" data-t="policy" aria-selected="true">Policy</button>
+      <button class="atab" data-t="procedure" aria-selected="false">Procedure</button>
+      <button class="atab" data-t="defs" aria-selected="false">Definitions</button>
+      <button class="atab" data-t="kfpro" aria-selected="false">Key facts — staff</button>
+      <button class="atab people" data-t="kfpeople" aria-selected="false">Key facts — people we support<span class="mk"></span></button>
+      <button class="atab" data-t="annexes" aria-selected="false">Person annexes</button>
+      <button class="atab" data-t="forms" aria-selected="false">Forms</button>
+      <button class="atab" data-t="versions" aria-selected="false">Version history</button>
+    </div>
+
+    <div class="apane" data-p="review"><h4>Review sheet</h4>
+      <p>Owner: Deputy Manager. Approved by Registered Manager, 20 August 2026. Next scheduled review 14 February 2027. Reviewed six-monthly or on regulatory change, whichever is sooner.</p>
+      <p>Aligned to CQC Single Assessment Framework — Safe (Medicines optimisation), Effective, Responsive.</p></div>
+
+    <div class="apane" data-p="purpose"><h4>Purpose</h4>
+      <p>To set out how Prosperity Care &amp; Wellbeing supports people to take their medication safely, in a way that respects their choices and keeps decision-making with the person wherever they are able to make it.</p></div>
+
+    <div class="apane" data-p="scope"><h4>Scope</h4>
+      <p>Applies to all staff working in Supported Living (Cheltenham) and Domiciliary Care (Gloucestershire), including bank and agency workers. Not in scope for Wellbeing Outreach (Stroud), which does not handle medication.</p></div>
+
+    <div class="apane on" data-p="policy"><h4>4. Policy</h4>
+      <p><span class="cl">4.1</span>Staff must not administer any medication unless they have completed the Safe Handling of Medicines training and been assessed as competent within the preceding twelve months.</p>
+      <p><span class="cl">4.4</span>Where a person has been assessed as able to self-administer, staff must not remove that responsibility without a documented reassessment and the person's involvement in that decision.</p>
+      <p><span class="cl">4.6</span>Covert administration may only be used where a documented best-interests decision exists, recorded under CR46 Mental Capacity Act 2005, agreed with the GP and pharmacist, and reviewed every three months.</p>
+      <p><span class="cl">4.7</span>The person's Easy Read medication summary must be updated within five working days of any change to 4.6.</p></div>
+
+    <div class="apane" data-p="procedure"><h4>5. Procedure</h4>
+      <p><span class="cl">5.2</span>A person may refuse their medication. Refusal must be respected, recorded, and reported to the prescriber. It must never be disguised, forced or given without the person's knowledge outside of clause 4.6.</p>
+      <p><span class="cl">5.5</span>Where a person wishes to change how, when or where their medication is given, staff must record the request and raise it at the next review rather than declining it at the point of care.</p>
+      <p><span class="cl">5.9</span>Any medication error, near-miss or refusal must be recorded on the eMAR within the same shift and escalated to the Deputy Manager without delay.</p></div>
+
+    <div class="apane" data-p="defs"><h4>Definitions</h4>
+      <ul><li><b>Covert administration</b> — giving medication disguised in food or drink without the person's knowledge.</li>
+      <li><b>Self-administration</b> — where the person manages and takes their own medication, with or without prompting.</li>
+      <li><b>Time-critical medication</b> — medication that must be given within 30 minutes of the prescribed time.</li></ul></div>
+
+    <div class="apane" data-p="kfpro"><h4>Key facts — staff</h4>
+      <p>Staff providing this service should be aware of the following:</p>
+      <ul>
+        <li>You must be trained and assessed as competent before administering any medication</li>
+        <li>A person can refuse. Record it, respect it, tell the prescriber. Never persuade or disguise</li>
+        <li>Covert administration needs a documented best-interests decision, not just GP agreement</li>
+        <li>If someone asks to change how their medication is given, record the request — don't decline it on the spot</li>
+        <li>Errors and near-misses go on the eMAR the same shift and to the Deputy Manager immediately</li>
+      </ul></div>
+
+    <div class="apane" data-p="kfpeople">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+        <h4 style="margin:0">Key facts — people we support</h4>
+        <span class="tag t-bad">Out of date · written against v3.2</span>
+        <div style="flex:1"></div>
+        <button class="btn btn-xs btn-b" data-go="easyread">Open Easy Read desk</button>
+      </div>
+      <p style="color:var(--faint);max-width:76ch">This tab exists in most policy systems as a plain-text bullet list. On its own it is not Easy Read — no symbols, no one-idea-per-page, no way for the person to say whether they understood it, and no record that they saw it. The desk turns this into something the person can actually use.</p>
+      <ul>
+        <li>You can look after your own medicine if you are able to</li>
+        <li>You can say no to your medicine</li>
+        <li>We will tell your doctor if you say no</li>
+        <li>We will not hide medicine in your food or drink</li>
+        <li>You can ask us to change how you get your medicine</li>
+      </ul>
+      <div style="border:1px solid #D8E6EE;background:var(--blue-soft);border-radius:6px;padding:11px 13px;max-width:76ch;font-size:12.5px;color:#1A4B6B">
+        <b>Clause 4.6 changed in v4.0.</b> One page of the Easy Read version needs redoing, and Tom B. and Sarah T. both need to see it again before it counts as current.
+      </div>
+    </div>
+
+    <div class="apane" data-p="annexes"><h4>Person-specific annexes</h4>
+      <p style="color:var(--faint)">The same policy, applied to a real person. This is the part a standard library cannot give you.</p>
+      <table style="border:1px solid var(--line);border-radius:6px;overflow:hidden">
+        <thead><tr><th>Person</th><th>Annexe</th><th>Reviewed with them</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr class="click"><td class="tn">Tom B.</td><td>Self-administration, weekly blister check · links to MM07</td><td class="num">7 Jul 2026</td><td><span class="tag t-ok">Agreed</span></td></tr>
+          <tr class="click"><td class="tn">Sarah T.</td><td>Rescue medication protocol, seizure plan</td><td class="num">2 Aug 2026</td><td><span class="tag t-warn">Re-check after v4.0</span></td></tr>
+        </tbody>
+      </table></div>
+
+    <div class="apane" data-p="forms"><h4>Forms</h4>
+      <table style="border:1px solid var(--line);border-radius:6px;overflow:hidden">
+        <thead><tr><th>Form</th><th>When it's used</th><th>Format</th></tr></thead>
+        <tbody>
+          <tr><td class="tn">Medication Competency Assessment — MM03</td><td>Annually, and after any error</td><td><span class="tag t-off">PDF</span></td></tr>
+          <tr><td class="tn">Self-Administration Risk Assessment — MM03</td><td>Before a person begins self-administering</td><td><span class="tag t-off">PDF</span></td></tr>
+          <tr><td class="tn">Covert Administration Best-Interests Record — MM03</td><td>Where clause 4.6 applies</td><td><span class="tag t-off">PDF</span></td></tr>
+          <tr style="background:#F8FBFC"><td class="tn">My Medicine booklet — MM03</td><td>Given to the person and reviewed with them</td><td><span class="tag t-blue">Easy Read · v2</span></td></tr>
+        </tbody>
+      </table></div>
+
+    <div class="apane" data-p="versions"><h4>Version history</h4>
+      <div class="ver" style="padding-left:0;padding-right:0"><span class="vn">v4.0</span><div style="flex:1">
+        <div style="font-size:13px;font-weight:500">Covert administration now requires a recorded best-interests decision</div>
+        <div class="ts">Deputy Manager · 20 Aug 2026 · approved by Registered Manager</div>
+        <div class="diff">
+          <div class="del">4.6 Covert administration may be used where the person lacks capacity and a decision has been agreed with the GP.</div>
+          <div class="add">4.6 Covert administration may only be used where a documented best-interests decision exists, recorded under CR46, agreed with the GP and pharmacist, and reviewed every 3 months.</div>
+          <div class="add">4.7 The person's Easy Read medication summary must be updated within 5 working days of any change to 4.6.</div>
+        </div></div></div>
+      <div class="ver" style="padding-left:0;padding-right:0"><span class="vn">v3.2</span><div><div style="font-size:13px;font-weight:500">Time-critical medication window narrowed to 30 minutes</div><div class="ts">4 Mar 2026 · 69 of 69 acknowledged</div></div></div>
+      <div class="ver" style="padding-left:0;padding-right:0"><span class="vn">v3.1</span><div><div style="font-size:13px;font-weight:500">Added self-administration risk assessment for Tom B.</div><div class="ts">12 Nov 2025 · raised at Tom's review meeting</div></div></div>
+    </div>
+
+    <div class="p-f">
+      <span>Acknowledged <b style="color:var(--ink)">61 / 69</b></span>
+      <div class="bar" style="width:90px;margin:0"><i class="w" style="width:88%"></i></div>
+      <button class="btn btn-xs" data-go="ack">See who's outstanding</button>
+      <div class="sp" style="flex:1"></div>
+      <span class="mono">Last synced from QCS 20 Aug 2026</span>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ NEW POLICY ============ -->
+<section class="view" id="v-new"><div class="wrap">
+  <div class="p" style="margin-bottom:14px">
+    <div class="p-h"><h2>New policy</h2><span class="hint">Supported Living — Cheltenham</span><div class="sp"></div><button class="btn btn-xs" data-go="library">Cancel</button></div>
+    <div class="wiz">
+      <button class="wcard" aria-pressed="true" data-go="editor">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/><path d="M9 13h6M9 16h4"/></svg></div>
+        <div class="t">Start from a QCS policy</div>
+        <div class="d">Pull the approved text from your library, then tailor it to this registration and the people it affects. Keeps the ref number and the update feed.</div>
+        <span class="tag t-a" style="width:fit-content">Recommended</span>
+      </button>
+      <button class="wcard" data-go="editor">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div class="t">Write from scratch</div>
+        <div class="d">For something specific to Prosperity that no library covers. You choose the ref number and own the review cycle.</div>
+        <span class="tag t-off" style="width:fit-content">You maintain it</span>
+      </button>
+      <button class="wcard" data-go="editor">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg></div>
+        <div class="t">Upload a Word document</div>
+        <div class="d">Bring an existing policy in. We split it into Purpose, Scope, Policy and Procedure so it behaves like the rest.</div>
+        <span class="tag t-off" style="width:fit-content">.docx · .pdf</span>
+      </button>
+    </div>
+    <div class="p-f">Whichever you pick, you'll be asked the same five questions before it can be published.</div>
+  </div>
+
+  <div class="p">
+    <div class="p-h"><h3>Drafts in progress</h3><span class="tag t-warn">2</span><div class="sp"></div></div>
+    <table><thead><tr><th style="width:1%">Ref</th><th>Title</th><th>Stage</th><th>Owner</th><th>Last edited</th></tr></thead><tbody>
+      <tr class="click" data-go="editor"><td><span class="ref">CR63a</span></td>
+        <td><div class="tn">Accessible Information Standard — Prosperity annexe</div><div class="ts">Adds how we actually meet the standard, not just that we know it exists</div></td>
+        <td><span class="tag t-warn">Awaiting approval</span></td><td>Registered Manager</td><td class="num">25 Aug 2026</td></tr>
+      <tr class="click" data-go="editor"><td><span class="ref">CR77</span></td>
+        <td><div class="tn">Restrictive Practices Including Restraint · v2.4</div><div class="ts">Adding Daniel M.'s de-escalation annexe</div></td>
+        <td><span class="tag t-off">Draft</span></td><td>Behaviour Lead</td><td class="num">22 Aug 2026</td></tr>
+    </tbody></table>
+  </div>
+</div></section>
+
+<!-- ============ EDITOR ============ -->
+<section class="view" id="v-editor"><div class="wrap">
+  <div class="p">
+    <div class="p-h">
+      <span class="ref">CR63a</span>
+      <h2>Accessible Information Standard — Prosperity annexe</h2>
+      <span class="tag t-off mono">v1.0 draft</span>
+      <div class="sp"></div>
+      <span style="font-size:12px;color:var(--faint)">Saved 2 minutes ago</span>
+      <button class="btn btn-xs">Preview</button>
+      <button class="btn btn-xs btn-p">Send for approval</button>
+    </div>
+    <div class="tools" style="gap:12px">
+      <div class="flow">
+        <span class="fstep done"><span class="b"></span>Draft</span>
+        <span class="fstep now"><span class="b"></span>Peer review</span>
+        <span class="fstep"><span class="b"></span>Approve</span>
+        <span class="fstep"><span class="b"></span>Publish &amp; assign</span>
+      </div>
+      <div class="sp" style="flex:1"></div>
+      <span style="font-size:12px;color:var(--faint)">Approver: Registered Manager · Deputy Manager can also approve</span>
+    </div>
+
+    <div class="ed">
+      <div class="edrail">
+        <button class="step done" data-s="basics"><span class="n">1</span><div><div class="t">Basics</div><div class="d">Ref, title, category, owner</div></div></button>
+        <button class="step done" data-s="scope"><span class="n">2</span><div><div class="t">Who it applies to</div><div class="d">Registrations and roles</div></div></button>
+        <button class="step" aria-current="true" data-s="content"><span class="n">3</span><div><div class="t">Write the policy</div><div class="d">Purpose, policy, procedure</div></div></button>
+        <button class="step" data-s="checks"><span class="n">4</span><div><div class="t">Check questions</div><div class="d">How you prove understanding</div></div></button>
+        <button class="step" data-s="access"><span class="n">5</span><div><div class="t">Accessible version</div><div class="d">Required before publishing</div></div></button>
+        <div class="railfoot">You cannot publish until step 5 is answered. That single rule is why CR63 wouldn't have slipped through.</div>
+      </div>
+
+      <div class="edmain">
+        <div class="edpane" data-e="basics">
+          <h4>Basics</h4>
+          <div class="sub2">The reference number is how your team will talk about this policy. Keep the QCS prefix if it extends an existing one.</div>
+          <div class="inrow" style="margin-bottom:15px">
+            <div class="field"><label>Reference</label><input class="inp mono" value="CR63a"><div class="help">Suffix an existing ref to show it extends CR63.</div></div>
+            <div class="field" style="flex:2"><label>Title</label><input class="inp" value="Accessible Information Standard — Prosperity annexe"></div>
+          </div>
+          <div class="inrow" style="margin-bottom:15px">
+            <div class="field"><label>Category</label><select class="inp"><option>Care Management</option><option>Rights &amp; Abuse</option><option>Medications Management</option><option>Health &amp; Safety</option></select></div>
+            <div class="field"><label>Owner</label><select class="inp"><option>Registered Manager</option><option>Deputy Manager</option><option>Behaviour Lead</option><option>H&amp;S Lead</option></select></div>
+            <div class="field"><label>Review every</label><select class="inp"><option>6 months</option><option selected>12 months</option><option>24 months</option></select></div>
+          </div>
+          <div class="field"><label>Impact level</label>
+            <div class="inrow">
+              <button class="chk" style="flex:1" aria-pressed="false"><span class="bx"></span><div><div class="t">Low</div><div class="d">Affects a few staff or one process</div></div></button>
+              <button class="chk" style="flex:1" aria-pressed="false"><span class="bx"></span><div><div class="t">Medium</div><div class="d">Affects most staff</div></div></button>
+              <button class="chk" style="flex:1" aria-pressed="true"><span class="bx"></span><div><div class="t">High</div><div class="d">Affects everyone and the people we support</div></div></button>
+            </div>
+            <div class="help">Drives the impact bars in the library and how hard the system chases acknowledgements.</div>
+          </div>
+        </div>
+
+        <div class="edpane" data-e="scope">
+          <h4>Who it applies to</h4>
+          <div class="sub2">A policy that applies everywhere by default is how services end up with rules that don't fit them. Choose deliberately.</div>
+          <button class="chk" aria-pressed="true"><span class="bx"></span><div><div class="t">Supported Living — Cheltenham</div><div class="d">CQC 1-000123456 · 22 staff · 4 people supported</div></div></button>
+          <button class="chk" aria-pressed="true"><span class="bx"></span><div><div class="t">Domiciliary Care — Gloucestershire</div><div class="d">CQC 1-000789012 · 35 staff · 31 people supported</div></div></button>
+          <button class="chk" aria-pressed="true"><span class="bx"></span><div><div class="t">Wellbeing Outreach — Stroud</div><div class="d">CQC 1-000345678 · 12 staff · 12 people supported</div></div></button>
+          <div class="field" style="margin-top:16px"><label>Roles that must acknowledge</label>
+            <select class="inp"><option>All staff (69)</option><option>Support workers only (58)</option><option>Seniors and above (11)</option></select>
+            <div class="help">Bank and agency workers are included automatically and chased when rostered.</div>
+          </div>
+        </div>
+
+        <div class="edpane on" data-e="content">
+          <h4>Write the policy</h4>
+          <div class="sub2">Same sections as every other policy in the library, so staff always know where to look.</div>
+          <div class="field"><label>Purpose</label>
+            <textarea class="inp" style="min-height:64px">To set out how Prosperity Care &amp; Wellbeing identifies, records and meets the communication needs of the people we support, so that everyone receives information in a form they can understand.</textarea></div>
+          <div class="field"><label>Policy</label>
+            <textarea class="inp">3.1 Every person we support has a recorded communication preference, reviewed at least annually and whenever their needs change.
+
+3.2 Any policy that directly affects a person's daily life must have an accessible version available before it is published.
+
+3.3 An accessible version is not complete until at least one person it is written for has confirmed they understand it.</textarea>
+            <div class="help">Numbered clauses become linkable. The Easy Read desk maps each page back to the clause it came from.</div></div>
+          <div class="field"><label>Procedure</label>
+            <textarea class="inp" style="min-height:76px">4.1 On admission, the keyworker records the person's communication preference — words, symbols, photographs, read aloud, or advocate present.
+
+4.2 Where a preference changes, the keyworker updates the record within five working days and flags any accessible documents that need redoing.</textarea></div>
+          <div class="field"><label>Key facts — staff</label>
+            <textarea class="inp" style="min-height:64px">• Check the person's communication preference before you hand them anything written
+• If they can't understand it, that's our problem to fix, not theirs
+• Tell the manager if an Easy Read version doesn't match what the policy now says</textarea></div>
+        </div>
+
+        <div class="edpane" data-e="checks">
+          <h4>Check questions</h4>
+          <div class="sub2">Two or three questions written against what this policy actually asks staff to do differently. Not a comprehension quiz on the whole document.</div>
+          <div class="field"><label>Question 1</label>
+            <input class="inp" value="Aisha tells you the fire leaflet doesn't make sense to her. What do you do?">
+            <div style="margin-top:8px">
+              <button class="chk" aria-pressed="true"><span class="bx"></span><div><div class="t">Record it and tell the manager the accessible version needs redoing</div><div class="d">Correct answer</div></div></button>
+              <button class="chk" aria-pressed="false"><span class="bx"></span><div><div class="t">Read it out to her and move on</div></div></button>
+              <button class="chk" aria-pressed="false"><span class="bx"></span><div><div class="t">Ask her keyworker to explain it next time they're in</div></div></button>
+            </div>
+          </div>
+          <button class="btn btn-xs" style="margin-top:4px">Add another question</button>
+          <div class="field" style="margin-top:18px"><label>If someone answers wrong</label>
+            <select class="inp"><option selected>Send them back to the relevant clause</option><option>Send them back to the whole policy</option><option>Notify the manager</option></select></div>
+        </div>
+
+        <div class="edpane" data-e="access">
+          <h4>Accessible version</h4>
+          <div class="sub2">This step cannot be skipped. Either an accessible version exists, or you record why one isn't needed — and that reason goes in the evidence pack.</div>
+          <button class="chk" aria-pressed="true"><span class="bx"></span><div><div class="t">This policy affects the daily life of people we support</div><div class="d">An Easy Read version is required before publishing</div></div></button>
+          <button class="chk" aria-pressed="false"><span class="bx"></span><div><div class="t">Staff-facing only — no accessible version needed</div><div class="d">You'll be asked to record why, and it appears in the evidence pack</div></div></button>
+
+          <div style="border:1px solid #D8E6EE;background:var(--blue-soft);border-radius:7px;padding:13px;margin-top:16px;max-width:760px">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:9px">
+              <span class="tag t-blue">Easy Read</span>
+              <span style="font-size:12.5px;font-weight:600;color:#12374F">Draft from the policy text</span>
+              <div style="flex:1"></div>
+              <button class="btn btn-xs btn-b" data-go="easyread">Open the desk</button>
+            </div>
+            <div style="font-size:12.5px;color:#1A4B6B;line-height:1.6;margin-bottom:11px">Clauses 3.1, 3.2 and 3.3 affect people directly, so the desk will suggest a page for each. You review and rewrite every one — nothing is published from a draft you haven't read.</div>
+            <div class="field" style="margin-bottom:0"><label style="color:#1A4B6B">Who reviews it before it goes live</label>
+              <div class="inrow">
+                <button class="chk" style="flex:1;background:#fff" aria-pressed="true"><span class="bx"></span><div><div class="t">Tom B.</div><div class="d">Words, no symbols</div></div></button>
+                <button class="chk" style="flex:1;background:#fff" aria-pressed="true"><span class="bx"></span><div><div class="t">Sarah T.</div><div class="d">Symbols, large print</div></div></button>
+                <button class="chk" style="flex:1;background:#fff" aria-pressed="false"><span class="bx"></span><div><div class="t">Aisha K.</div><div class="d">Photographs, read aloud</div></div></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="edbar">
+          <button class="btn btn-xs">Back</button>
+          <button class="btn btn-xs btn-p">Continue</button>
+          <div class="sp" style="flex:1"></div>
+          <span style="font-size:12px;color:var(--faint)">Step 3 of 5 · draft autosaved</span>
+          <button class="btn btn-xs" data-go="library">Save and close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ EASY READ DESK ============ -->
+<section class="view" id="v-easyread"><div class="wrap">
+  <div class="p" style="margin-bottom:14px">
+    <div class="p-h"><span class="ref">MM03</span><h2>Easy Read desk</h2><span class="hint">Key facts — people we support · v3 draft</span><div class="sp"></div>
+      <button class="btn btn-xs">Preview booklet</button><button class="btn btn-xs">Print A4 large text</button><button class="btn btn-xs btn-b" data-go="voice">Send to reading group</button></div>
+    <div class="desk">
+      <div class="dl">
+        <div class="dk-h"><span class="tag t-a">Staff</span><span class="t">Approved policy text</span><span class="r mono">v4.0 · read-only</span></div>
+        <div class="dk-b">
+          <p style="font-weight:500;color:var(--ink)">4. Policy</p>
+          <p><span class="cl">4.1</span>Staff must not administer any medication unless they have completed the Safe Handling of Medicines training and been assessed as competent within the preceding twelve months.</p>
+          <p><span class="cl">4.4</span><span class="hl">Where a person has been assessed as able to self-administer, staff must not remove that responsibility without a documented reassessment and the person's involvement in that decision.</span></p>
+          <p><span class="cl">4.6</span><span class="hl">Covert administration may only be used where a documented best-interests decision exists, recorded under CR46, agreed with the GP and pharmacist, and reviewed every three months.</span></p>
+          <p style="font-weight:500;color:var(--ink)">5. Procedure</p>
+          <p><span class="cl">5.2</span><span class="hl">A person may refuse their medication. Refusal must be respected, recorded, and reported to the prescriber. It must never be disguised, forced or given without the person's knowledge outside of clause 4.6.</span></p>
+          <p><span class="cl">5.5</span>Where a person wishes to change how, when or where their medication is given, staff must record the request and raise it at the next review rather than declining it at the point of care.</p>
+        </div>
+      </div>
+      <div class="dr">
+        <div class="dk-h"><span class="tag t-blue">People we support</span><span class="t">Easy Read</span><span class="r mono">v3 draft · editing</span></div>
+        <div class="dk-b">
+          <div class="er"><div class="er-s"><svg viewBox="0 0 24 24"><use href="#s-person"/></svg></div>
+            <div><div class="er-t">If you can look after your own medicine, we will not take that away from you.</div><div class="er-m">MM03 · from 4.4</div></div></div>
+          <div class="er"><div class="er-s"><svg viewBox="0 0 24 24"><use href="#s-talk"/></svg></div>
+            <div><div class="er-t">If we think it needs to change, we will talk to you first.</div><div class="er-m">MM03 · from 4.4</div></div></div>
+          <div class="er" style="border-color:#EDDDBB"><div class="er-s" style="background:var(--warn-soft);border-color:#EDDDBB"><svg viewBox="0 0 24 24" style="stroke:var(--warn)"><use href="#s-no"/></svg></div>
+            <div><div class="er-t">You can say no to your medicine. Saying no is allowed.</div><div class="er-m" style="color:var(--warn)">MM03 · from 5.2 · clause changed in v4.0</div></div></div>
+          <div class="er"><div class="er-s"><svg viewBox="0 0 24 24"><use href="#s-phone"/></svg></div>
+            <div><div class="er-t">If you say no, we will write it down and tell your doctor.</div><div class="er-m">MM03 · from 5.2</div></div></div>
+          <div class="er" style="border-style:dashed;box-shadow:none"><div class="er-s" style="background:#F4F8FA"><svg viewBox="0 0 24 24" style="opacity:.35"><use href="#s-pill"/></svg></div>
+            <div><div class="er-t" style="color:var(--faint)">Clause 4.6 has no Easy Read yet.</div><div class="er-m">MM03 · 4.6 · covert administration</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="p-f">
+      <span class="mono">Reading age 8</span>
+      <div class="bar" style="width:90px;margin:0"><i style="width:82%;background:var(--blue)"></i></div>
+      <span class="tag t-warn">1 clause not translated</span><span class="tag t-warn">1 page out of date</span>
+      <div class="sp" style="flex:1"></div>
+      <button class="btn btn-xs" data-jump="reader">Preview as Tom sees it</button>
+    </div>
+  </div>
+
+  <div class="row c2">
+    <div class="p tbl-p">
+      <div class="p-h"><h3>Co-production sign-off</h3><div class="sp"></div><button class="btn btn-xs btn-b">Book session</button></div>
+      <table><thead><tr><th>Reviewer</th><th>Session</th><th>Verdict</th></tr></thead><tbody>
+        <tr><td><div class="tn">Tom B.</div><div class="ts">Reading group, with keyworker</div></td><td class="num">11 Aug 2026</td><td><span class="tag t-ok">Clear to me</span></td></tr>
+        <tr><td><div class="tn">Sarah T.</div><div class="ts">One to one, symbols only</div></td><td class="num">11 Aug 2026</td><td><span class="tag t-warn">Asked to change 2 pages</span></td></tr>
+        <tr><td><div class="tn">Aisha K.</div><div class="ts">Reading group</div></td><td class="num">—</td><td><span class="tag t-off">Not yet seen</span></td></tr>
+        <tr><td><div class="tn">Daniel M.</div><div class="ts">Advocate present</div></td><td class="num">—</td><td><span class="tag t-off">Not yet seen</span></td></tr>
+      </tbody></table>
+      <div class="hintbox">An Easy Read version isn't finished when the office says so. It's finished when the people it's for say they understand it.</div>
+    </div>
+    <div class="p">
+      <div class="p-h"><h3>Policies missing an accessible version</h3><span class="tag t-bad">2</span><div class="sp"></div></div>
+      <table><tbody>
+        <tr class="click" style="background:#FFFCF6"><td style="width:1%"><span class="ref">CR63</span></td>
+          <td><div class="tn">Accessible Information Standard (AIS)</div><div class="ts">A policy about accessible information, with no accessible version</div></td>
+          <td style="width:1%;text-align:right"><button class="btn btn-xs btn-b">Draft</button></td></tr>
+        <tr class="click"><td><span class="ref">CR77</span></td>
+          <td><div class="tn">Restrictive Practices Including Restraint</div><div class="ts">Affects Daniel M. and Aisha K. directly</div></td>
+          <td style="text-align:right"><button class="btn btn-xs btn-b">Draft</button></td></tr>
+      </tbody></table>
+      <div class="hintbox">CR63 is the one an inspector will notice. Under the Accessible Information Standard the obligation is to provide information people can understand — holding a policy that says so is not the same as meeting it.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ ACK ============ -->
+<section class="view" id="v-ack"><div class="wrap">
+  <div class="row c3">
+    <div class="p m"><div class="k">Signed</div><div class="v" style="color:var(--ok)">61</div><div class="d">Read, answered, signed</div></div>
+    <div class="p m"><div class="k">Opened, not signed</div><div class="v" style="color:var(--warn)">5</div><div class="d">Started but didn't finish the check</div></div>
+    <div class="p m"><div class="k">Never opened</div><div class="v" style="color:var(--bad)">3</div><div class="d">No activity since publication</div></div>
+  </div>
+
+  <div class="p tbl-p" style="margin-bottom:14px">
+    <div class="p-h"><span class="ref">MM03</span><h2>Read &amp; understood</h2><span class="tag t-off mono">v4.0</span><div class="sp"></div>
+      <button class="btn btn-xs">Export list</button><button class="btn btn-xs btn-p">Chase all 8</button></div>
+    <div class="tools">
+      <button class="chipf" aria-pressed="true">All<span class="n">69</span></button>
+      <button class="chipf">Outstanding<span class="n">8</span></button>
+      <button class="chipf">Failed a check question<span class="n">3</span></button>
+      <button class="chipf">Bank &amp; agency<span class="n">6</span></button>
+    </div>
+    <table>
+      <thead><tr><th>Staff member</th><th>Role</th><th>Opened</th><th>On page</th><th>Check questions</th><th>Signed</th></tr></thead>
+      <tbody>
+        <tr class="click"><td><div class="tn">J. Okafor</div><div class="ts">Cheltenham</div></td><td>Senior Support Worker</td><td class="num">20 Aug 09:12</td><td class="num">6m 41s</td><td><span class="tag t-ok">3 / 3</span></td><td class="num">20 Aug 09:19</td></tr>
+        <tr class="click"><td><div class="tn">M. Whitcombe</div><div class="ts">Cheltenham</div></td><td>Support Worker</td><td class="num">21 Aug 14:03</td><td class="num">9m 02s</td><td><span class="tag t-warn">2 / 3 retried</span></td><td class="num">21 Aug 14:15</td></tr>
+        <tr class="click"><td><div class="tn">L. Brennan</div><div class="ts">Cheltenham</div></td><td>Support Worker</td><td class="num">22 Aug 07:48</td><td class="num" style="color:var(--warn)">41s</td><td><span class="tag t-warn">Not attempted</span></td><td><span class="tag t-warn">Outstanding</span></td></tr>
+        <tr class="click"><td><div class="tn">D. Ferreira</div><div class="ts">Cheltenham · bank</div></td><td>Bank Support Worker</td><td><span class="tag t-bad">Never opened</span></td><td class="num">—</td><td class="num">—</td><td><span class="tag t-bad">On rota Thu</span></td></tr>
+        <tr class="click"><td><div class="tn">A. Nowak</div><div class="ts">Gloucestershire</div></td><td>Senior Support Worker</td><td class="num">20 Aug 11:30</td><td class="num">7m 55s</td><td><span class="tag t-ok">3 / 3</span></td><td class="num">20 Aug 11:38</td></tr>
+      </tbody>
+    </table>
+    <div class="p-f">Showing 5 of 69 · <button class="btn btn-xs">Load more</button></div>
+  </div>
+
+  <div class="row c2">
+    <div class="p">
+      <div class="p-h"><h3>Check questions</h3><span class="hint">Written against what changed in v4.0</span><div class="sp"></div><button class="btn btn-xs">Edit</button></div>
+      <div class="q"><div class="qt">Kofi refuses his morning tablets for the third day running. What do you do?</div>
+        <div class="opt r"><span class="m2"></span>Record the refusal, respect it, and tell the prescriber</div>
+        <div class="opt"><span class="m2"></span>Try again with food to make it easier</div>
+        <div class="opt"><span class="m2"></span>Wait and mention it at the next team meeting</div></div>
+      <div class="q"><div class="qt">What changed about covert administration in this version?</div>
+        <div class="opt r"><span class="m2"></span>It now needs a recorded best-interests decision reviewed every 3 months</div>
+        <div class="opt"><span class="m2"></span>It is no longer permitted in any circumstance</div>
+        <div class="opt"><span class="m2"></span>Nothing changed — the GP agreement is still enough</div></div>
+      <div class="hintbox">A wrong answer sends the person back to clause 4.6, not the whole document.</div>
+    </div>
+    <div class="p">
+      <div class="p-h"><h3>Staff experience</h3><div class="sp"></div><button class="btn btn-xs btn-p" data-jump="staff">Open staff view</button></div>
+      <div class="p-b" style="font-size:12.5px;color:var(--body);line-height:1.6">Staff see only the clause that changed — not the whole twelve-page document. That single decision is the difference between staff reading it and staff scrolling to the bottom to click the button.</div>
+      <div class="hintbox">Bank and agency staff get the same view but are chased differently — flagged so a reminder fires when they're rostered, not on a weekly cycle they'll never see.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ VOICE ============ -->
+<section class="view" id="v-voice"><div class="wrap">
+  <div class="row c3">
+    <div class="p m"><div class="k">Feedback recorded</div><div class="v">27</div><div class="d">This year, across all channels</div></div>
+    <div class="p m"><div class="k">Acted on</div><div class="v" style="color:var(--ok)">19</div><div class="d">Led to a policy or practice change</div></div>
+    <div class="p m"><div class="k">Awaiting response</div><div class="v" style="color:var(--warn)">3</div><div class="d">Oldest open 11 days</div></div>
+  </div>
+
+  <div class="row c21">
+    <div class="p">
+      <div class="p-h"><h2>Feedback trail</h2><span class="hint">House meetings, reviews, reading groups, one to ones</span><div class="sp"></div><button class="btn btn-xs btn-b">Record feedback</button></div>
+      <div class="tools">
+        <button class="chipf" aria-pressed="true">All<span class="n">27</span></button>
+        <button class="chipf">Awaiting response<span class="n">3</span></button>
+        <button class="chipf">Changed a policy<span class="n">19</span></button>
+      </div>
+      <div class="quote"><p>"The complaints leaflet says I should write a letter. I don't write letters. I want to be able to tell Jess and have it count."</p>
+        <div class="by">Sarah T. · house meeting · 15 Aug 2026</div>
+        <div class="out"><span class="tag t-warn">Awaiting response</span><span class="ref">CR40</span><span>Raised 11 days ago. No action recorded.</span></div></div>
+      <div class="quote"><p>"Nobody told me I was allowed to say no. I thought I had to take them."</p>
+        <div class="by">Tom B. · medication review · 7 Jul 2026</div>
+        <div class="out"><span class="tag t-ok">Changed the policy</span><span class="ref">MM03</span><span>Clause 5.2 reworded in v3.2. Easy Read gained a page.</span></div></div>
+      <div class="quote"><p>"The fire drill is too loud and nobody says when it will happen."</p>
+        <div class="by">Daniel M. · with advocate · 3 Jun 2026</div>
+        <div class="out"><span class="tag t-ok">Changed the policy</span><span class="ref">HS08</span><span>v3.0 now requires advance notice and a personal evacuation plan.</span></div></div>
+      <div class="quote"><p>"I want the pictures to be of our actual kitchen, not a stock one. I didn't know it was about here."</p>
+        <div class="by">Aisha K. · reading group · 11 Aug 2026</div>
+        <div class="out"><span class="tag t-ok">Changed the practice</span><span>Symbol set replaced with photographs of the house and staff team.</span></div></div>
+    </div>
+
+    <div class="stack">
+      <div class="p tbl-p">
+        <div class="p-h"><h3>Reading group</h3></div>
+        <table><tbody>
+          <tr class="click"><td><div class="tn">Tom B.</div><div class="ts">Prefers words, no symbols</div></td><td class="num" style="text-align:right">11 Aug</td></tr>
+          <tr class="click"><td><div class="tn">Sarah T.</div><div class="ts">Symbols only, large print</div></td><td class="num" style="text-align:right">11 Aug</td></tr>
+          <tr class="click"><td><div class="tn">Aisha K.</div><div class="ts">Photographs, read aloud</div></td><td class="num" style="text-align:right;color:var(--warn)">2 Jun</td></tr>
+          <tr class="click"><td><div class="tn">Daniel M.</div><div class="ts">Advocate attends</div></td><td class="num" style="text-align:right;color:var(--warn)">2 Jun</td></tr>
+        </tbody></table>
+        <div class="hintbox">Communication preferences recorded here feed the Accessible Information Standard record under CR63.</div>
+      </div>
+      <div class="p">
+        <div class="p-h"><h3>For the inspector</h3></div>
+        <div class="p-b" style="font-size:12.5px;color:var(--body);line-height:1.6">Four policies changed this quarter as a direct result of feedback. Each links back to the conversation, the date, and who was there.</div>
+        <div class="p-f"><button class="btn btn-xs" data-go="evidence">Add to evidence pack</button></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ ACCESS ============ -->
+<section class="view" id="v-access"><div class="wrap">
+  <div class="p" style="margin-bottom:14px">
+    <div class="p-h"><h2>People &amp; access</h2><span class="hint">Four roles · scope and flags do the rest</span><div class="sp"></div><button class="btn btn-xs btn-p">Add a person</button></div>
+    <div class="desk">
+      <div>
+        <div class="rc"><div class="h"><span class="tag t-a">Admin</span><span class="n">Manager &amp; Deputy</span><span class="c">4</span></div>
+          <ul><li>Write, approve and publish policies</li><li>Assign reading and chase acknowledgements</li><li>Run the Easy Read desk and export evidence</li></ul>
+          <div class="r"><b style="color:var(--ink)">Rule:</b> never fewer than two. If your only Admin leaves or goes on long-term sick, the compliance record has no owner — and CQC will ask.</div></div>
+        <div class="rc"><div class="h"><span class="tag t-off">Staff</span><span class="n">Support workers</span><span class="c">69</span></div>
+          <ul><li>Read what's assigned to them</li><li>Answer check questions and sign</li><li>Ask a question about a clause</li></ul>
+          <div class="r">Cannot see other people's records. A senior at Stroud is Staff scoped to Stroud, not a separate role.</div></div>
+      </div>
+      <div style="border-left:1px solid var(--line)">
+        <div class="rc"><div class="h"><span class="tag t-blue">Reader</span><span class="n">People we support</span><span class="c">47</span></div>
+          <ul><li>Easy Read versions only</li><li>Say "I understand" or "I don't"</li><li>Tell us something, any time</li></ul>
+          <div class="r">Family and advocates use this same view, by the person's invitation. One role avoids deciding on someone's behalf what their family gets to see.</div></div>
+        <div class="rc"><div class="h"><span class="tag t-off">Viewer</span><span class="n">Director · Nominated Individual</span><span class="c">2</span></div>
+          <ul><li>Read everything, change nothing</li><li>Cross-registration comparison</li><li>Export the evidence pack</li></ul>
+          <div class="r">Inspectors get a time-boxed share link, not an account.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row c2">
+    <div class="p">
+      <div class="p-h"><h3>Induction ladder</h3><span class="hint">D. Ferreira · starts Monday</span><div class="sp"></div><button class="btn btn-xs">Edit</button></div>
+      <div class="rung"><span class="w">Before shift 1</span><div style="flex:1"><div class="t">CR100 · MM03 · HS08 · CR91 Whistleblowing</div><div class="d">Cannot be rostered until all four are signed. Hard block.</div></div><span class="tag t-bad">0 / 4</span></div>
+      <div class="rung"><span class="w">Week 1</span><div style="flex:1"><div class="t">CR46 · CR77 · HS22</div><div class="d">Plus the Easy Read version of each, so she sees what the person she supports sees.</div></div><span class="tag t-off">Queued</span></div>
+      <div class="rung"><span class="w">Week 2–4</span><div style="flex:1"><div class="t">The remaining nine</div><div class="d">Two or three a week, alongside shadowing.</div></div><span class="tag t-off">Queued</span></div>
+      <div class="rung"><span class="w">Week 4</span><div style="flex:1"><div class="t">Person annexes for her caseload</div><div class="d">Tom's self-administration plan. Sarah's seizure protocol.</div></div><span class="tag t-off">Queued</span></div>
+      <div class="hintbox">Sixteen policies on day one guarantees she ticks through without reading. Staged, she actually reads them.</div>
+    </div>
+    <div class="p">
+      <div class="p-h"><h3>Leaver policy</h3><div class="sp"></div><button class="btn btn-xs">Archived staff <span class="mono">2</span></button></div>
+      <div class="p-b" style="display:flex;flex-direction:column;gap:10px">
+        <div style="border:1px solid #F0D2D7;background:var(--bad-soft);border-radius:6px;padding:10px 12px">
+          <div style="font-size:12.5px;font-weight:600;color:var(--bad)">Access ends the same day</div>
+          <div style="font-size:12px;color:var(--body);margin-top:3px">Login disabled, assignments cancelled, removed from every rota-linked chase.</div></div>
+        <div style="border:1px solid #CFE2D6;background:var(--ok-soft);border-radius:6px;padding:10px 12px">
+          <div style="font-size:12.5px;font-weight:600;color:var(--ok)">Their record stays forever</div>
+          <div style="font-size:12px;color:var(--body);margin-top:3px">Every acknowledgement they signed is retained. It's the evidence they were competent on the day they gave that medication.</div></div>
+      </div>
+      <div class="hintbox">Deleting the account must never delete the history. Two former staff are archived this way — their signatures still appear in the evidence pack, their accounts don't exist.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ EVIDENCE ============ -->
+<section class="view" id="v-evidence"><div class="wrap">
+  <div class="row c2">
+    <div class="p tbl-p">
+      <div class="p-h"><h2>Evidence pack</h2><span class="hint">Mapped to CQC quality statements</span><div class="sp"></div><button class="btn btn-xs btn-p">Generate</button></div>
+      <table><thead><tr><th>Component</th><th>Quality statement</th><th>Status</th></tr></thead><tbody>
+        <tr><td class="tn">Policy register with version history</td><td class="ts">Safe · Well-led</td><td><span class="tag t-ok">Ready</span></td></tr>
+        <tr><td class="tn">Acknowledgement records per version</td><td class="ts">Safe · Effective</td><td><span class="tag t-warn">8 outstanding</span></td></tr>
+        <tr style="background:#FFFCF6"><td class="tn">Accessible versions and sign-off</td><td class="ts">Responsive · Caring</td><td><span class="tag t-bad">2 missing</span></td></tr>
+        <tr><td class="tn">Co-production trail</td><td class="ts">Responsive · Well-led</td><td><span class="tag t-ok">Ready</span></td></tr>
+        <tr><td class="tn">Person-specific annexes</td><td class="ts">Person-centred care</td><td><span class="tag t-ok">Ready</span></td></tr>
+        <tr><td class="tn">Communication preferences (AIS)</td><td class="ts">Responsive</td><td><span class="tag t-ok">Ready</span></td></tr>
+        <tr><td class="tn">Induction and leaver records</td><td class="ts">Well-led</td><td><span class="tag t-ok">Ready</span></td></tr>
+      </tbody></table>
+    </div>
+    <div class="p">
+      <div class="p-h"><h3>Scope the export</h3></div>
+      <div class="p-b">
+        <div class="reglab">Registration</div>
+        <select class="regsel" style="margin-bottom:11px"><option>Supported Living — Cheltenham</option><option>Domiciliary — Gloucestershire</option><option>Wellbeing Outreach — Stroud</option></select>
+        <div class="reglab">Period</div>
+        <div class="seg" style="width:fit-content"><button aria-pressed="true">12 months</button><button>Since last inspection</button><button>All time</button></div>
+        <div style="border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin-top:12px;background:#FAFBFB">
+          <div class="mono" style="font-size:11.5px">prosperity_SL-chelt_2026-08-26.pdf</div>
+          <div style="font-size:11.5px;color:var(--faint);margin-top:4px">94 pages · 16 policies · 1,104 acknowledgements · 27 feedback entries · 14 Easy Read documents</div>
+        </div>
+      </div>
+      <div class="p-f">Or <button class="btn btn-xs">Share expiring link</button> — read-only, scoped, no account needed.</div>
+    </div>
+  </div>
+
+  <div class="p tbl-p">
+    <div class="p-h"><h3>Activity log</h3><span class="hint">Append-only · each entry carries the hash of the one before it</span><div class="sp"></div><button class="btn btn-xs">Filter</button></div>
+    <table class="log"><thead><tr><th>When</th><th>Who</th><th>Ref</th><th>What</th><th>Hash</th></tr></thead><tbody>
+      <tr><td>2026-08-26 08:41</td><td>A. Nowak</td><td>MM03</td><td>Signed v4.0 · 3 of 3 correct</td><td class="h">9f3c1a</td></tr>
+      <tr><td>2026-08-25 16:07</td><td>Registered Manager</td><td>MM03</td><td>Easy Read v3 sent to reading group</td><td class="h">7b2e04</td></tr>
+      <tr><td>2026-08-24 10:22</td><td>Tom B.</td><td>MM03</td><td>Reader confirmed understanding · Easy Read v2</td><td class="h">55ae1b</td></tr>
+      <tr><td>2026-08-22 07:48</td><td>L. Brennan</td><td>MM03</td><td>Opened v4.0 · 41s · not signed</td><td class="h">4d81cc</td></tr>
+      <tr><td>2026-08-20 09:55</td><td>Registered Manager</td><td>MM03</td><td>Approved v4.0 · superseded v3.2</td><td class="h">1a6f7e</td></tr>
+      <tr><td>2026-08-20 09:12</td><td>Deputy Manager</td><td>MM03</td><td>Amended clause 4.6 · covert administration</td><td class="h">e08b39</td></tr>
+      <tr><td>2026-08-15 11:20</td><td>J. Okafor</td><td>CR40</td><td>Recorded feedback from Sarah T.</td><td class="h">c5d290</td></tr>
+    </tbody></table>
+    <div class="p-f">Showing 7 of 4,182 · <button class="btn btn-xs">Load more</button></div>
+  </div>
+</div></section>
+
+<!-- ============ STAFF SHIFT ============ -->
+<section class="view" id="v-shift"><div class="wrap">
+  <div class="row c2">
+    <div>
+      <div class="phone">
+        <div class="pin">
+          <div class="ptop"><div class="n">Morning, Leah</div><div class="s">Shift starts 08:00 · Cheltenham</div></div>
+          <div class="pit">
+            <span class="tag t-bad">Read before your next shift</span>
+            <div class="t"><span class="ref" style="margin-right:6px">MM03</span>Medication Administration v4.0</div>
+            <div class="d">One clause changed. You only need to read the highlighted part.</div>
+            <div class="delta"><span class="lab">4.6 · CHANGED</span>Covert administration may only be used where a documented best-interests decision exists, agreed with the GP and pharmacist, and reviewed every three months.</div>
+            <div class="pacts"><button class="btn btn-xs btn-p">I've read this</button><button class="btn btn-xs">Ask a question</button></div>
+          </div>
+          <div class="pit">
+            <span class="tag t-blue">Worth knowing</span>
+            <div class="t">Tom's Easy Read medicine page changed</div>
+            <div class="d">He now has a page that says he can say no. If he refuses, follow it — don't persuade.</div>
+            <div class="pacts"><button class="btn btn-xs" data-jump="reader">See what Tom sees</button></div>
+          </div>
+          <div class="pit">
+            <span class="tag t-off">Due Friday</span>
+            <div class="t"><span class="ref" style="margin-right:6px">HS22</span>Lone Working v4.4</div>
+            <div class="d">No rush.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="p"><div class="p-h"><h3>Why only the changed clause</h3></div>
+        <div class="p-b" style="font-size:12.5px;color:var(--body);line-height:1.6">Asking someone to re-read twelve pages to find one altered sentence is how you get a wall of ticks and no understanding. Showing the delta is the single most important decision in the staff experience — and it's what makes the acknowledgement record mean something.</div></div>
+      <div class="p"><div class="p-h"><h3>Questions on this clause</h3><span class="ref" style="margin-left:auto">MM03 · 4.6</span></div>
+        <div class="p-b">
+          <div style="border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:#FAFBFB">
+            <div style="font-size:12.5px;font-weight:500">L. Brennan</div>
+            <div style="font-size:12px;color:var(--body);margin-top:3px">"If the GP agreed covert meds last year, does that still count or do we need a new decision?"</div>
+            <div style="margin-top:8px"><span class="tag t-ok">Answered by Deputy Manager</span></div>
+          </div>
+        </div>
+        <div class="hintbox">Questions attach to the clause. If three people ask the same thing, the clause is badly written — and the system tells you.</div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ============ STAFF RECORD ============ -->
+<section class="view" id="v-myrecord"><div class="wrap">
+  <div class="row c3">
+    <div class="p m"><div class="k">Policies signed</div><div class="v">15<small>/16</small></div><div class="bar"><i style="width:94%"></i></div></div>
+    <div class="p m"><div class="k">Outstanding</div><div class="v" style="color:var(--bad)">1</div><div class="d">Due before your next shift</div></div>
+    <div class="p m"><div class="k">Induction</div><div class="v" style="font-size:18px;padding-top:6px">Complete</div><div class="d">4 Mar 2025</div></div>
+  </div>
+  <div class="p tbl-p">
+    <div class="p-h"><h2>My record</h2><span class="hint">Yours to see, yours to prove</span><div class="sp"></div><button class="btn btn-xs">Download</button></div>
+    <table>
+      <thead><tr><th>Ref</th><th>Policy</th><th>Version signed</th><th>Date</th><th>Check questions</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr class="click"><td><span class="ref">MM03</span></td><td class="tn">Medication Administration</td><td class="num">v3.2</td><td class="num">5 Mar 2026</td><td><span class="tag t-ok">3 / 3</span></td><td><span class="tag t-bad">v4.0 outstanding</span></td></tr>
+        <tr class="click"><td><span class="ref">CR100</span></td><td class="tn">Safeguarding Adults</td><td class="num">v7.1</td><td class="num">19 Feb 2026</td><td><span class="tag t-ok">4 / 4</span></td><td><span class="tag t-ok">Current</span></td></tr>
+        <tr class="click"><td><span class="ref">CR77</span></td><td class="tn">Restrictive Practices</td><td class="num">v2.3</td><td class="num">11 Jan 2026</td><td><span class="tag t-ok">3 / 3</span></td><td><span class="tag t-ok">Current</span></td></tr>
+        <tr class="click"><td><span class="ref">HS08</span></td><td class="tn">Fire Safety and Evacuation</td><td class="num">v3.0</td><td class="num">8 Jan 2026</td><td><span class="tag t-ok">2 / 2</span></td><td><span class="tag t-ok">Current</span></td></tr>
+        <tr class="click"><td><span class="ref">HS22</span></td><td class="tn">Lone Working</td><td class="num">v4.4</td><td class="num">2 Dec 2025</td><td><span class="tag t-ok">2 / 2</span></td><td><span class="tag t-warn">Review due Sep</span></td></tr>
+      </tbody>
+    </table>
+    <div class="hintbox">If something goes wrong on a shift, the first question is what the worker had been told and when. That record protects them as much as the organisation — so they can see it without asking permission.</div>
+  </div>
+</div></section>
+
+<!-- ============ READER BOOKLET ============ -->
+<section class="view" id="v-booklet"><div class="wrap">
+  <div class="tablet">
+    <div class="tin">
+      <div class="ttop"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--blue);fill:none;stroke-width:1.5"><use href="#s-pill"/></svg>
+        <div class="t">About your medicine</div><div class="pg"><span id="pgn">1</span> of 5</div></div>
+      <div class="page on" data-p="1"><div class="sym"><svg viewBox="0 0 24 24"><use href="#s-person"/></svg></div>
+        <div class="w">If you can look after your own medicine, we will not take that away from you.</div></div>
+      <div class="page" data-p="2"><div class="sym"><svg viewBox="0 0 24 24"><use href="#s-talk"/></svg></div>
+        <div class="w">If we think it needs to change, we will talk to you first.</div></div>
+      <div class="page" data-p="3"><div class="sym"><svg viewBox="0 0 24 24" style="stroke:var(--bad)"><use href="#s-no"/></svg></div>
+        <div class="w">You can say no to your medicine. Saying no is allowed.</div></div>
+      <div class="page" data-p="4"><div class="sym"><svg viewBox="0 0 24 24"><use href="#s-phone"/></svg></div>
+        <div class="w">If you say no, we will write it down and tell your doctor.</div></div>
+      <div class="page" data-p="5"><div class="sym"><svg viewBox="0 0 24 24"><use href="#s-heart"/></svg></div>
+        <div class="w">We will never hide medicine in your food or your drink.</div></div>
+      <div class="tfoot">
+        <button class="big" id="prev"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Back</button>
+        <button class="big" id="next">Next<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+        <div style="flex:1"></div>
+        <button class="big" id="listen"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zM17 9a4 4 0 0 1 0 6"/></svg>Read to me</button>
+      </div>
+      <div class="tfoot">
+        <button class="big big-y" data-said="yes"><svg viewBox="0 0 24 24"><use href="#s-tick"/></svg>I understand this</button>
+        <button class="big big-n" data-said="no"><svg viewBox="0 0 24 24"><use href="#s-q"/></svg>I don't understand</button>
+        <div style="flex:1"></div>
+        <button class="big" data-said="tell"><svg viewBox="0 0 24 24"><use href="#s-talk"/></svg>Tell us something</button>
+      </div>
+    </div>
+  </div>
+  <div class="said" id="said"></div>
+  <div class="row c3" style="margin-top:14px">
+    <div class="p"><div class="p-h"><h3>One idea a page</h3></div><div class="p-b" style="font-size:12.5px;color:var(--body);line-height:1.6">No scrolling, no columns, no jargon. A symbol, a sentence, and space around it. This is what the "key facts" bullet list becomes.</div></div>
+    <div class="p"><div class="p-h"><h3>Saying no is a real button</h3></div><div class="p-b" style="font-size:12.5px;color:var(--body);line-height:1.6">"I don't understand" isn't a dead end. It creates a task for the manager and books the page into the next reading group.</div></div>
+    <div class="p"><div class="p-h"><h3>It counts as evidence</h3></div><div class="p-b" style="font-size:12.5px;color:var(--body);line-height:1.6">Tom pressing "I understand" on 24 August appears in the activity log against MM03, alongside staff signatures.</div></div>
+  </div>
+</div></section>
+
+<!-- ============ READER TELL US ============ -->
+<section class="view" id="v-tellus"><div class="wrap">
+  <div class="tablet">
+    <div class="tin">
+      <div class="ttop"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:var(--blue);fill:none;stroke-width:1.5"><use href="#s-talk"/></svg><div class="t">Tell us something</div></div>
+      <div style="padding:32px 28px;text-align:center">
+        <div style="font-size:21px;line-height:1.4;font-weight:500;color:#173747;max-width:25ch;margin:0 auto 24px">Is there something you want to change about how we do things?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:400px;margin:0 auto">
+          <button class="big" style="flex-direction:column;padding:18px;gap:10px"><svg viewBox="0 0 24 24" style="width:32px;height:32px"><use href="#s-pill"/></svg>My medicine</button>
+          <button class="big" style="flex-direction:column;padding:18px;gap:10px"><svg viewBox="0 0 24 24" style="width:32px;height:32px"><use href="#s-home"/></svg>My home</button>
+          <button class="big" style="flex-direction:column;padding:18px;gap:10px"><svg viewBox="0 0 24 24" style="width:32px;height:32px"><use href="#s-person"/></svg>The staff</button>
+          <button class="big" style="flex-direction:column;padding:18px;gap:10px"><svg viewBox="0 0 24 24" style="width:32px;height:32px"><use href="#s-warn"/></svg>Something worries me</button>
+        </div>
+        <div style="margin-top:22px;font-size:13.5px;color:var(--blue)">You can say it out loud, or ask someone to write it for you.</div>
+      </div>
+    </div>
+  </div>
+  <div class="p" style="max-width:560px;margin-top:14px">
+    <div class="p-h"><h3>Where it goes</h3></div>
+    <div class="p-b" style="font-size:12.5px;color:var(--body);line-height:1.6">Straight onto the manager's Voice screen with the date and the person's name, waiting for a response. Sarah's complaint about the CR40 leaflet started here, and the counter on Readiness has been ticking for eleven days because nobody has answered it. That visible, uncomfortable counter is the point.</div>
+  </div>
+</div></section>
+
+<!-- ============ VIEWER ============ -->
+<section class="view" id="v-oversight"><div class="wrap">
+  <div class="row c3">
+    <div class="p m"><div class="k">Group readiness</div><div class="v">84<small>%</small></div><div class="bar"><i class="w" style="width:84%"></i></div></div>
+    <div class="p m"><div class="k">Weakest service</div><div class="v" style="font-size:18px;padding-top:6px;color:var(--bad)">Stroud</div><div class="d">71% acknowledged · co-production stale since June</div></div>
+    <div class="p m"><div class="k">Single points of failure</div><div class="v" style="color:var(--warn)">1</div><div class="d">Stroud has only one Admin</div></div>
+  </div>
+  <div class="p tbl-p" style="margin-bottom:14px">
+    <div class="p-h"><h2>Compare registrations</h2><div class="sp"></div><button class="btn btn-xs">Export</button></div>
+    <table>
+      <thead><tr><th>Registration</th><th>Readiness</th><th>Acknowledged</th><th>Easy Read</th><th>Co-production</th><th>Admins</th></tr></thead>
+      <tbody>
+        <tr class="click"><td><div class="tn">Domiciliary — Gloucestershire</div><div class="ts">31 people supported</div></td><td><span class="tag t-ok">94%</span></td><td class="num">96%</td><td class="num">19 / 19</td><td class="num">29 Jul 2026</td><td class="num">2</td></tr>
+        <tr class="click"><td><div class="tn">Supported Living — Cheltenham</div><div class="ts">4 people supported</div></td><td><span class="tag t-warn">86%</span></td><td class="num">88%</td><td class="num">14 / 16</td><td class="num">11 Aug 2026</td><td class="num">2</td></tr>
+        <tr class="click"><td><div class="tn">Wellbeing Outreach — Stroud</div><div class="ts">12 people supported</div></td><td><span class="tag t-bad">71%</span></td><td class="num">71%</td><td class="num">9 / 12</td><td class="num" style="color:var(--bad)">2 Jun 2026</td><td class="num" style="color:var(--warn)">1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row c2">
+    <div class="p tbl-p">
+      <div class="p-h"><h3>Permissions</h3><span class="hint">The restriction is the feature</span></div>
+      <table><tbody>
+        <tr><td>Edit or approve a policy</td><td style="text-align:right"><span class="tag t-off">Blocked</span></td></tr>
+        <tr><td>Assign or chase reading</td><td style="text-align:right"><span class="tag t-off">Blocked</span></td></tr>
+        <tr><td>Change an Easy Read version</td><td style="text-align:right"><span class="tag t-off">Blocked</span></td></tr>
+        <tr><td>Read every record and export it</td><td style="text-align:right"><span class="tag t-ok">Allowed</span></td></tr>
+      </tbody></table>
+      <div class="hintbox">Every Viewer action is logged too. An inspector reading the pack leaves a trace, same as anyone else.</div>
+    </div>
+    <div class="p">
+      <div class="p-h"><h3>Inspector access</h3><div class="sp"></div><button class="btn btn-xs">New link</button></div>
+      <div class="p-b">
+        <div style="border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:#FAFBFB">
+          <div class="mono" style="font-size:11.5px;word-break:break-all">prosperity.app/e/SL-chelt/7f2a91b4</div>
+          <div style="font-size:11.5px;color:var(--faint);margin-top:4px">Expires 9 Sep 2026 · viewed 0 times</div>
+        </div>
+        <div style="font-size:12.5px;color:var(--body);margin-top:10px;line-height:1.6">Scoped to one registration and time-boxed. They see the evidence pack and nothing else.</div>
+        <button class="btn btn-xs" style="margin-top:10px" data-go="evidence">See what they'd see</button>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+</div>
+</div>
+<div class="demo">Prototype</div>
+
+<script>
+(function(){
+  var IC={
+    readiness:'M3 12h4l3 8 4-16 3 8h4',library:'M4 4h7v16H4zM13 4h7v16h-7z',ack:'M9 11l2 2 4-4M4 4h16v16H4z',
+    easyread:'M4 5.5h6a2.5 2.5 0 0 1 2.5 2.5v11M20 5.5h-6A2.5 2.5 0 0 0 11.5 8v11',voice:'M3.5 5.5h17v10h-9l-5 4v-4h-3z',
+    access:'M12 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM5 20c0-3.6 3-6 7-6s7 2.4 7 6',evidence:'M4 3h16v18H4zM8 8h8M8 12h8M8 16h5',
+    shift:'M12 7v5l3 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z',myrecord:'M9 11l2 2 4-4M4 3h16v18H4z',
+    booklet:'M3 9h18v7H3zM12 9v7',tellus:'M3.5 5.5h17v10h-9l-5 4v-4h-3z',oversight:'M3 12h4l3 8 4-16 3 8h4',
+    "new":'M4 4h11l5 5v11H4zM15 4v5h5M12 12v5M9.5 14.5h5'
+  };
+  var NAV={
+    admin:[
+      {l:'Run the service',i:[{id:'readiness',t:'Readiness'},{id:'library',t:'Policy library'},{id:'new',t:'Drafts',c:'2'},{id:'ack',t:'Read & understood',c:'8'}]},
+      {l:'People we support',i:[{id:'easyread',t:'Easy Read desk',c:'2'},{id:'voice',t:'Voice'}]},
+      {l:'Administer',i:[{id:'access',t:'People & access'},{id:'evidence',t:'Evidence pack'}]}
+    ],
+    staff:[{l:'Your shift',i:[{id:'shift',t:'Before your shift',c:'1'},{id:'myrecord',t:'My record'}]}],
+    reader:[{l:'Your booklets',i:[{id:'booklet',t:'About your medicine'},{id:'tellus',t:'Tell us something'}]}],
+    viewer:[{l:'Oversight',i:[{id:'oversight',t:'All registrations'},{id:'evidence',t:'Evidence pack'}]}]
+  };
+  var T={
+    readiness:['Readiness','Supported Living — Cheltenham'],library:['Policy library','Supported Living — Cheltenham'],
+    policy:['MM03 Medication Administration','Policy library'],easyread:['Easy Read desk','MM03 · people we support'],
+    ack:['Read & understood','MM03 v4.0'],voice:['Voice','People we support'],
+    access:['People & access','Administer'],evidence:['Evidence pack','Administer'],
+    shift:['Before your shift','Leah Brennan · Support Worker'],myrecord:['My record','Leah Brennan · Support Worker'],
+    booklet:['About your medicine','Tom B.'],tellus:['Tell us something','Tom B.'],oversight:['All registrations','Read-only oversight'],
+    "new":['Drafts','Supported Living — Cheltenham'],editor:['CR63a — Prosperity annexe','Drafts']
+  };
+  var P={policy:'library',editor:'new'};
+  var R={
+    admin:{h:'readiness',b:'Policy &amp; Voice',reg:true,bar:null},
+    staff:{h:'shift',b:'Your policies',reg:false,bar:['','<b>Viewing as a support worker.</b> Read what\'s assigned, answer the check questions, sign. No other worker\'s record, no editing.']},
+    reader:{h:'booklet',b:'Easy Read',reg:false,bar:['blue','<b>Viewing as a person we support.</b> Everything is Easy Read — large text, one idea a page, and a real way to say you don\'t understand.']},
+    viewer:{h:'oversight',b:'Oversight',reg:true,bar:['','<b>Viewing as a director.</b> Read-only across all registrations. Every view is written to the activity log.']}
+  };
+  var role='admin',view='readiness';
+  var nav=document.getElementById('nav'),bar=document.getElementById('rolebar'),rb=document.getElementById('regbox');
+
+  function renderNav(){
+    nav.innerHTML='';
+    NAV[role].forEach(function(g){
+      var w=document.createElement('div');w.className='navgroup';
+      w.innerHTML='<div class="navlabel">'+g.l+'</div>';
+      g.i.forEach(function(it){
+        var b=document.createElement('button');
+        b.className='navitem';b.dataset.go=it.id;
+        b.setAttribute('aria-current',(P[view]||view)===it.id?'true':'false');
+        b.innerHTML='<svg viewBox="0 0 24 24"><path d="'+(IC[it.id]||'')+'"/></svg>'+it.t+(it.c?'<span class="ct">'+it.c+'</span>':'');
+        w.appendChild(b);
+      });
+      nav.appendChild(w);
+    });
+  }
+  function setRole(r){
+    role=r;
+    document.querySelectorAll('#roles button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.role===r?'true':'false')});
+    var c=R[r];
+    document.getElementById('bsub').innerHTML=c.b;
+    rb.style.display=c.reg?'':'none';
+    bar.innerHTML=c.bar?'<div class="rolebar '+c.bar[0]+'">'+c.bar[1]+'</div>':'';
+    go(c.h);
+  }
+  function go(id){
+    view=id;
+    document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('on',v.id==='v-'+id)});
+    var t=T[id]||['',''];
+    document.getElementById('ptitle').textContent=t[0];
+    document.getElementById('crumb').textContent=t[1];
+    renderNav();window.scrollTo({top:0,behavior:'instant'});
+  }
+  document.addEventListener('click',function(e){
+    var at=e.target.closest('.atab');
+    if(at){
+      document.querySelectorAll('.atab').forEach(function(b){b.setAttribute('aria-selected','false')});
+      at.setAttribute('aria-selected','true');
+      document.querySelectorAll('.apane').forEach(function(p){p.classList.toggle('on',p.dataset.p===at.dataset.t)});
+      return;
+    }
+    var st=e.target.closest('.step');
+    if(st){
+      document.querySelectorAll('.step').forEach(function(b){b.setAttribute('aria-current','false')});
+      st.setAttribute('aria-current','true');
+      document.querySelectorAll('.edpane').forEach(function(p){p.classList.toggle('on',p.dataset.e===st.dataset.s)});
+      return;
+    }
+    var wc=e.target.closest('.wcard');
+    if(wc){document.querySelectorAll('.wcard').forEach(function(b){b.setAttribute('aria-pressed','false')});wc.setAttribute('aria-pressed','true')}
+    var ck=e.target.closest('.chk');
+    if(ck){ck.setAttribute('aria-pressed',ck.getAttribute('aria-pressed')==='true'?'false':'true');return}
+    var j=e.target.closest('[data-jump]');if(j){setRole(j.dataset.jump);return}
+    var r=e.target.closest('#roles button');if(r){setRole(r.dataset.role);return}
+    var g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
+    var c=e.target.closest('.chipf');
+    if(c){c.parentElement.querySelectorAll('.chipf').forEach(function(b){b.setAttribute('aria-pressed','false')});c.setAttribute('aria-pressed','true');return}
+    var s=e.target.closest('.seg button');
+    if(s&&!s.dataset.role){s.parentElement.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed','false')});s.setAttribute('aria-pressed','true')}
+  });
+
+  var p=1,total=5;
+  function paint(){
+    document.querySelectorAll('#v-booklet .page').forEach(function(el){el.classList.toggle('on',+el.dataset.p===p)});
+    document.getElementById('pgn').textContent=p;
+    document.getElementById('prev').style.opacity=p===1?'.4':'1';
+    document.getElementById('next').style.opacity=p===total?'.4':'1';
+  }
+  document.getElementById('next').onclick=function(){if(p<total){p++;paint()}};
+  document.getElementById('prev').onclick=function(){if(p>1){p--;paint()}};
+  document.getElementById('listen').onclick=function(){
+    var el=document.getElementById('said');
+    el.className='said on';el.style.borderColor='#CFE0EB';el.style.background='var(--blue-soft)';el.style.color='var(--blue)';
+    el.textContent='Reading this page out loud.';
+  };
+  document.querySelectorAll('[data-said]').forEach(function(b){
+    b.onclick=function(){
+      var el=document.getElementById('said'),k=b.dataset.said;
+      if(k==='tell'){go('tellus');return}
+      el.className='said on';
+      if(k==='yes'){el.style.borderColor='#CFE2D6';el.style.background='var(--ok-soft)';el.style.color='var(--ok)';
+        el.textContent='Thank you. We have written down that you understand page '+p+'.';}
+      else{el.style.borderColor='#EDDDBB';el.style.background='var(--warn-soft)';el.style.color='var(--warn)';
+        el.textContent='That is okay. We will go through page '+p+' with you at the next reading group, and your manager has been told.';}
+    };
+  });
+  renderNav();paint();
+})();
+</script>
+</body>
+</html>
